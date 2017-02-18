@@ -159,9 +159,9 @@ public class CharSheetApp {
 				dispSpellbook();
 				}
 				break;
-			//case "attack":
-				
-				//break;
+			case "attack":
+				//TODO: attacks
+				break;
 			case "note":
 			case "notes":
 				notes();
@@ -332,15 +332,13 @@ public class CharSheetApp {
 					s.proficient = false;
 					s.expertise = false;
 					System.out.println("[Lost proficiency with "+s.skillName+"]");
-
 				}
 				break;
 			case "expert":
 			case "expertise":
 				if (s!=null){
 					s.expertise = true;
-					System.out.println("[Expertise proficiency with "+s.skillName+"]");
-
+					System.out.println("[Gained expertise with "+s.skillName+"]");
 				}
 				break;
 			case "view":
