@@ -1,0 +1,120 @@
+List of Valid Commands:
+
+[new]--------------------------------------------------------------------------------------------
+	new
+	  > creates a new character
+
+[save]--------------------------------------------------------------------------------------------
+	save
+	  > saves current character to /data/charactername.data
+ 
+[load]--------------------------------------------------------------------------------------------
+	load
+	load <name>
+
+[import]--------------------------------------------------------------------------------------------
+	import
+	import <name>
+	  > imports specified character from /data/charactername.data
+	importall
+[export]--------------------------------------------------------------------------------------------
+	export
+	export <name>
+	  > exports specified character to /data/charactername.txt
+	exportall
+
+[list]--------------------------------------------------------------------------------------------
+	list 
+	  > lists all characters
+	
+[view]--------------------------------------------------------------------------------------------
+	view 
+	  > displays stats and inventory
+
+[stats]--------------------------------------------------------------------------------------------
+	stats 
+	  > displays stats
+
+[level]--------------------------------------------------------------------------------------------
+	level <#>
+	  > set character to specified level
+	levelup
+	  > increase level by 1
+[notes]--------------------------------------------------------------------------------------------
+	notes add
+	notes clear
+	notes view
+
+[set]--------------------------------------------------------------------------------------------
+	set
+	  > edit character attributes
+	set <attribute> <=#>					
+	  > "=" or "@" symbol required, with no space between "="or "@" and the number
+	set <unprepOnCast/requirePrep>  			
+	  > toggle for spellcasting properties
+
+[inv]--------------------------------------------------------------------------------------------
+	inv 							
+	  > view inventory
+	inv sort
+	  > sort inventory alphabetically
+	inv <get/add/drop>  
+	  > guided get/add/drop process
+	inv <add/drop> <#> <name>	
+	  > add/drop specified items
+	inv <get> <item/weapon/armor/equippable> <name> <*#>
+	  > add a new item to your inventory
+	  > Omiting a count defaults to 1. '*' symbol required if count is specified. 
+
+[skill / skills]--------------------------------------------------------------------------------------------
+	skill 
+	  > view all skills
+	skill view <skill name> 
+	  > view a specific skill
+	skill train <skill name>
+	  > gain proficiency
+	skill forget <skill name>
+	  > lose proficiency
+	skill expert(ise) <skill name>
+	  > gain expertise
+
+[spell / spells]--------------------------------------------------------------------------------------------
+	spell (view known spells)
+	spell cast <spellname>
+	spell cast <spellname> <@level#>   		
+	  > "@" symbol required, with no space between "@" and level#. 
+	  > Ex: "spell cast firebolt @5".  
+	  > Omitting the level# will cast the spell at it's default level.
+	spell learn <spellname><@level#>
+	spell charge <#slots> <spell slot level#>
+	  > recharge spell sclots
+	spell chargeall
+	spell prep <spell name>
+	  > prepare a spell
+	spell prepall
+	spell unprep <spell name>
+	  > unprepare a spell
+	spell unprepall
+	spell slots
+	  > view spell slots
+	spell slots get <#slots> <spell slot level#>
+	  > gain new spell slots
+
+[equip]--------------------------------------------------------------------------------------------
+	equip
+	equip <item name>
+
+[dequip]--------------------------------------------------------------------------------------------
+	dequip
+	dequip <item name>
+
+[hurt]--------------------------------------------------------------------------------------------
+	hurt <#>
+	  > lose an amount of hp
+
+[heal]--------------------------------------------------------------------------------------------
+	heal <#>
+	  >  gain an amount of hp
+
+[quit]--------------------------------------------------------------------------------------------
+	quit
