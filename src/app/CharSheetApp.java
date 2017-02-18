@@ -52,7 +52,7 @@ public class CharSheetApp {
 	
 		activeIndex = 0;
 /****************************************************************************/
-		importAll();	
+		//importAll();	
 		
 		while (quit == false){
 			System.out.print("> What would you like to do? ");
@@ -468,7 +468,7 @@ public class CharSheetApp {
 			}
 		} else if (input.length == 2) {
 					
-			//special case toggle
+			//special case toggle --- temporary
 			tgt = input[1];
 			if (tgt.equalsIgnoreCase("unprepOnCast")){
 				chars.get(activeIndex).unprepOnCast = !chars.get(activeIndex).unprepOnCast;
@@ -494,9 +494,6 @@ public class CharSheetApp {
 		chars.get(activeIndex).updateStats();
 	}
 	
-	//unimplemented
-	public static void editCharacter(){}
-
 	public static void inv(String command){
 		int count;
 		String name;
@@ -713,9 +710,6 @@ public class CharSheetApp {
 		return null;
 	}
 	
-	//unimplemented
-	public static void getCharIndexByName(String name){}
-	
 	public static int getCharIndexFromList(){
 		dispCharList();
 		int n = 0;
@@ -730,9 +724,6 @@ public class CharSheetApp {
 		}
 		return n;
 	}
-	
-	//unimplemented
-	public static void getItemIndexFromInv(){}
 	
 	public static int getItemIndexByName(String name){
 		for(int i = 3; i<chars.get(activeIndex).playerInventory.size(); i++){
