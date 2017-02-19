@@ -201,7 +201,9 @@ public class CharSheetApp {
 	
 	public static void importAll() throws ClassNotFoundException, IOException, StreamCorruptedException {
 		try {
-			File path = new File("./data");
+			//File path = new File("./data");
+			File path = new File("../data");
+
 			File [] files = path.listFiles();
 			for (int i = 0; i < files.length; i++){
 			    File file = files[i];
@@ -234,7 +236,8 @@ public class CharSheetApp {
 					} else {
 						name = buildString(1);
 					}
-					inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream("./data/"+name+".data")));
+					//inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream("./data/"+name+".data")));
+					inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream("../data/"+name+".data")));
 					break;
 				} catch (FileNotFoundException e) {
 					System.out.println("[\""+name+"\""+" not found]");
@@ -250,7 +253,8 @@ public class CharSheetApp {
 	}
 	
 	public static void saveChar(int i) throws IOException {
-		String dataFile = "./data/"+chars.get(i).playerName+".data";
+		//String dataFile = "./data/"+chars.get(i).playerName+".data";
+		String dataFile = "../data/"+chars.get(i).playerName+".data";
 		ObjectOutputStream out = null;
 	    out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(dataFile)));
 	    out.writeObject(chars.get(i));
@@ -267,7 +271,8 @@ public class CharSheetApp {
 		}
 			if (i != -1){
 				text = chars.get(i).toString()+"\n"+chars.get(i).playerInventory.toString();
-				Files.write(Paths.get("./data/"+chars.get(i).playerName+".txt"), text.getBytes());
+				//Files.write(Paths.get("./data/"+chars.get(i).playerName+".txt"), text.getBytes());
+				Files.write(Paths.get("../data/"+chars.get(i).playerName+".txt"), text.getBytes());
 				System.out.println("[Exported character to "+chars.get(i).playerName+".txt]");
 			}
 		
