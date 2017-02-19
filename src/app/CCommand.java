@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
-public class CharSheetApp {
+public class CCommand {
 	public static ArrayList<Character> chars = new ArrayList<Character>();
 	public static boolean quit = false;
 	public static int activeIndex;
