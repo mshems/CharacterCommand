@@ -161,7 +161,7 @@ public class CCommand {
 				}
 				break;
 			case "attack":
-				//TODO: attacks
+				
 				break;
 			case "note":
 			case "notes":
@@ -197,6 +197,12 @@ public class CCommand {
 		activeIndex = chars.size()-1;
 		return c;
 	}
+	
+	//TODO: attacks, AC calclations
+	//TODO: fix & update export text formatting
+	//TODO: spellcasting ability, spell save DC, spell attack bonus
+	//TODO: sorcery points
+	//TODO: proficiencies, EXP
 	
 	public static void importAll() throws ClassNotFoundException, IOException, StreamCorruptedException {
 		try {
