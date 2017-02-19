@@ -67,6 +67,7 @@ public class CharSheetApp {
 				break;
 			case "delete":
 				deleteCharacter();
+				break;
 			case "load":
 				if (input.length==1){
 				activeIndex = getCharIndexFromList()-1;
