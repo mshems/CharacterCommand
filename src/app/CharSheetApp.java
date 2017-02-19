@@ -189,11 +189,9 @@ public class CharSheetApp {
 		String classname = scanner.nextLine();
 		Character c = new Character(name, classname);
 		c.race = race;
-		
 		for (Attribute a : c.abilityScores){
 			a.setValue(getValidInt("Enter "+a.getName()+" score: "));
 		}
-		
 		chars.add(c);	
 		System.out.println("[Created "+c.playerName+"]");
 		activeIndex = chars.size()-1;
