@@ -3,13 +3,15 @@ package app;
 public class Armor extends Item{
 	protected int[] attributeTargets;
 	protected int[] attributeBonuses;
-	protected int armorAbility;
-	protected int acMax;
-	protected int armorWeight;
+	protected int acBase = 0;
+	protected int armorWeight = 0;
 	
-	protected static final int light = 0;
-	protected static final int medium = 1;
-	protected static final int heavy = 2;
+	protected static final int none = 0 ;
+	protected static final int light = 1;
+	protected static final int medium = 2;
+	protected static final int heavy = 3;
+	protected static final int shield = 4;
+	protected static final int bonus = 5;
 
 	public Armor(){
 		super();
@@ -21,10 +23,12 @@ public class Armor extends Item{
 		this.equippable = true;
 	}
 	
-	public Armor(String n, int[] aT, int[] aB) {
+	public Armor(String n, int[] aT, int[] aB, int armorWeight, int acBase) {
 		super(n);
 		this.attributeTargets = aT;
 		this.attributeBonuses = aB;
+		this.armorWeight = armorWeight;
+		this.acBase = acBase;
 		this.equippable = true;
 	}
 	
@@ -38,6 +42,24 @@ public class Armor extends Item{
 				i++;
 			}
 		}
+		if (this.acBase != 0 && this.armorWeight != Armor.none){
+			int ac=this.acBase;
+			int dexMod = (int) c.abilityScores[Attribute.DEX].getMod();
+			if (this.armorWeight == Armor.light){
+				ac += dexMod;
+			} else if (this.armorWeight == Armor.medium){
+				if (dexMod < 2){
+				ac += dexMod;
+				} else {
+					ac +=2;
+				}
+			} else if (this.armorWeight == Armor.bonus){
+				ac = (int) c.playerStats[Attribute.AC].getValue() + this.acBase;
+			} else if (this.armorWeight == Armor.shield){
+				ac = (int) c.playerStats[Attribute.AC].getValue() + 2;	
+			}
+			c.playerStats[Attribute.AC].setValue(ac);
+		}
 	}
 	
 	@Override
@@ -50,6 +72,8 @@ public class Armor extends Item{
 				i++;
 			}
 		}
+		int dexMod = (int) c.abilityScores[Attribute.DEX].getMod();
+		c.playerStats[Attribute.AC].setValue(10+dexMod);
 	}
 	
 	public String toString(){

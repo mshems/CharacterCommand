@@ -7,10 +7,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,31 +30,32 @@ public class CCommand {
 		
 /****************************************************************************/
 	//add some characters and items for testing
-		Character c = new Character("Sir Robin the Brave", "Knight");
-		c.race = "Human";
-		chars.add(c);
+		Character robin = new Character("Sir Robin the Brave", "Knight of the Round Table");
+		robin.race = "Human";
+		chars.add(robin);
 		
-		c.addNewItem(new Weapon("Longsword"),1);
-		c.playerInventory.get(Character.gp).setItemCount(50);
-		c.playerInventory.get(Character.sp).setItemCount(0);
-		c.playerInventory.get(Character.cp).setItemCount(0);
-		c.spellbook.add(new Spell(Spell.cantrip, "Run Away"));
-		c.spellbook.add(new Spell(4, "Polymorph: Chicken"));
-		c.spellbook.add(new Spell(2, "Bravery"));
+		robin.addNewItem(new Weapon("Longsword"),1);
+		robin.addNewItem(new Armor("Plate Armor", null, null, Armor.heavy, 18), 1);
+		robin.playerInventory.get(Character.gp).setItemCount(50);
+		robin.playerInventory.get(Character.sp).setItemCount(0);
+		robin.playerInventory.get(Character.cp).setItemCount(0);
+		robin.spellbook.add(new Spell(Spell.cantrip, "Run Away"));
+		robin.spellbook.add(new Spell(4, "Polymorph: Chicken"));
+		robin.spellbook.add(new Spell(2, "Bravery"));
 
-		Character c2 = new Character("Frodo Baggins", "Hobbit");
-		c2.race = "Hobbit";
-		chars.add(c2);
+		Character frodo = new Character("Frodo Baggins", "Adventurer");
+		frodo.race = "Hobbit";
+		chars.add(frodo);
 		
-		chars.get(1).addNewItem(new Equippable("Ring of Power"),1);
-		chars.get(1).addNewItem(new Weapon("Sting"),1);
-		chars.get(1).playerInventory.get(Character.gp).setItemCount(0);
-		chars.get(1).playerInventory.get(Character.sp).setItemCount(0);
-		chars.get(1).playerInventory.get(Character.cp).setItemCount(0);
+		frodo.addNewItem(new Equippable("Ring of Power"),1);
+		frodo.addNewItem(new Weapon("Sting"),1);
+		frodo.playerInventory.get(Character.gp).setItemCount(0);
+		frodo.playerInventory.get(Character.sp).setItemCount(0);
+		frodo.playerInventory.get(Character.cp).setItemCount(0);
 	
 		activeIndex = 0;
 /****************************************************************************/
-		//importAll();	
+		checkDirs();
 		
 		while (quit == false){
 			System.out.print("> What would you like to do? ");
@@ -77,6 +80,7 @@ public class CCommand {
 				System.out.println(String.format("[Loaded %s]", chars.get(activeIndex).playerName));
 				break;
 			case "save":
+				checkDirs();
 				saveChar(activeIndex);
 				break;
 			case "saveall":
@@ -85,15 +89,19 @@ public class CCommand {
 				}
 				break;
 			case "import":
+				checkDirs();
 				importChar();
 				break;
 			case "importall":
+				checkDirs();
 				importAll();
 				break;
 			case "export":
+				checkDirs();
 				exportChar(activeIndex);
 				break;
 			case "exportall":
+				checkDirs();
 				for (int i = 0; i<chars.size(); i++){
 					exportChar(i);
 				}
@@ -192,22 +200,32 @@ public class CCommand {
 		for (Attribute a : c.abilityScores){
 			a.setValue(getValidInt("Enter "+a.getName()+" score: "));
 		}
+		c.updateSkills();
+		c.updateStats();
 		chars.add(c);	
 		System.out.println("[Created "+c.playerName+"]");
 		activeIndex = chars.size()-1;
 		return c;
 	}
 	
-	//TODO: attacks, AC calclations
+	//TODO: attacks
+	//TODO: edit items
 	//TODO: fix & update export text formatting
 	//TODO: spellcasting ability, spell save DC, spell attack bonus
 	//TODO: sorcery points
 	//TODO: proficiencies, EXP
 	
+	public static void checkDirs() throws IOException, FileNotFoundException{
+		Path dataPath = Paths.get("./data/");
+		if (!Files.exists(dataPath)){
+			Files.createDirectories(dataPath);
+		}
+	}
+	
 	public static void importAll() throws ClassNotFoundException, IOException, StreamCorruptedException {
 		try {
-			//File path = new File("./data");
-			File path = new File("../data");
+			File path = new File("./data");
+			//File path = new File("../data");
 
 			File [] files = path.listFiles();
 			for (int i = 0; i < files.length; i++){
@@ -241,8 +259,8 @@ public class CCommand {
 					} else {
 						name = buildString(1);
 					}
-					//inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream("./data/"+name+".data")));
-					inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream("../data/"+name+".data")));
+					inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream("./data/"+name+".data")));
+					//inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream("../data/"+name+".data")));
 					break;
 				} catch (FileNotFoundException e) {
 					System.out.println("[\""+name+"\""+" not found]");
@@ -258,13 +276,17 @@ public class CCommand {
 	}
 	
 	public static void saveChar(int i) throws IOException {
-		//String dataFile = "./data/"+chars.get(i).playerName+".data";
-		String dataFile = "../data/"+chars.get(i).playerName+".data";
-		ObjectOutputStream out = null;
-	    out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(dataFile)));
-	    out.writeObject(chars.get(i));
-	    out.close();
-		System.out.println("["+chars.get(i).playerName+" saved]");
+			try {
+				String dataFile = "./data/"+chars.get(i).playerName+".data";
+				//String dataFile = "../data/"+chars.get(i).playerName+".data";
+				ObjectOutputStream out = null;
+				out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(dataFile)));
+				out.writeObject(chars.get(i));
+				out.close();
+				System.out.println("["+chars.get(i).playerName+" saved]");
+			} catch (FileNotFoundException e) {
+				//e.printStackTrace();
+			}
 	}
 	
 	public static void exportChar(int i) throws IOException {
@@ -276,8 +298,8 @@ public class CCommand {
 		}
 			if (i != -1){
 				text = chars.get(i).toString()+"\n"+chars.get(i).playerInventory.toString();
-				//Files.write(Paths.get("./data/"+chars.get(i).playerName+".txt"), text.getBytes());
-				Files.write(Paths.get("../data/"+chars.get(i).playerName+".txt"), text.getBytes());
+				Files.write(Paths.get("./data/"+chars.get(i).playerName+".txt"), text.getBytes());
+				//Files.write(Paths.get("../data/"+chars.get(i).playerName+".txt"), text.getBytes());
 				System.out.println("[Exported character to "+chars.get(i).playerName+".txt]");
 			}
 		
@@ -466,7 +488,7 @@ public class CCommand {
 			a = getAttributeByName(tgt);
 			if (a != null){
 				try {
-					int val = getSpecialInput(input[input.length-1]);
+					int val = getSpecialInt(input[input.length-1]);
 					a.setValue(val);
 					//a.setValue(Double.parseDouble(input[1]));
 					System.out.println("["+a.getName()+" set to "+val+"]");
@@ -513,7 +535,7 @@ public class CCommand {
 				
 				//if (!validIntInput(3)){break;}
 				//count = Integer.parseInt(input[3]);
-				count = getSpecialInput(input[input.length-1]);
+				count = getSpecialInt(input[input.length-1]);
 				name = buildString(3);
 
 				switch (type){
@@ -816,7 +838,16 @@ public class CCommand {
 		}
 	}
 	
-	public static int getSpecialInput(String inputString){
+	public static String getSpecialArgument(String inputString){
+		if (inputString.startsWith("-")){
+			String s = inputString.substring(1).trim();
+			return s;
+		} else {
+			return null;
+		}
+	}
+	
+	public static int getSpecialInt(String inputString){
 		if (inputString.startsWith("@") || inputString.startsWith("=") || inputString.startsWith("*")){
 			String s = inputString.substring(1).trim();
 			try {

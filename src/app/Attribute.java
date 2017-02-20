@@ -9,6 +9,12 @@ public class Attribute implements Serializable{
 	public static final int WIS = 3;
 	public static final int INT = 4;
 	public static final int CHA = 5;
+	public static final int HP = 0;
+	public static final int AC = 1;
+	public static final int SPD = 2;
+	public static final int PER = 3;
+	public static final int PRO = 4;
+	public static final int INI = 5;
 	
 	private String name;
 	private double value;
