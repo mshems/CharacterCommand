@@ -1,0 +1,4 @@
+1. Shift+Right-Click in main folder
+2. Click 'Open command window here'
+3. Enter " java -cp ./bin app.CCommand "
+4. YAY!
