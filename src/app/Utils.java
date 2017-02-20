@@ -56,6 +56,12 @@ public class Utils {
 	public static final String[] INI = new String[]{
 			"initiative","ini","init"
 	};
+	public static final String[] SSDC = new String[]{
+			"spell save","spell dc", "spell save dc", "ssdc"
+	};
+	public static final String[] SAM = new String[]{
+			"spell mod","spell attack", "spell attack mod", "spell modifier", "sam"
+	};
 	public static final String[] STR_THROW = new String[]{
 			"str throw","str save","str saving throw"
 	};

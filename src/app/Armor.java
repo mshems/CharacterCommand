@@ -46,19 +46,22 @@ public class Armor extends Item{
 			int ac=this.acBase;
 			int dexMod = (int) c.abilityScores[Attribute.DEX].getMod();
 			if (this.armorWeight == Armor.light){
-				ac += dexMod;
+				c.playerStats[Attribute.AC].setValue(ac+=dexMod);
 			} else if (this.armorWeight == Armor.medium){
 				if (dexMod < 2){
 				ac += dexMod;
 				} else {
 					ac +=2;
 				}
+				c.playerStats[Attribute.AC].setValue(ac);
+			}else if (this.armorWeight == Armor.heavy) {
+				c.playerStats[Attribute.AC].setValue(ac);
 			} else if (this.armorWeight == Armor.bonus){
-				ac = (int) c.playerStats[Attribute.AC].getValue() + this.acBase;
+				c.playerStats[Attribute.AC].setBonus(c.playerStats[Attribute.AC].getBonus()+ac);
 			} else if (this.armorWeight == Armor.shield){
-				ac = (int) c.playerStats[Attribute.AC].getValue() + 2;	
-			}
-			c.playerStats[Attribute.AC].setValue(ac);
+				c.playerStats[Attribute.AC].setBonus(c.playerStats[Attribute.AC].getBonus()+2);
+			} 
+			
 		}
 	}
 	

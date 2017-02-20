@@ -15,9 +15,13 @@ public class Attribute implements Serializable{
 	public static final int PER = 3;
 	public static final int PRO = 4;
 	public static final int INI = 5;
+	public static final int SSDC = 6;
+	public static final int SAM = 7;
 	
 	private String name;
 	private double value;
+	private double bonus;
+	@SuppressWarnings("unused")
 	private double mod;
 	protected String[] matches;
 	
@@ -26,6 +30,7 @@ public class Attribute implements Serializable{
 		this.value = value;
 		this.mod = this.getMod();
 		this.matches = matches;
+		this.bonus = 0;
 	}
 	
 	public String getName(){
@@ -34,7 +39,7 @@ public class Attribute implements Serializable{
 	
 	public double getMod(){
 		double m;
-		m = Math.floor((this.value - 10) / 2);
+		m = Math.floor((this.value+this.bonus - 10) / 2);
 		return m;
 	}
 	
@@ -48,7 +53,15 @@ public class Attribute implements Serializable{
 	
 	
 	public String toString(){
-		String s = String.format("%s: %.0f (%+.0f) ", this.name, this.value, this.getMod());
+		String s = String.format("%s: %.0f (%+.0f) ", this.name, this.value+this.bonus, this.getMod());
 		return s;
+	}
+
+	public double getBonus() {
+		return bonus;
+	}
+
+	public void setBonus(double bonus) {
+		this.bonus = bonus;
 	}
 }

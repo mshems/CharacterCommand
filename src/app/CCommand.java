@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
@@ -36,6 +35,8 @@ public class CCommand {
 		
 		robin.addNewItem(new Weapon("Longsword"),1);
 		robin.addNewItem(new Armor("Plate Armor", null, null, Armor.heavy, 18), 1);
+		robin.addNewItem(new Armor("Shield", null, null, Armor.shield, 2), 1);
+
 		robin.playerInventory.get(Character.gp).setItemCount(50);
 		robin.playerInventory.get(Character.sp).setItemCount(0);
 		robin.playerInventory.get(Character.cp).setItemCount(0);
@@ -200,6 +201,12 @@ public class CCommand {
 		for (Attribute a : c.abilityScores){
 			a.setValue(getValidInt("Enter "+a.getName()+" score: "));
 		}
+		System.out.print("Spellcaster? [y/n]: ");
+		if (scanner.nextLine().equalsIgnoreCase("y")){
+			c.caster = true;
+			System.out.print("Spell Ability?: ");
+			c.casterType = (int) getAttributeByName(scanner.nextLine()).getValue();
+		} 
 		c.updateSkills();
 		c.updateStats();
 		chars.add(c);	
@@ -736,7 +743,7 @@ public class CCommand {
 				}
 			}
 		}
-		System.out.println("[Command format error]");
+		System.out.println("[Attribute not fount]");
 		return null;
 	}
 	

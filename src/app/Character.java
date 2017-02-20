@@ -21,6 +21,8 @@ public class Character implements Serializable{
 	protected SpellSlot[] spellSlots;
 	protected boolean unprepOnCast = false;
 	protected boolean requirePrep = false;
+	protected boolean caster = false;
+	protected int casterType;
 	
 	public double getCurrHP() {
 		return currHP;
@@ -66,7 +68,8 @@ public class Character implements Serializable{
 				new Attribute(10, "CON", Utils.CON),
 				new Attribute(10, "INT", Utils.INT),
 				new Attribute(10, "WIS", Utils.WIS),
-				new Attribute(10, "CHA", Utils.CHA)
+				new Attribute(10, "CHA", Utils.CHA),
+				
 			};
 	}
 	
@@ -77,8 +80,11 @@ public class Character implements Serializable{
 				new Attribute(30, "Speed", Utils.SPD),
 				new Attribute(10, "Passive Perception", Utils.PER),
 				new Attribute(2, "Proficiency Bonus", Utils.PRO),
-				new Attribute(this.abilityScores[1].getMod(), "Initiative", Utils.INI)
+				new Attribute(this.abilityScores[1].getMod(), "Initiative", Utils.INI),
+				new Attribute(0, "Spell Save DC", Utils.SSDC),
+				new Attribute(0, "Spell Attack Modifier", Utils.SAM),
 			};
+		this.playerStats[Attribute.AC].setValue(10+this.abilityScores[Attribute.DEX].getMod());
 		this.currHP = this.playerStats[Attribute.HP].getValue();
 	}
 	
@@ -125,14 +131,15 @@ public class Character implements Serializable{
 				new Skill("Deception",5, Utils.DECEPTION),
 				new Skill("Intimidation",5, Utils.INTIMIDATION),
 				new Skill("Performance",5, Utils.PERFORMANCE),
-				new Skill("Persuasion",5, Utils.PERSUASION)
+				new Skill("Persuasion",5, Utils.PERSUASION),
 		};
 		updateSkills();
 	}
 	
 	protected void updateStats(){
 		this.playerStats[Attribute.INI].setValue(this.abilityScores[Attribute.DEX].getMod());
-		this.playerStats[Attribute.AC].setValue(10+this.abilityScores[Attribute.DEX].getMod());
+		this.playerStats[Attribute.SSDC].setValue(8 + this.playerStats[Attribute.PRO].getValue() + this.abilityScores[this.casterType].getMod());
+		this.playerStats[Attribute.SAM].setValue(this.playerStats[Attribute.PRO].getValue() + this.abilityScores[this.casterType].getMod());
 	}
 	
 	protected void updateSkills(){
