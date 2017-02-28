@@ -2,21 +2,8 @@ package app;
 
 public class Utils {
 	public static final String line = "---------------------------------------------------";
-	public static final void divider(){
-		System.out.println(line);
-	}
+	public static final void divider(){System.out.println(line);}
 	
-	public static final String formatError = "Invalid Command Format";
-
-	public static final String[] attributes = new String[]{
-			"hp",
-			"ac",
-			"spd",
-			"per",
-			"pro",
-			"ini"
-	};
-
 	public static final String[] STR = new String[]{
 			"str","strength"
 	};
@@ -35,6 +22,9 @@ public class Utils {
 	public static final String[] CHA = new String[]{
 			"cha","charisma"
 	};
+	
+	
+	
 	public static final String[] HP = new String[]{
 			"hp","hit points","health"
 	};
@@ -62,6 +52,9 @@ public class Utils {
 	public static final String[] SAM = new String[]{
 			"spell mod","spell attack", "spell attack mod", "spell modifier", "sam"
 	};
+	
+	
+	
 	public static final String[] STR_THROW = new String[]{
 			"str throw","str save","str saving throw"
 	};

@@ -1,0 +1,10 @@
+[Sir Robin the Brave - Level 1 Human Knight of the Round Table]
+[10/10 HP]  [AC: 10] [Speed: 30ft] [Initiative: +0] [Proficiency Bonus: +2]
+[Spell Save DC: 10] [Spell Attack Modifier: +2]
+STR: 10 (+0) DEX: 10 (+0) CON: 10 (+0) 
+INT: 10 (+0) WIS: 10 (+0) CHA: 10 (+0) [Inventory]
+[$] - 50x Gold - 0x Silver - 0x Copper
+[1] - 1x Longsword
+[2] - 1x Plate Armor
+[3] - 1x Shield
+[4] - 1x Steadfast Shield

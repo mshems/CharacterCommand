@@ -134,8 +134,8 @@ public class Character implements Serializable{
 	
 	protected void updateStats(){
 		this.playerStats[Attribute.INI].setBaseVal(this.abilityScores[Attribute.DEX].getMod());
-		this.playerStats[Attribute.SSDC].setBaseVal(8 + this.playerStats[Attribute.PRO].total() + this.playerStats[this.casterType].getMod());
-		this.playerStats[Attribute.SAM].setBaseVal(this.playerStats[Attribute.PRO].total() + this.playerStats[this.casterType].getMod());
+		this.playerStats[Attribute.SSDC].setBaseVal(8 + this.playerStats[Attribute.PRO].total() + this.abilityScores[this.casterType].getMod());
+		this.playerStats[Attribute.SAM].setBaseVal(this.playerStats[Attribute.PRO].total() + this.abilityScores[this.casterType].getMod());
 	}
 	
 	protected void updateSkills(){
@@ -307,11 +307,16 @@ public class Character implements Serializable{
 	
 	public String spellBookToString(){
 		Collections.sort(this.spellbook); //sort by level
-		
-		String s = "[Spellbook]";
-		for (Spell spell : this.spellbook){
-			s += "\n"+spell;
-		}
+		String s = "";
+			if (this.caster == true && this.spellbook.size()!=0){
+				s+= String.format("[Spell Save DC: %.0f] [Spell Attack Modifier: %+.0f]\n", this.playerStats[Attribute.SSDC].total(), this.playerStats[Attribute.SAM].total());
+					s += "[Spellbook]";
+				for (Spell spell : this.spellbook){
+					s += "\n"+spell;
+				}
+			} else {
+				s += "[No Spells Known]";
+			}
 		return s;
 	}
 	
@@ -337,6 +342,12 @@ public class Character implements Serializable{
 			s += a;
 			if (n == 3) s+= "\n";
 		}
+		return s;
+	}
+	
+	public String toExport(){
+		String s = this.toString()+this.playerInventory.toString();
+		s.replaceAll("\n", "\r");
 		return s;
 	}
 	

@@ -31,22 +31,21 @@ public class CCommand {
 		
 /****************************************************************************/
 		//TODO: attacks
-		//TODO: edit items, create from premade
+		//TODO: edit items
 		//TODO: fix & update export text formatting
-		//TODO: spellcasting ability, spell save DC, spell attack bonus
 		//TODO: sorcery points
 		//TODO: proficiencies, EXP
 		
 	//add some characters and items for testing
 		Character robin = new Character("Sir Robin the Brave", "Knight of the Round Table");
-		robin.race = "Human";
 		chars.add(robin);
-		
+		robin.race = "Human";
+		robin.caster = true;
+		robin.casterType = 5;
 		robin.addNewItem(new Weapon("Longsword"),1);
 		robin.addNewItem(new Armor("Plate Armor", null, null, Armor.heavy, 18), 1);
 		robin.addNewItem(new Armor("Shield", null, null, Armor.shield, 2), 1);
 		robin.addNewItem(new Armor(Items.steadfastShield), 1);
-
 		robin.playerInventory.get(Character.gp).setItemCount(50);
 		robin.playerInventory.get(Character.sp).setItemCount(0);
 		robin.playerInventory.get(Character.cp).setItemCount(0);
@@ -55,32 +54,32 @@ public class CCommand {
 		robin.spellbook.add(new Spell(2, "Bravery"));
 
 		Character frodo = new Character("Frodo Baggins", "Adventurer");
-		frodo.race = "Hobbit";
 		chars.add(frodo);
-		
+		frodo.race = "Hobbit";
 		frodo.addNewItem(new Equippable("Ring of Power"),1);
 		frodo.addNewItem(new Weapon("Sting"),1);
 		frodo.addNewItem(new Armor("Mithil Chainmail", new int[]{Attribute.CON}, new int[]{2}, Armor.light, 16), 1);
-
 		frodo.playerInventory.get(Character.gp).setItemCount(2);
 		frodo.playerInventory.get(Character.sp).setItemCount(10);
 		frodo.playerInventory.get(Character.cp).setItemCount(5);
 		
-		activeIndex = 2;
 		Character tim = new Character("Tim", "Wizard");
 		chars.add(tim);
+		activeIndex = 2;
+		tim.race = "Human";
 		tim.caster = true;
-		tim.casterType = 4;
-		tim.race = "Human(?)";
-		
+		tim.casterType = 3;
+		tim.spellbook.add(new Spell(Spell.cantrip, "Firebolt"));
+		tim.spellbook.add(new Spell(Spell.cantrip, "Intimidate"));
 	
 		activeIndex = 0;
 /****************************************************************************/
 		checkDirs();
 		
 		while (quit == false){
+			
 			System.out.print("> What would you like to do? ");
-			String s = scanner.nextLine();
+			String s = scanner.nextLine().trim();
 			input = s.split("\\s+");
 			
 			s = input[0];
@@ -93,20 +92,26 @@ public class CCommand {
 				deleteCharacter();
 				break;
 			case "load":
-				if (input.length==1){
-				activeIndex = getCharIndexFromList()-1;
-				} else {
-					activeIndex = findCharByName(buildString(1)); 
-				}
-				System.out.println(String.format("[Loaded %s]", chars.get(activeIndex).playerName));
+				if (checkChars()){
+					if (input.length==1){
+					activeIndex = getCharIndexFromList()-1;
+					} else {
+						activeIndex = findCharByName(buildString(1)); 
+					}
+					System.out.println(String.format("[Loaded %s]", chars.get(activeIndex).playerName));
+					}
 				break;
 			case "save":
-				checkDirs();
-				saveChar(activeIndex);
+				if (checkChars()){
+					checkDirs();
+					saveChar(activeIndex);
+				}
 				break;
 			case "saveall":
-				for (int i = 0; i<chars.size(); i++){
-					saveChar(i);
+				if (checkChars()){
+					for (int i = 0; i<chars.size(); i++){
+						saveChar(i);
+					}
 				}
 				break;
 			case "import":
@@ -118,13 +123,17 @@ public class CCommand {
 				importAll();
 				break;
 			case "export":
-				checkDirs();
-				exportChar(activeIndex);
+				if (checkChars()){
+					checkDirs();
+					exportChar(activeIndex);
+				}
 				break;
 			case "exportall":
-				checkDirs();
-				for (int i = 0; i<chars.size(); i++){
-					exportChar(i);
+				if (checkChars()){
+					checkDirs();
+					for (int i = 0; i<chars.size(); i++){
+						exportChar(i);
+					}
 				}
 				break;
 			case "list":
@@ -132,70 +141,90 @@ public class CCommand {
 				break;
 			case "stat":
 			case "stats":
-				if (input.length == 1){
-					dispCharacter();
+				if (checkChars()){
+					if (input.length == 1){
+						dispCharacter();
 					} else {
 						dispStatDetail(getAttributeByName(buildString(1)));
 					}
+				}
 				break;
 			case "skill":
 			case "skills":
-				skills();
+				if (checkChars()){
+					skills();
+				}
 				break;
 			case "view":
-				dispCharacter();
-				dispInventory();
+				if (checkChars()){
+					dispCharacter();
+					dispInventory();
+				}
 				break;
 			case "inv":
-				if (input.length == 1){
-				dispInventory();
-				} else {
-				inv(input[1]);
+				if (checkChars()){
+					if (input.length == 1){
+						dispInventory();
+						} else {
+							inv(input[1]);
+					}
 				}
 				break;
 			case "equip":
 			case "dequip":
-				equip();
+				if (checkChars()){
+					equip();
+				}
 				break;
 			case "heal":
-				if (input.length > 1){
-					chars.get(activeIndex).heal(input[1]);
-				} else {
-					//System.out.println("[Missing argument: amount]");
-					int n = getValidInt("Enter health gained: ");
-					chars.get(activeIndex).heal(n);
+				if (checkChars()){
+					if (input.length > 1){
+						chars.get(activeIndex).heal(input[1]);
+					} else {
+						//System.out.println("[Missing argument: amount]");
+						int n = getValidInt("Enter health gained: ");
+						chars.get(activeIndex).heal(n);
+					}
 				}
 				break;
 			case "hurt":
-				if (input.length > 1){
-					chars.get(activeIndex).hurt(input[1]);
-				} else {
-					//System.out.println("[Missing argument: amount]");
-					int n = getValidInt("Enter health lost: ");
-					chars.get(activeIndex).heal(n);
+				if (checkChars()){
+					if (input.length > 1){
+						chars.get(activeIndex).hurt(input[1]);
+					} else {
+						//System.out.println("[Missing argument: amount]");
+						int n = getValidInt("Enter health lost: ");
+						chars.get(activeIndex).heal(n);
+					}
 				}
 				break;
 			case "set":
-				set();
+				if (checkChars()){
+					set();
+				}
 				break;
 			case "level":
 			case "levelup":
-				String lvl;
-				if (input.length == 1){
-					lvl = "0";
-				} else { 
-					lvl = input[1];
-				}
-				chars.get(activeIndex).levelUp(lvl);
+				if (checkChars()){
+					String lvl;
+					if (input.length == 1){
+						lvl = "0";
+					} else { 
+						lvl = input[1];
+					}
+					chars.get(activeIndex).levelUp(lvl);
+					}
 				break;
 			case "magic":
 			case "spell":
 			case "spells":
 			case "spellbook":
-				if (input.length > 1){
-				spells(input[1]);
-				} else {
-				dispSpellbook();
+				if (checkChars()){
+					if (input.length > 1){
+					spells(input[1]);
+					} else {
+					dispSpellbook();
+					}
 				}
 				break;
 			case "attack":
@@ -203,7 +232,9 @@ public class CCommand {
 				break;
 			case "note":
 			case "notes":
-				notes();
+				if (checkChars()){
+					notes();
+				}
 				break;
 			case "help":
 				dispHelpMenu();
@@ -215,10 +246,9 @@ public class CCommand {
 				System.out.println("> Command not found - enter \"help\" for list of commands");
 				break;
 			}
+			Utils.divider();
 		}
 	}
-	
-	
 	
 	public static Character createCharacter(){ 
 		System.out.print("[New Character]\nName: ");
@@ -268,6 +298,15 @@ public class CCommand {
 		Path dataPath = Paths.get("./data/");
 		if (!Files.exists(dataPath)){
 			Files.createDirectories(dataPath);
+		}
+	}
+	
+	public static boolean checkChars(){
+		if (chars.size()>0){
+			return true;
+		} else {
+			System.out.println("[Error: No characters loaded]");
+			return false;
 		}
 	}
 	
@@ -341,17 +380,16 @@ public class CCommand {
 	public static void exportChar(int i) throws IOException {
 		String text = "";
 		if (input.length == 1){
-			text = chars.get(i).toString()+"\n"+chars.get(i).playerInventory.toString();
+			text = chars.get(i).toExport();
 		} else {
 			i = findCharByName(buildString(1));
 		}
 			if (i != -1){
-				text = chars.get(i).toString()+"\n"+chars.get(i).playerInventory.toString();
+				text = chars.get(i).toExport();
 				Files.write(Paths.get("./data/"+chars.get(i).playerName+".txt"), text.getBytes());
 				//Files.write(Paths.get("../data/"+chars.get(i).playerName+".txt"), text.getBytes());
 				System.out.println("[Exported character to "+chars.get(i).playerName+".txt]");
 			}
-		
 	}
 	
 	public static void deleteCharacter(){
@@ -581,8 +619,6 @@ public class CCommand {
 			if (input.length>=4){
 				String type = input[2];
 				
-				//if (!validIntInput(3)){break;}
-				//count = Integer.parseInt(input[3]);
 				count = getSpecialInt(input[input.length-1]);
 				name = buildString(3);
 
@@ -965,7 +1001,7 @@ public class CCommand {
 	public static void dispHelpMenu(){
 		System.out.println("<> = variable field\n[new][load <name>][list][delete][save <name>][saveall][import <name>][importall][export <name>][exportall]");
 		System.out.println("[stats][view][set <arguments>][inv <arguments>][spells <arguments>][equip <item>][dequip <item>]");
-		System.out.println("[heal #][hurt #][level <#>][levelup][skills <arguments>][notes <arguments>]");
+		System.out.println("[heal <#>][hurt <#>][level <#>][levelup][skills <arguments>][notes <arguments>]");
 		System.out.println("View README.txt for details");
 	}
 }
