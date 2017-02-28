@@ -23,11 +23,14 @@ public class Character implements Serializable{
 	protected boolean requirePrep = false;
 	protected boolean caster = false;
 	protected int casterType;
+	protected int exp;
 	
 	public static final int gp = 0;
 	public static final int sp = 1;
 	public static final int cp = 2;
-	
+	public static final int wisCaster = Attribute.WIS;
+	public static final int intCaster = Attribute.INT;
+	public static final int chaCaster = Attribute.CHA;
 	
 	
 	public Character(String n, String c){
@@ -49,6 +52,9 @@ public class Character implements Serializable{
 		this.initSpellSlots();
 		this.initSpellBook();
 		this.notes = "";
+		
+		
+		this.updateStats();
 	}
 	
 	private void initAbilityScores(){
@@ -74,7 +80,8 @@ public class Character implements Serializable{
 				new Attribute(0, "Spell Save DC", Utils.SSDC),
 				new Attribute(0, "Spell Attack Modifier", Utils.SAM),
 			};
-		this.currHP = this.playerStats[Attribute.HP].getValue();
+		this.currHP = this.playerStats[Attribute.HP].total();
+		updateStats();
 	}
 	
 	private void initSpellSlots(){
@@ -126,18 +133,18 @@ public class Character implements Serializable{
 	}
 	
 	protected void updateStats(){
-		this.playerStats[Attribute.INI].setValue(this.abilityScores[Attribute.DEX].getMod());
-		this.playerStats[Attribute.SSDC].setValue(8 + this.playerStats[Attribute.PRO].getValue() + this.abilityScores[this.casterType].getMod());
-		this.playerStats[Attribute.SAM].setValue(this.playerStats[Attribute.PRO].getValue() + this.abilityScores[this.casterType].getMod());
+		this.playerStats[Attribute.INI].setBaseVal(this.abilityScores[Attribute.DEX].getMod());
+		this.playerStats[Attribute.SSDC].setBaseVal(8 + this.playerStats[Attribute.PRO].total() + this.playerStats[this.casterType].getMod());
+		this.playerStats[Attribute.SAM].setBaseVal(this.playerStats[Attribute.PRO].total() + this.playerStats[this.casterType].getMod());
 	}
 	
 	protected void updateSkills(){
 		for (Skill s : this.playerSkills){
 			s.skillMod = this.abilityScores[s.skillAttribute].getMod();
 			if (s.proficient){
-				s.skillMod += this.playerStats[Attribute.PRO].getValue();
+				s.skillMod += this.playerStats[Attribute.PRO].total();
 				if (s.expertise){
-					s.skillMod += this.playerStats[Attribute.PRO].getValue();	
+					s.skillMod += this.playerStats[Attribute.PRO].total();	
 				}
 			}
 		}
@@ -151,13 +158,35 @@ public class Character implements Serializable{
 	}
 	
 	public void heal(String s){
+		double hpStart = this.currHP;
 		int amount = 0;
 		try {
 			amount = Integer.parseInt(s);
 			this.currHP+=amount;
 			System.out.println("[Gained "+amount+" HP]");
+			if (hpStart <=0 && currHP >0){
+				System.out.println("["+this.playerName+" is no longer unconscious]");
+			}
 		} catch (NumberFormatException e) {
 			System.out.println("[Not a number]");
+		}
+	}
+	
+	public void heal(int n){
+		double hpStart = this.currHP;
+
+		this.currHP+=n;
+		System.out.println("[Gained "+n+" HP]");
+		if (hpStart <=0 && currHP >0){
+			System.out.println("["+this.playerName+" is no longer unconscious]");
+		}
+	}
+	
+	public void hurt(int n){
+		this.currHP-=n;
+		System.out.println("[Lost "+n+" HP]");
+		if (this.currHP <= 0){
+			System.out.println("["+this.playerName+" is unconscious]");
 		}
 	}
 	
@@ -167,6 +196,9 @@ public class Character implements Serializable{
 			amount = Integer.parseInt(s);
 			this.currHP-=amount;
 			System.out.println("[Lost "+amount+" HP]");
+			if (this.currHP <= 0){
+				System.out.println("["+this.playerName+" is unconscious]");
+			}
 		} catch (NumberFormatException e) {
 			System.out.println("[Not a number]");
 		}
@@ -174,13 +206,13 @@ public class Character implements Serializable{
 	
 	protected void updateProficiency(){
 		if (this.playerLevel > 16){
-			this.playerStats[Attribute.PRO].setValue(6);
+			this.playerStats[Attribute.PRO].setBaseVal(6);
 		} else if (this.playerLevel > 12){
-			this.playerStats[Attribute.PRO].setValue(5);
+			this.playerStats[Attribute.PRO].setBaseVal(5);
 		} else if (this.playerLevel > 8){
-			this.playerStats[Attribute.PRO].setValue(4);
+			this.playerStats[Attribute.PRO].setBaseVal(4);
 		} else if (this.playerLevel > 4){
-			this.playerStats[Attribute.PRO].setValue(3);
+			this.playerStats[Attribute.PRO].setBaseVal(3);
 		}
 		updateSkills();
 	}
@@ -262,7 +294,7 @@ public class Character implements Serializable{
 	protected void prepSpell(){}
 	
 	public double getProficiency(){
-		return this.playerStats[Attribute.PRO].getValue();
+		return this.playerStats[Attribute.PRO].total();
 	}
 	
 	public String skillsToString(){
@@ -294,8 +326,11 @@ public class Character implements Serializable{
 	public String toString(){
 		String s = String.format("[%s - Level %d %s %s]\n", this.playerName, this.playerLevel, this.race, this.playerClass);
 		s += String.format("[%.0f/%.0f HP]  [AC: %.0f] [Speed: %.0fft] [Initiative: %+.0f] [Proficiency Bonus: %+.0f]\n", 
-			this.currHP, this.playerStats[Attribute.HP].getValue(), this.playerStats[Attribute.AC].getValue(), 
-			this.playerStats[Attribute.SPD].getValue(), this.playerStats[Attribute.INI].getValue(), this.playerStats[Attribute.PRO].getValue());
+			this.currHP, this.playerStats[Attribute.HP].total(), this.playerStats[Attribute.AC].total(), 
+			this.playerStats[Attribute.SPD].total(), this.playerStats[Attribute.INI].total(), this.playerStats[Attribute.PRO].total());
+		if (this.caster == true){
+			s+= String.format("[Spell Save DC: %.0f] [Spell Attack Modifier: %+.0f]\n", this.playerStats[Attribute.SSDC].total(), this.playerStats[Attribute.SAM].total());
+		}
 		int n = 0;
 		for (Attribute a : this.abilityScores){
 			n++;

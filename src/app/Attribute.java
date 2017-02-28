@@ -43,16 +43,24 @@ public class Attribute implements Serializable{
 		return m;
 	}
 	
-	public void setValue(double d){
+	public void setBaseVal(double d){
 		this.base = d;
 	}
 	
-	public double getBase(){
+	public double getBaseVal(){
 		return this.base;
 	}
 	
-	public double getValue(){
+	public double total(){
 		return this.base + this.bonus;
+	}
+	
+	public double getBonus() {
+		return bonus;
+	}
+
+	public void setBonus(double bonus) {
+		this.bonus = bonus;
 	}
 	
 	public String toString(){
@@ -61,15 +69,7 @@ public class Attribute implements Serializable{
 	}
 	
 	public String detail(){
-		String s = String.format("%s: %.0f + %.0f = %.0f", this.name, this.base, this.bonus, this.base+this.bonus);
+		String s = String.format("[%s DETAIL]\nBase: %.0f\nBonus: %+.0f\nTotal: %.0f", this.name, this.base, this.bonus, this.base+this.bonus);
 		return s;
-	}
-
-	public double getBonus() {
-		return bonus;
-	}
-
-	public void setBonus(double bonus) {
-		this.bonus = bonus;
-	}
+	}	
 }

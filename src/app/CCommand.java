@@ -30,6 +30,13 @@ public class CCommand {
 		scanner = new Scanner(System.in);
 		
 /****************************************************************************/
+		//TODO: attacks
+		//TODO: edit items, create from premade
+		//TODO: fix & update export text formatting
+		//TODO: spellcasting ability, spell save DC, spell attack bonus
+		//TODO: sorcery points
+		//TODO: proficiencies, EXP
+		
 	//add some characters and items for testing
 		Character robin = new Character("Sir Robin the Brave", "Knight of the Round Table");
 		robin.race = "Human";
@@ -38,7 +45,7 @@ public class CCommand {
 		robin.addNewItem(new Weapon("Longsword"),1);
 		robin.addNewItem(new Armor("Plate Armor", null, null, Armor.heavy, 18), 1);
 		robin.addNewItem(new Armor("Shield", null, null, Armor.shield, 2), 1);
-		robin.addNewItem(new Armor(Items.premade1), 1);
+		robin.addNewItem(new Armor(Items.steadfastShield), 1);
 
 		robin.playerInventory.get(Character.gp).setItemCount(50);
 		robin.playerInventory.get(Character.sp).setItemCount(0);
@@ -53,11 +60,19 @@ public class CCommand {
 		
 		frodo.addNewItem(new Equippable("Ring of Power"),1);
 		frodo.addNewItem(new Weapon("Sting"),1);
-		robin.addNewItem(new Armor("Mithil Chainmail", null, null, Armor.light, 16), 1);
+		frodo.addNewItem(new Armor("Mithil Chainmail", new int[]{Attribute.CON}, new int[]{2}, Armor.light, 16), 1);
 
-		frodo.playerInventory.get(Character.gp).setItemCount(0);
-		frodo.playerInventory.get(Character.sp).setItemCount(0);
-		frodo.playerInventory.get(Character.cp).setItemCount(0);
+		frodo.playerInventory.get(Character.gp).setItemCount(2);
+		frodo.playerInventory.get(Character.sp).setItemCount(10);
+		frodo.playerInventory.get(Character.cp).setItemCount(5);
+		
+		activeIndex = 2;
+		Character tim = new Character("Tim", "Wizard");
+		chars.add(tim);
+		tim.caster = true;
+		tim.casterType = 4;
+		tim.race = "Human(?)";
+		
 	
 		activeIndex = 0;
 /****************************************************************************/
@@ -146,16 +161,18 @@ public class CCommand {
 				if (input.length > 1){
 					chars.get(activeIndex).heal(input[1]);
 				} else {
-					System.out.println("[Missing argument: amount]");
-					//TODO manual option
+					//System.out.println("[Missing argument: amount]");
+					int n = getValidInt("Enter health gained: ");
+					chars.get(activeIndex).heal(n);
 				}
 				break;
 			case "hurt":
 				if (input.length > 1){
 					chars.get(activeIndex).hurt(input[1]);
 				} else {
-					System.out.println("[Missing argument: amount]");
-					//TODO manual option
+					//System.out.println("[Missing argument: amount]");
+					int n = getValidInt("Enter health lost: ");
+					chars.get(activeIndex).heal(n);
 				}
 				break;
 			case "set":
@@ -201,6 +218,8 @@ public class CCommand {
 		}
 	}
 	
+	
+	
 	public static Character createCharacter(){ 
 		System.out.print("[New Character]\nName: ");
 		String name = scanner.nextLine();
@@ -211,14 +230,32 @@ public class CCommand {
 		Character c = new Character(name, classname);
 		c.race = race;
 		for (Attribute a : c.abilityScores){
-			a.setValue(getValidInt("Enter "+a.getName()+" score: "));
+			a.setBaseVal(getValidInt("Enter "+a.getName()+" score: "));
 		}
 		System.out.print("Spellcaster? [y/n]: ");
+		
 		if (scanner.nextLine().equalsIgnoreCase("y")){
-			c.caster = true;
-			System.out.print("Spell Ability?: ");
-			c.casterType = (int) getAttributeByName(scanner.nextLine()).getValue();
-		} 
+			while(true){
+				c.caster = true;
+				System.out.print("Spell Ability?: ");
+				String str = scanner.nextLine().toLowerCase().substring(0, 3);
+				
+				if (str.equals("wis")){
+					c.casterType = Attribute.WIS;
+					break;
+				} else 
+				if (str.equals("int")){
+					c.casterType = Attribute.INT;
+					break;	
+				} else
+				if (str.equals("cha")){
+					c.casterType = Attribute.CHA;
+					break;	
+				} else {
+					System.out.println("Attribute not found");
+				} 
+			}
+		}
 		c.updateSkills();
 		c.updateStats();
 		chars.add(c);	
@@ -226,13 +263,6 @@ public class CCommand {
 		activeIndex = chars.size()-1;
 		return c;
 	}
-	
-	//TODO: attacks
-	//TODO: edit items
-	//TODO: fix & update export text formatting
-	//TODO: spellcasting ability, spell save DC, spell attack bonus
-	//TODO: sorcery points
-	//TODO: proficiencies, EXP
 	
 	public static void checkDirs() throws IOException, FileNotFoundException{
 		Path dataPath = Paths.get("./data/");
@@ -508,7 +538,7 @@ public class CCommand {
 			if (a != null){
 				try {
 					int val = getSpecialInt(input[input.length-1]);
-					a.setValue(val);
+					a.setBaseVal(val);
 					System.out.println("["+a.getName()+" set to "+val+"]");
 				} catch (NumberFormatException e) {
 					System.out.println("Invalid Command Format");
@@ -534,7 +564,7 @@ public class CCommand {
 				a = getAttributeByName(tgt);
 			}
 			int value = getValidInt("Enter new value: ");
-			a.setValue(value);
+			a.setBaseVal(value);
 			System.out.println("["+a.getName()+" set to "+value+"]");
 		
 		}

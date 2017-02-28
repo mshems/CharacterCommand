@@ -27,7 +27,7 @@ public class Equippable extends Item{
 		if (this.attributeBonuses != null && this.attributeTargets != null){
 			int i=0;
 			for (int n : this.attributeTargets){
-				c.abilityScores[n].setValue(c.abilityScores[n].getValue()+this.attributeBonuses[i]);	
+				c.abilityScores[n].setBaseVal(c.abilityScores[n].total()+this.attributeBonuses[i]);	
 				i++;
 			}
 		}
@@ -39,7 +39,7 @@ public class Equippable extends Item{
 		if (this.attributeBonuses != null && this.attributeTargets != null){
 			int i=0;
 			for (int n : this.attributeTargets){
-				c.abilityScores[n].setValue(c.abilityScores[n].getValue()-this.attributeBonuses[i]);	
+				c.abilityScores[n].setBaseVal(c.abilityScores[n].total()-this.attributeBonuses[i]);	
 				i++;
 			}
 		}
