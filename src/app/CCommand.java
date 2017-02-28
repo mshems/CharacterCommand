@@ -2,14 +2,18 @@ package app;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.io.StreamCorruptedException;
+import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,12 +34,6 @@ public class CCommand {
 		scanner = new Scanner(System.in);
 		
 /****************************************************************************/
-		//TODO: attacks
-		//TODO: edit items
-		//TODO: fix & update export text formatting
-		//TODO: sorcery points
-		//TODO: proficiencies, EXP
-		
 	//add some characters and items for testing
 		Character robin = new Character("Sir Robin the Brave", "Knight of the Round Table");
 		chars.add(robin);
@@ -74,6 +72,12 @@ public class CCommand {
 	
 		activeIndex = 0;
 /****************************************************************************/
+		
+		//TODO: attacks
+		//TODO: editing items
+		//TODO: sorcery points?
+		//TODO: proficiencies, EXP
+		
 		checkDirs();
 		
 		while (quit == false){
@@ -92,14 +96,14 @@ public class CCommand {
 				deleteCharacter();
 				break;
 			case "load":
-				if (checkChars()){
+				
 					if (input.length==1){
-					activeIndex = getCharIndexFromList()-1;
+					activeIndex = getCharIndexFromList();
 					} else {
 						activeIndex = findCharByName(buildString(1)); 
 					}
 					System.out.println(String.format("[Loaded %s]", chars.get(activeIndex).playerName));
-					}
+					
 				break;
 			case "save":
 				if (checkChars()){
@@ -181,7 +185,6 @@ public class CCommand {
 					if (input.length > 1){
 						chars.get(activeIndex).heal(input[1]);
 					} else {
-						//System.out.println("[Missing argument: amount]");
 						int n = getValidInt("Enter health gained: ");
 						chars.get(activeIndex).heal(n);
 					}
@@ -192,7 +195,6 @@ public class CCommand {
 					if (input.length > 1){
 						chars.get(activeIndex).hurt(input[1]);
 					} else {
-						//System.out.println("[Missing argument: amount]");
 						int n = getValidInt("Enter health lost: ");
 						chars.get(activeIndex).heal(n);
 					}
@@ -302,10 +304,10 @@ public class CCommand {
 	}
 	
 	public static boolean checkChars(){
-		if (chars.size()>0){
+		if (chars.size()>0 && activeIndex >= 0){
 			return true;
 		} else {
-			System.out.println("[Error: No characters loaded]");
+			System.out.println("[Error: No character loaded]");
 			return false;
 		}
 	}
@@ -378,6 +380,7 @@ public class CCommand {
 	}
 	
 	public static void exportChar(int i) throws IOException {
+		
 		String text = "";
 		if (input.length == 1){
 			text = chars.get(i).toExport();
@@ -385,20 +388,25 @@ public class CCommand {
 			i = findCharByName(buildString(1));
 		}
 			if (i != -1){
-				text = chars.get(i).toExport();
-				Files.write(Paths.get("./data/"+chars.get(i).playerName+".txt"), text.getBytes());
-				//Files.write(Paths.get("../data/"+chars.get(i).playerName+".txt"), text.getBytes());
+				File file = new File("./data/"+chars.get(i).playerName+".txt");
+				try (
+					BufferedReader reader = new BufferedReader(new StringReader(text));
+					PrintWriter writer = new PrintWriter(new FileWriter(file));){
+						reader.lines().forEach(line -> writer.println(line));
+				}
 				System.out.println("[Exported character to "+chars.get(i).playerName+".txt]");
 			}
 	}
 	
 	public static void deleteCharacter(){
-		int del;
 		System.out.println("[Select character to delete]");
-		dispCharList();
-		del = getCharIndexFromList();
-		System.out.println(String.format("[Deleted %s]\n", chars.get(del).playerName));
-		chars.remove(del);
+		int del = getCharIndexFromList();
+		System.out.print("Are you sure? [Y/N]: ");
+		if (scanner.nextLine().equalsIgnoreCase("y")){
+			System.out.println(String.format("[Deleted %s]", chars.get(del).playerName));
+			chars.remove(del);
+			activeIndex=-1;
+		}
 	}
 	
 	public static void notes(){
@@ -836,7 +844,7 @@ public class CCommand {
 				System.out.println("[No character at that index]");
 			}
 		}
-		return n;
+		return n-1;
 	}
 	
 	public static int getItemIndexByName(String name){
