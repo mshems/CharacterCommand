@@ -7,5 +7,5 @@ public class Items {
 	public static final Item sp = new Item("Silver");
 	public static final Item cp = new Item("Copper");
 	
-	public static final Object[] premade1 = new Object[]{"STR Shield", new int[Attribute.STR], new int[2], Armor.shield, 2};
+	public static final Object[] steadfastShield = new Object[]{"Steadfast Shield", new int[]{Attribute.CON}, new int[]{2}, Armor.shield, 2};
 }

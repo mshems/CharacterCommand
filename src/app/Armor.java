@@ -56,16 +56,16 @@ public class Armor extends Item{
 			int ac=this.acBase;
 			int dexMod = (int) c.abilityScores[Attribute.DEX].getMod();
 			if (this.armorWeight == Armor.light){
-				c.playerStats[Attribute.AC].setValue(ac+=dexMod);
+				c.playerStats[Attribute.AC].setBaseVal(ac+=dexMod);
 			} else if (this.armorWeight == Armor.medium){
 				if (dexMod < 2){
 				ac += dexMod;
 				} else {
 					ac +=2;
 				}
-				c.playerStats[Attribute.AC].setValue(ac);
+				c.playerStats[Attribute.AC].setBaseVal(ac);
 			}else if (this.armorWeight == Armor.heavy) {
-				c.playerStats[Attribute.AC].setValue(ac);
+				c.playerStats[Attribute.AC].setBaseVal(ac);
 			} else if (this.armorWeight == Armor.bonus){
 				c.playerStats[Attribute.AC].setBonus(c.playerStats[Attribute.AC].getBonus()+ac);
 			} else if (this.armorWeight == Armor.shield){
@@ -89,16 +89,16 @@ public class Armor extends Item{
 			int ac=this.acBase;
 			int dexMod = (int) c.abilityScores[Attribute.DEX].getMod();
 			if (this.armorWeight == Armor.light){
-				c.playerStats[Attribute.AC].setValue(ac-=dexMod);
+				c.playerStats[Attribute.AC].setBaseVal(ac-=dexMod);
 			} else if (this.armorWeight == Armor.medium){
 				if (dexMod < 2){
 				ac -= dexMod;
 				} else {
 					ac -=2;
 				}
-				c.playerStats[Attribute.AC].setValue(ac);
+				c.playerStats[Attribute.AC].setBaseVal(ac);
 			}else if (this.armorWeight == Armor.heavy) {
-				c.playerStats[Attribute.AC].setValue(ac);
+				c.playerStats[Attribute.AC].setBaseVal(ac);
 			} else if (this.armorWeight == Armor.bonus){
 				c.playerStats[Attribute.AC].setBonus(c.playerStats[Attribute.AC].getBonus()-ac);
 			} else if (this.armorWeight == Armor.shield){

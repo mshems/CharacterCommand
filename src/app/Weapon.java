@@ -28,7 +28,7 @@ public class Weapon extends Item {
 		if (this.attributeBonuses != null && this.attributeTargets != null){
 			int i=0;
 			for (int n : this.attributeTargets){
-				c.abilityScores[n].setValue(+this.attributeBonuses[i]);	
+				c.abilityScores[n].setBaseVal(+this.attributeBonuses[i]);	
 				i++;
 			}
 		}
@@ -40,7 +40,7 @@ public class Weapon extends Item {
 		if (this.attributeBonuses != null && this.attributeTargets != null){
 			int i=0;
 			for (int n : this.attributeTargets){
-				c.abilityScores[n].setValue(-this.attributeBonuses[i]);	
+				c.abilityScores[n].setBaseVal(-this.attributeBonuses[i]);	
 				i++;
 			}
 		}
