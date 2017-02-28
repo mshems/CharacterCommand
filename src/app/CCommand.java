@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
+import items.Items;
+
 public class CCommand {
 	public static ArrayList<Character> chars = new ArrayList<Character>();
 	public static boolean quit = false;
@@ -36,6 +38,7 @@ public class CCommand {
 		robin.addNewItem(new Weapon("Longsword"),1);
 		robin.addNewItem(new Armor("Plate Armor", null, null, Armor.heavy, 18), 1);
 		robin.addNewItem(new Armor("Shield", null, null, Armor.shield, 2), 1);
+		robin.addNewItem(new Armor(Items.premade1), 1);
 
 		robin.playerInventory.get(Character.gp).setItemCount(50);
 		robin.playerInventory.get(Character.sp).setItemCount(0);
@@ -50,6 +53,8 @@ public class CCommand {
 		
 		frodo.addNewItem(new Equippable("Ring of Power"),1);
 		frodo.addNewItem(new Weapon("Sting"),1);
+		robin.addNewItem(new Armor("Mithil Chainmail", null, null, Armor.light, 16), 1);
+
 		frodo.playerInventory.get(Character.gp).setItemCount(0);
 		frodo.playerInventory.get(Character.sp).setItemCount(0);
 		frodo.playerInventory.get(Character.cp).setItemCount(0);
@@ -110,8 +115,13 @@ public class CCommand {
 			case "list":
 				dispCharList();
 				break;
+			case "stat":
 			case "stats":
-				dispCharacter();
+				if (input.length == 1){
+					dispCharacter();
+					} else {
+						dispStatDetail(getAttributeByName(buildString(1)));
+					}
 				break;
 			case "skill":
 			case "skills":
@@ -137,6 +147,7 @@ public class CCommand {
 					chars.get(activeIndex).heal(input[1]);
 				} else {
 					System.out.println("[Missing argument: amount]");
+					//TODO manual option
 				}
 				break;
 			case "hurt":
@@ -144,6 +155,7 @@ public class CCommand {
 					chars.get(activeIndex).hurt(input[1]);
 				} else {
 					System.out.println("[Missing argument: amount]");
+					//TODO manual option
 				}
 				break;
 			case "set":
@@ -497,7 +509,6 @@ public class CCommand {
 				try {
 					int val = getSpecialInt(input[input.length-1]);
 					a.setValue(val);
-					//a.setValue(Double.parseDouble(input[1]));
 					System.out.println("["+a.getName()+" set to "+val+"]");
 				} catch (NumberFormatException e) {
 					System.out.println("Invalid Command Format");
@@ -895,6 +906,10 @@ public class CCommand {
 			System.out.println(String.format("[%d] - %s", i, c.playerName));
 			i++;
 		}
+	}
+	
+	public static void dispStatDetail(Attribute a){
+		System.out.println(a.detail());
 	}
 	
 	public static void dispCharacter(){

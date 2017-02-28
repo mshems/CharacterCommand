@@ -24,14 +24,6 @@ public class Character implements Serializable{
 	protected boolean caster = false;
 	protected int casterType;
 	
-	public double getCurrHP() {
-		return currHP;
-	}
-
-	public void setCurrHP(double currHP) {
-		this.currHP = currHP;
-	}
-
 	public static final int gp = 0;
 	public static final int sp = 1;
 	public static final int cp = 2;
@@ -42,16 +34,14 @@ public class Character implements Serializable{
 		this.playerLevel = 1;
 		this.playerName = n;
 		this.playerClass = c;
-		this.initAbilityScores();
-		this.initPlayerStats();
-		this.initInventory();
-		this.initPlayerSkills();
-		this.initSpellSlots();
-		this.initSpellBook();
-		this.notes = "";
+		initCharacter();
 	}
 	
 	public Character(){
+		initCharacter();
+	}
+	
+	private void initCharacter(){
 		this.initAbilityScores();
 		this.initPlayerStats();
 		this.initInventory();
@@ -76,7 +66,7 @@ public class Character implements Serializable{
 	private void initPlayerStats(){
 		this.playerStats = new Attribute[]{
 				new Attribute(10, "Hit Point Maximum", Utils.HP_MAX),
-				new Attribute(10, "Armor Class", Utils.AC),
+				new Attribute(10+this.abilityScores[Attribute.DEX].getMod(), "Armor Class", Utils.AC),
 				new Attribute(30, "Speed", Utils.SPD),
 				new Attribute(10, "Passive Perception", Utils.PER),
 				new Attribute(2, "Proficiency Bonus", Utils.PRO),
@@ -84,7 +74,6 @@ public class Character implements Serializable{
 				new Attribute(0, "Spell Save DC", Utils.SSDC),
 				new Attribute(0, "Spell Attack Modifier", Utils.SAM),
 			};
-		this.playerStats[Attribute.AC].setValue(10+this.abilityScores[Attribute.DEX].getMod());
 		this.currHP = this.playerStats[Attribute.HP].getValue();
 	}
 	
@@ -315,5 +304,14 @@ public class Character implements Serializable{
 		}
 		return s;
 	}
+	
+	public double getCurrHP() {
+		return currHP;
+	}
+
+	public void setCurrHP(double currHP) {
+		this.currHP = currHP;
+	}
+
 	
 }

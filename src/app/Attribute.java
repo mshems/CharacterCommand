@@ -19,15 +19,15 @@ public class Attribute implements Serializable{
 	public static final int SAM = 7;
 	
 	private String name;
-	private double value;
+	private double base;
 	private double bonus;
 	@SuppressWarnings("unused")
 	private double mod;
 	protected String[] matches;
 	
-	public Attribute(double value, String name, String[] matches){
+	public Attribute(double baseVal, String name, String[] matches){
 		this.name = name;
-		this.value = value;
+		this.base = baseVal;
 		this.mod = this.getMod();
 		this.matches = matches;
 		this.bonus = 0;
@@ -39,21 +39,29 @@ public class Attribute implements Serializable{
 	
 	public double getMod(){
 		double m;
-		m = Math.floor((this.value+this.bonus - 10) / 2);
+		m = Math.floor((this.base + this.bonus - 10) / 2);
 		return m;
 	}
 	
 	public void setValue(double d){
-		this.value = d;
+		this.base = d;
+	}
+	
+	public double getBase(){
+		return this.base;
 	}
 	
 	public double getValue(){
-		return this.value;
+		return this.base + this.bonus;
 	}
 	
-	
 	public String toString(){
-		String s = String.format("%s: %.0f (%+.0f) ", this.name, this.value+this.bonus, this.getMod());
+		String s = String.format("%s: %.0f (%+.0f) ", this.name, this.base+this.bonus, this.getMod());
+		return s;
+	}
+	
+	public String detail(){
+		String s = String.format("%s: %.0f + %.0f = %.0f", this.name, this.base, this.bonus, this.base+this.bonus);
 		return s;
 	}
 
