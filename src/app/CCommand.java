@@ -43,7 +43,7 @@ public class CCommand {
 		robin.addNewItem(new Weapon("Longsword"),1);
 		robin.addNewItem(new Armor("Plate Armor", null, null, Armor.heavy, 18), 1);
 		robin.addNewItem(new Armor("Shield of Cowardice", new int[]{Attribute.CON, Attribute.CHA}, new int[]{-2,-2}, Armor.shield, 2), 1);
-		//robin.addNewItem(new Armor(Items.steadfastShield), 1);
+		//robin.addNewItem(new Armor(Armors.steadfastShield), 1);
 		robin.playerInventory.get(Character.gp).setItemCount(50);
 		robin.playerInventory.get(Character.sp).setItemCount(0);
 		robin.playerInventory.get(Character.cp).setItemCount(0);
@@ -105,13 +105,13 @@ public class CCommand {
 					
 				break;
 			case "save":
-				if (checkChars()){
+				if (charLoaded()){
 					checkDirs();
 					saveChar(activeIndex);
 				}
 				break;
 			case "saveall":
-				if (checkChars()){
+				if (charLoaded()){
 					for (int i = 0; i<chars.size(); i++){
 						saveChar(i);
 					}
@@ -126,13 +126,13 @@ public class CCommand {
 				importAll();
 				break;
 			case "export":
-				if (checkChars()){
+				if (charLoaded()){
 					checkDirs();
 					exportChar(activeIndex);
 				}
 				break;
 			case "exportall":
-				if (checkChars()){
+				if (charLoaded()){
 					checkDirs();
 					for (int i = 0; i<chars.size(); i++){
 						exportChar(i);
@@ -144,7 +144,7 @@ public class CCommand {
 				break;
 			case "stat":
 			case "stats":
-				if (checkChars()){
+				if (charLoaded()){
 					if (input.length == 1){
 						dispCharacter();
 					} else {
@@ -154,18 +154,18 @@ public class CCommand {
 				break;
 			case "skill":
 			case "skills":
-				if (checkChars()){
+				if (charLoaded()){
 					skills();
 				}
 				break;
 			case "view":
-				if (checkChars()){
+				if (charLoaded()){
 					dispCharacter();
 					dispInventory();
 				}
 				break;
 			case "inv":
-				if (checkChars()){
+				if (charLoaded()){
 					if (input.length == 1){
 						dispInventory();
 						} else {
@@ -175,12 +175,12 @@ public class CCommand {
 				break;
 			case "equip":
 			case "dequip":
-				if (checkChars()){
+				if (charLoaded()){
 					equip();
 				}
 				break;
 			case "heal":
-				if (checkChars()){
+				if (charLoaded()){
 					if (input.length > 1){
 						chars.get(activeIndex).heal(input[1]);
 					} else {
@@ -190,7 +190,7 @@ public class CCommand {
 				}
 				break;
 			case "hurt":
-				if (checkChars()){
+				if (charLoaded()){
 					if (input.length > 1){
 						chars.get(activeIndex).hurt(input[1]);
 					} else {
@@ -200,13 +200,13 @@ public class CCommand {
 				}
 				break;
 			case "set":
-				if (checkChars()){
+				if (charLoaded()){
 					set();
 				}
 				break;
 			case "level":
 			case "levelup":
-				if (checkChars()){
+				if (charLoaded()){
 					String lvl;
 					if (input.length == 1){
 						lvl = "0";
@@ -220,7 +220,7 @@ public class CCommand {
 			case "spell":
 			case "spells":
 			case "spellbook":
-				if (checkChars()){
+				if (charLoaded()){
 					if (input.length > 1){
 					spells(input[1]);
 					} else {
@@ -233,7 +233,7 @@ public class CCommand {
 				break;
 			case "note":
 			case "notes":
-				if (checkChars()){
+				if (charLoaded()){
 					notes();
 				}
 				break;
@@ -302,7 +302,7 @@ public class CCommand {
 		}
 	}
 	
-	public static boolean checkChars(){
+	public static boolean charLoaded(){
 		if (chars.size()>0 && activeIndex >= 0){
 			return true;
 		} else {
@@ -314,7 +314,6 @@ public class CCommand {
 	public static void importAll() throws ClassNotFoundException, IOException, StreamCorruptedException {
 		try {
 			File path = new File("./data");
-			//File path = new File("../data");
 
 			File [] files = path.listFiles();
 			for (int i = 0; i < files.length; i++){
@@ -349,7 +348,6 @@ public class CCommand {
 						name = buildString(1);
 					}
 					inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream("./data/"+name+".data")));
-					//inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream("../data/"+name+".data")));
 					break;
 				} catch (FileNotFoundException e) {
 					System.out.println("[\""+name+"\""+" not found]");
@@ -367,14 +365,12 @@ public class CCommand {
 	public static void saveChar(int i) throws IOException {
 			try {
 				String dataFile = "./data/"+chars.get(i).playerName+".data";
-				//String dataFile = "../data/"+chars.get(i).playerName+".data";
 				ObjectOutputStream out = null;
 				out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(dataFile)));
 				out.writeObject(chars.get(i));
 				out.close();
 				System.out.println("["+chars.get(i).playerName+" saved]");
 			} catch (FileNotFoundException e) {
-				//e.printStackTrace();
 			}
 	}
 	

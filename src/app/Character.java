@@ -164,7 +164,7 @@ public class Character implements Serializable{
 			amount = Integer.parseInt(s);
 			this.currHP+=amount;
 			System.out.println("[Gained "+amount+" HP]");
-			if (hpStart <=0 && currHP >0){
+			if (hpStart <= 0 && currHP > 0){
 				System.out.println("["+this.playerName+" is no longer unconscious]");
 			}
 		} catch (NumberFormatException e) {
