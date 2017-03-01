@@ -2,9 +2,50 @@
 [10/10 HP]  [AC: 10] [Speed: 30ft] [Initiative: +0] [Proficiency Bonus: +2]
 [Spell Save DC: 10] [Spell Attack Modifier: +2]
 STR: 10 (+0) DEX: 10 (+0) CON: 10 (+0) 
-INT: 10 (+0) WIS: 10 (+0) CHA: 10 (+0) [Inventory]
+INT: 10 (+0) WIS: 10 (+0) CHA: 10 (+0) 
+[Inventory]
 [$] - 50x Gold - 0x Silver - 0x Copper
 [1] - 1x Longsword
 [2] - 1x Plate Armor
 [3] - 1x Shield
 [4] - 1x Steadfast Shield
+[Skills]
+STR Throws (+0)
+Athletics (+0)
+DEX Throws (+0)
+Acrobatics (+0)
+Sleight of Hand (+0)
+Stealth (+0)
+CON Throws (+0)
+INT Throws (+0)
+Arcana (+0)
+History (+0)
+Investigation (+0)
+Nature (+0)
+Religion (+0)
+WIS Throws (+0)
+Animal Handling (+0)
+Insight (+0)
+Medicine (+0)
+Perception (+0)
+Survival (+0)
+CHA Throws (+0)
+Deception (+0)
+Intimidation (+0)
+Performance (+0)
+Persuasion (+0)
+[Spell Save DC: 10] [Spell Attack Modifier: +2]
+[Spellbook]
+Cantrip - Run Away
+Level 2 - Bravery
+Level 4 - Polymorph: Chicken
+[Spell Slots]
+Level 1 - 0/0
+Level 2 - 0/0
+Level 3 - 0/0
+Level 4 - 0/0
+Level 5 - 0/0
+Level 6 - 0/0
+Level 7 - 0/0
+Level 8 - 0/0
+Level 9 - 0/0

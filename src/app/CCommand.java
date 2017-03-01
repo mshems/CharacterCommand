@@ -39,11 +39,11 @@ public class CCommand {
 		chars.add(robin);
 		robin.race = "Human";
 		robin.caster = true;
-		robin.casterType = 5;
+		robin.casterType = Attribute.CHA;
 		robin.addNewItem(new Weapon("Longsword"),1);
 		robin.addNewItem(new Armor("Plate Armor", null, null, Armor.heavy, 18), 1);
-		robin.addNewItem(new Armor("Shield", null, null, Armor.shield, 2), 1);
-		robin.addNewItem(new Armor(Items.steadfastShield), 1);
+		robin.addNewItem(new Armor("Shield of Cowardice", new int[]{Attribute.CON, Attribute.CHA}, new int[]{-2,-2}, Armor.shield, 2), 1);
+		//robin.addNewItem(new Armor(Items.steadfastShield), 1);
 		robin.playerInventory.get(Character.gp).setItemCount(50);
 		robin.playerInventory.get(Character.sp).setItemCount(0);
 		robin.playerInventory.get(Character.cp).setItemCount(0);
@@ -66,7 +66,7 @@ public class CCommand {
 		activeIndex = 2;
 		tim.race = "Human";
 		tim.caster = true;
-		tim.casterType = 3;
+		tim.casterType = Attribute.WIS;
 		tim.spellbook.add(new Spell(Spell.cantrip, "Firebolt"));
 		tim.spellbook.add(new Spell(Spell.cantrip, "Intimidate"));
 	
@@ -74,7 +74,6 @@ public class CCommand {
 /****************************************************************************/
 		
 		//TODO: attacks
-		//TODO: editing items
 		//TODO: sorcery points?
 		//TODO: proficiencies, EXP
 		
@@ -230,7 +229,7 @@ public class CCommand {
 				}
 				break;
 			case "attack":
-				
+				System.out.println("> Coming Soon");
 				break;
 			case "note":
 			case "notes":

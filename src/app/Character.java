@@ -329,6 +329,7 @@ public class Character implements Serializable{
 	}
 	
 	public String toString(){
+		updateStats();
 		String s = String.format("[%s - Level %d %s %s]\n", this.playerName, this.playerLevel, this.race, this.playerClass);
 		s += String.format("[%.0f/%.0f HP]  [AC: %.0f] [Speed: %.0fft] [Initiative: %+.0f] [Proficiency Bonus: %+.0f]\n", 
 			this.currHP, this.playerStats[Attribute.HP].total(), this.playerStats[Attribute.AC].total(), 
@@ -346,8 +347,10 @@ public class Character implements Serializable{
 	}
 	
 	public String toExport(){
-		String s = this.toString()+this.playerInventory.toString();
-		s.replaceAll("\n", "\r");
+		String s = 
+				this.toString()+"\n"+this.playerInventory.toString()+"\n"+this.skillsToString()+"\n"+this.spellBookToString()+
+				"\n"+this.spellSlotsToString();
+		s.replaceAll("\n", System.getProperty("line.separator"));
 		return s;
 	}
 	
