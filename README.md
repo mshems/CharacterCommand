@@ -1,17 +1,21 @@
-"# CharacterCommand" 
+# CharacterCommand
+### A Command-Line D&D Character Manager.
+---
+#### Features:
+* Inventory Management
+* Equipment
+* Skills
+* Spells & Spell Casting
+* Import/Export Characters
 
-Command-Line D&D Character Manager.
+---
+#### Overview
+Everything is done by entering certain commands. "stats" displays basic info about your character, "inv" displays your inventory, etc...
+Many commands also have additional arguments. 
+For example:
+> inv get item Potion \*3
 
-Features:
+This command adds three items named "Potion" to your inventory. 
 
-Inventory Management
-
-Equipment
-
-Skills
-
-Spells & Spell Casting
-
-Import/Export Characters
-
-...and more!
+Entering "help" will display an abbrevieated guide. 
+The file COMMANDS.txt contains a full list of commands and their arguments and usages. 
