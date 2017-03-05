@@ -386,7 +386,8 @@ public class CCommand {
 				File file = new File("./data/"+chars.get(i).playerName+".txt");
 				try (
 					BufferedReader reader = new BufferedReader(new StringReader(text));
-					PrintWriter writer = new PrintWriter(new FileWriter(file));){
+					PrintWriter writer = new PrintWriter(new FileWriter(file));
+						){
 						reader.lines().forEach(line -> writer.println(line));
 				}
 				System.out.println("[Exported character to "+chars.get(i).playerName+".txt]");
