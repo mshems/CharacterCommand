@@ -26,6 +26,7 @@ import items.Items;
 public class CCommand {
 	public static ArrayList<Character> chars = new ArrayList<Character>();
 	public static boolean quit = false;
+	public static boolean viewAlways = false; 
 	public static int activeIndex;
 	public static Scanner scanner;
 	public static String[] input;
@@ -33,7 +34,7 @@ public class CCommand {
 	public static void main(String[] args) throws NumberFormatException, IOException, ClassNotFoundException {
 		scanner = new Scanner(System.in);
 		
-/****************************************************************************/
+/***************************************************************************
 	//add some characters and items for testing
 		Character robin = new Character("Sir Robin the Brave", "Knight of the Round Table");
 		chars.add(robin);
@@ -76,10 +77,34 @@ public class CCommand {
 		//TODO: attacks
 		//TODO: sorcery points?
 		//TODO: proficiencies, EXP
+		//TODO: guided add spells
+		//TODO: guided charge slotss
+		//TODO: less horrifyingly basic autosave
 		
 		checkDirs();
-		
+		importAll();
+		int autosaveCounter=0;
 		while (quit == false){
+			
+			/*if (autosaveCounter==5){
+				if (charLoaded()){
+					checkDirs();
+					saveChar(activeIndex);
+					exportChar(activeIndex);
+				}
+				autosaveCounter=0;
+			}
+			autosaveCounter++;*/
+			
+			if (viewAlways==true){
+				if (charLoaded()){
+					dispCharacter();
+					dispInventory();
+					System.out.println("[Notes]");
+					System.out.println(chars.get(activeIndex).notes);
+					Utils.divider();
+				}
+			}
 			
 			System.out.print("> What would you like to do? ");
 			String s = scanner.nextLine().trim();
@@ -88,6 +113,14 @@ public class CCommand {
 			s = input[0];
 			
 			switch (s){
+			case "viewalways":
+				if (input[1].equals("on")){
+					viewAlways=true;
+				}
+				if (input[1].equals("off")){
+					viewAlways=false;
+				}
+				break;
 			case "new":
 				createCharacter();
 				break;
@@ -95,25 +128,33 @@ public class CCommand {
 				deleteCharacter();
 				break;
 			case "load":
-				
+				int index=0;
 					if (input.length==1){
-					activeIndex = getCharIndexFromList();
+						index = getCharIndexFromList();
+						if (index==-1){
+							break;
+						}
 					} else {
-						activeIndex = findCharByName(buildString(1)); 
+						index = findCharByName(buildString(1));
+						if (index==-1){
+							break;
+						}
 					}
+					activeIndex = index;
 					System.out.println(String.format("[Loaded %s]", chars.get(activeIndex).playerName));
-					
 				break;
 			case "save":
 				if (charLoaded()){
 					checkDirs();
 					saveChar(activeIndex);
+					exportChar(activeIndex);
 				}
 				break;
 			case "saveall":
 				if (charLoaded()){
 					for (int i = 0; i<chars.size(); i++){
 						saveChar(i);
+						exportChar(i);
 					}
 				}
 				break;
@@ -241,6 +282,12 @@ public class CCommand {
 				dispHelpMenu();
 				break;
 			case "quit":
+				if (charLoaded()){
+					for (int i = 0; i<chars.size(); i++){
+						saveChar(i);
+						exportChar(i);
+					}
+				}
 				quit = true;
 				break;
 			default:
@@ -251,6 +298,8 @@ public class CCommand {
 		}
 	}
 	
+/* NEW CHARACTER METHODS **************************************************************************************************************/	
+
 	public static Character createCharacter(){ 
 		System.out.print("[New Character]\nName: ");
 		String name = scanner.nextLine();
@@ -295,19 +344,21 @@ public class CCommand {
 		return c;
 	}
 	
-	public static void checkDirs() throws IOException, FileNotFoundException{
-		Path dataPath = Paths.get("./data/");
-		if (!Files.exists(dataPath)){
-			Files.createDirectories(dataPath);
-		}
-	}
+/* IO METHODS **************************************************************************************************************/	
 	
 	public static boolean charLoaded(){
 		if (chars.size()>0 && activeIndex >= 0){
 			return true;
 		} else {
-			System.out.println("[Error: No character loaded]");
+			System.out.println("[Error: No characters to load]");
 			return false;
+		}
+	}
+	
+	public static void checkDirs() throws IOException, FileNotFoundException{
+		Path dataPath = Paths.get("./data/");
+		if (!Files.exists(dataPath)){
+			Files.createDirectories(dataPath);
 		}
 	}
 	
@@ -318,7 +369,7 @@ public class CCommand {
 			File [] files = path.listFiles();
 			for (int i = 0; i < files.length; i++){
 			    File file = files[i];
-				if (file.isFile()){
+				if (file.isFile()&&file.getName().endsWith(".data")){
 			    	ObjectInputStream inStream = null;
 					Character character = new Character();
 						inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));		
@@ -334,7 +385,7 @@ public class CCommand {
 		
 	}
 	
-	public static Character importChar() throws ClassNotFoundException, IOException {
+	public static void importChar() throws ClassNotFoundException, IOException {
 		
 		ObjectInputStream inStream = null;
 		String name = "";
@@ -348,18 +399,18 @@ public class CCommand {
 						name = buildString(1);
 					}
 					inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream("./data/"+name+".data")));
+					character = (Character) inStream.readObject();
+					inStream.close();
+					chars.add(character);
+					System.out.println("["+name+" imported]");
 					break;
 				} catch (FileNotFoundException e) {
 					System.out.println("[\""+name+"\""+" not found]");
-					if (input.length != 1){return null;}
-					scanner.nextLine();
+					break;
 				}
 			}
-			character = (Character) inStream.readObject();
-			inStream.close();
-			System.out.println("["+name+" imported]");
-			chars.add(character);
-			return character;
+			
+			//return character;
 	}
 	
 	public static void saveChar(int i) throws IOException {
@@ -404,6 +455,8 @@ public class CCommand {
 			activeIndex=-1;
 		}
 	}
+	
+/* FUNCTION METHODS **************************************************************************************************************/
 	
 	public static void notes(){
 		String command;
@@ -460,6 +513,7 @@ public class CCommand {
 			case "expert":
 			case "expertise":
 				if (s!=null){
+					s.proficient = true;
 					s.expertise = true;
 					System.out.println("[Gained expertise with "+s.skillName+"]");
 				}
@@ -517,11 +571,14 @@ public class CCommand {
 			}
 			break;
 		case "charge":
-			if (!validIntInput(2) || !validIntInput(3)){break;}
-			lvl = Integer.parseInt(input[2]);
-			num = Integer.parseInt(input[3]);
-			chars.get(activeIndex).chargeSpell(lvl, num);
-
+			if (input.length>=4){
+				if (!validIntInput(2) || !validIntInput(3)){break;}
+				lvl = Integer.parseInt(input[2]);
+				num = Integer.parseInt(input[3]);
+				chars.get(activeIndex).chargeSpell(lvl, num);
+			} else {
+				System.out.println("[Invalid command format]");
+			}
 			break;
 		case "chargeall":
 			chars.get(activeIndex).chargeAll();
@@ -792,7 +849,7 @@ public class CCommand {
 			System.out.print("[Item not valid]\n");
 		}
 	}
-	
+/* UTILITY METHODS **************************************************************************************************************/
 	public static int getValidInt(String message){
 		int n = 0;
 		while (true) {
@@ -829,6 +886,7 @@ public class CCommand {
 	}
 	
 	public static int getCharIndexFromList(){
+		if(charLoaded()){
 		dispCharList();
 		int n = 0;
 		boolean repeat = true;
@@ -841,6 +899,8 @@ public class CCommand {
 			}
 		}
 		return n-1;
+		} 
+		return -1;
 	}
 	
 	public static int getItemIndexByName(String name){
@@ -969,6 +1029,7 @@ public class CCommand {
 		return false;
 	}
 	
+/* DISPLAY METHODS **************************************************************************************************************/
 	public static void dispCharList(){
 		System.out.println("[Characters]");
 		int i=1;
@@ -1006,6 +1067,6 @@ public class CCommand {
 		System.out.println("<> = variable field\n[new][load <name>][list][delete][save <name>][saveall][import <name>][importall][export <name>][exportall]");
 		System.out.println("[stats][view][set <arguments>][inv <arguments>][spells <arguments>][equip <item>][dequip <item>]");
 		System.out.println("[heal <#>][hurt <#>][level <#>][levelup][skills <arguments>][notes <arguments>]");
-		System.out.println("View README.txt for details");
+		System.out.println("View COMMANDS.txt for details");
 	}
 }

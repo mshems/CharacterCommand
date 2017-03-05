@@ -7,6 +7,10 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class Character implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1;
 	protected String playerName;
 	protected int playerLevel;
 	protected String playerClass;
@@ -53,7 +57,6 @@ public class Character implements Serializable{
 		this.initSpellBook();
 		this.notes = "";
 		
-		
 		this.updateStats();
 	}
 	
@@ -65,20 +68,21 @@ public class Character implements Serializable{
 				new Attribute(10, "INT", Utils.INT),
 				new Attribute(10, "WIS", Utils.WIS),
 				new Attribute(10, "CHA", Utils.CHA),
-				
 			};
 	}
 	
 	private void initPlayerStats(){
+		double ac = 10+this.abilityScores[Attribute.DEX].getMod();
+		double ini = this.abilityScores[1].getMod();
 		this.playerStats = new Attribute[]{
-				new Attribute(10, "Hit Point Maximum", Utils.HP_MAX),
-				new Attribute(10+this.abilityScores[Attribute.DEX].getMod(), "Armor Class", Utils.AC),
-				new Attribute(30, "Speed", Utils.SPD),
-				new Attribute(10, "Passive Perception", Utils.PER),
-				new Attribute(2, "Proficiency Bonus", Utils.PRO),
-				new Attribute(this.abilityScores[1].getMod(), "Initiative", Utils.INI),
-				new Attribute(0, "Spell Save DC", Utils.SSDC),
-				new Attribute(0, "Spell Attack Modifier", Utils.SAM),
+				new Attribute(10,	"Hit Point Maximum",	Utils.HP_MAX),
+				new Attribute(ac, 	"Armor Class",			Utils.AC),
+				new Attribute(30, 	"Speed",				Utils.SPD),
+				new Attribute(10, 	"Passive Perception",	Utils.PER),
+				new Attribute(2, 	"Proficiency Bonus",	Utils.PRO),
+				new Attribute(ini, 	"Initiative",			Utils.INI),
+				new Attribute(0, 	"Spell Save DC",		Utils.SSDC),
+				new Attribute(0, 	"Spell Attack Modifier",Utils.SAM),
 			};
 		this.currHP = this.playerStats[Attribute.HP].total();
 		updateStats();
@@ -104,30 +108,30 @@ public class Character implements Serializable{
 	
 	private void initPlayerSkills(){
 		this.playerSkills = new Skill[]{
-				new Skill("STR Throws", 0, Utils.STR_THROW),
-				new Skill("Athletics",0, Utils.ATHLETICS),
-				new Skill("DEX Throws",1, Utils.DEX_THROW),
-				new Skill("Acrobatics",1, Utils.ACROBATICS),
-				new Skill("Sleight of Hand",1, Utils.SLEIGHT_OF_HAND),
-				new Skill("Stealth",1, Utils.STEALTH),
-				new Skill("CON Throws",2, Utils.CON_THROWS),
-				new Skill("INT Throws",3, Utils.INT_THROWS),
-				new Skill("Arcana",3, Utils.ARCANA),
-				new Skill("History",3, Utils.HISTORY),
-				new Skill("Investigation",3, Utils.INVESTIGATION),
-				new Skill("Nature",3, Utils.NATURE),
-				new Skill("Religion",3, Utils.RELIGION),
-				new Skill("WIS Throws",4, Utils.WIS_THROWS),
-				new Skill("Animal Handling",4, Utils.ANIMAL_HANDLING),
-				new Skill("Insight",4, Utils.INSIGHT),
-				new Skill("Medicine",4, Utils.MEDICINE),
-				new Skill("Perception",4, Utils.PERCEPTION),
-				new Skill("Survival",4, Utils.SURVIVAL),
-				new Skill("CHA Throws",5, Utils.CHA),
-				new Skill("Deception",5, Utils.DECEPTION),
-				new Skill("Intimidation",5, Utils.INTIMIDATION),
-				new Skill("Performance",5, Utils.PERFORMANCE),
-				new Skill("Persuasion",5, Utils.PERSUASION),
+				new Skill("STR Throws",		Attribute.STR, Utils.STR_THROW),
+				new Skill("Athletics",		Attribute.STR, Utils.ATHLETICS),
+				new Skill("DEX Throws",		Attribute.DEX, Utils.DEX_THROW),
+				new Skill("Acrobatics",		Attribute.DEX, Utils.ACROBATICS),
+				new Skill("Sleight of Hand",Attribute.DEX, Utils.SLEIGHT_OF_HAND),
+				new Skill("Stealth",		Attribute.DEX, Utils.STEALTH),
+				new Skill("CON Throws",		Attribute.CON, Utils.CON_THROWS),
+				new Skill("INT Throws",		Attribute.INT, Utils.INT_THROWS),
+				new Skill("Arcana",			Attribute.INT, Utils.ARCANA),
+				new Skill("History",		Attribute.INT, Utils.HISTORY),
+				new Skill("Investigation",	Attribute.INT, Utils.INVESTIGATION),
+				new Skill("Nature",			Attribute.INT, Utils.NATURE),
+				new Skill("Religion",		Attribute.INT, Utils.RELIGION),
+				new Skill("WIS Throws",		Attribute.WIS, Utils.WIS_THROWS),
+				new Skill("Animal Handling",Attribute.WIS, Utils.ANIMAL_HANDLING),
+				new Skill("Insight",		Attribute.WIS, Utils.INSIGHT),
+				new Skill("Medicine",		Attribute.WIS, Utils.MEDICINE),
+				new Skill("Perception",		Attribute.WIS, Utils.PERCEPTION),
+				new Skill("Survival",		Attribute.WIS, Utils.SURVIVAL),
+				new Skill("CHA Throws",		Attribute.CHA, Utils.CHA),
+				new Skill("Deception",		Attribute.CHA, Utils.DECEPTION),
+				new Skill("Intimidation",	Attribute.CHA, Utils.INTIMIDATION),
+				new Skill("Performance",	Attribute.CHA, Utils.PERFORMANCE),
+				new Skill("Persuasion",		Attribute.CHA, Utils.PERSUASION),
 		};
 		updateSkills();
 	}
@@ -174,7 +178,6 @@ public class Character implements Serializable{
 	
 	public void heal(int n){
 		double hpStart = this.currHP;
-
 		this.currHP+=n;
 		System.out.println("[Gained "+n+" HP]");
 		if (hpStart <=0 && currHP >0){
@@ -214,7 +217,6 @@ public class Character implements Serializable{
 		} else if (this.playerLevel > 4){
 			this.playerStats[Attribute.PRO].setBaseVal(3);
 		}
-		updateSkills();
 	}
 	
 	protected void levelUp(String lvl){
@@ -227,6 +229,8 @@ public class Character implements Serializable{
 			}
 			System.out.println(String.format("[%s is now level %d]", this.playerName, this.playerLevel));
 			updateProficiency();
+			updateSkills();
+			updateStats();
 		} catch (NumberFormatException e) {
 			System.out.println("[Not a number]");
 		}	

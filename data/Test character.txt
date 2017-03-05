@@ -1,0 +1,43 @@
+[Test character - Level 10 Humanoid Fighter]
+[10/10 HP]  [AC: 10] [Speed: 30ft] [Initiative: +1] [Proficiency Bonus: +4]
+[Spell Save DC: 15] [Spell Attack Modifier: +7]
+STR: 12 (+1) DEX: 13 (+1) CON: 14 (+2) 
+INT: 15 (+2) WIS: 16 (+3) CHA: 17 (+3) 
+[Inventory]
+[$] - 0x Gold - 0x Silver - 0x Copper
+[Skills]
+STR Throws (+1)
+Athletics (+1)
+DEX Throws (+1)
+Acrobatics (+1)
+Sleight of Hand (+1)
+Stealth (+1)
+CON Throws (+2)
+INT Throws (+3)
+Arcana (+3)
+History (+3)
+Investigation (+3)
+Nature (+3)
+Religion (+3)
+WIS Throws (+2)
+Animal Handling (+2)
+Insight (+2)
+Medicine (+2)
+Perception (+2)
+Survival (+2)
+CHA Throws (+3)
+Deception (+3)
+Intimidation (+3)
+Performance (+3)
+Persuasion (+3)
+[No Spells Known]
+[Spell Slots]
+Level 1 - 0/0
+Level 2 - 0/0
+Level 3 - 0/0
+Level 4 - 0/0
+Level 5 - 0/0
+Level 6 - 0/0
+Level 7 - 0/0
+Level 8 - 0/0
+Level 9 - 0/0
