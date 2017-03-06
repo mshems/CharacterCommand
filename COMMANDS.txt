@@ -116,5 +116,9 @@ List of Valid Commands:
 	heal <#>
 	  >  gain an amount of hp
 
+[viewalways]----------------------------------------------------------------------------------------
+	viewalways <on/off>
+	  > toggles viewing full character sheet after every command. Requested feature for convenience.
+	  
 [quit]--------------------------------------------------------------------------------------------
 	quit
