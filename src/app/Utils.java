@@ -24,7 +24,6 @@ public class Utils {
 	};
 	
 	
-	
 	public static final String[] HP = new String[]{
 			"hp","hit points","health"
 	};
