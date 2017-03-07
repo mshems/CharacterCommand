@@ -24,6 +24,15 @@ List of Valid Commands:
 	exportall
 
 [list]--------------------------------------------------------------------------------------------
+	roll <#d#>
+	  > rolls the specified number and type of dice 
+	roll <#>
+	  > rolls the specified number of 20-sided dice
+	roll
+	  > rolls 1d20
+
+
+[list]--------------------------------------------------------------------------------------------
 	list 
 	  > lists all characters
 	

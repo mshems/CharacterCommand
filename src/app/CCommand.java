@@ -18,7 +18,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 import java.util.Scanner;
 
 import items.Items;
@@ -89,17 +91,6 @@ public class CCommand {
 		
 		while (quit == false){
 			
-			/*int autosaveCounter=0;
-			if (autosaveCounter==5){
-				if (charLoaded()){
-					checkDirs();
-					saveChar(activeIndex);
-					exportChar(activeIndex);
-				}
-				autosaveCounter=0;
-			}
-			autosaveCounter++;*/
-			
 			if (viewAlways==true){
 				if (charLoaded()){
 					dispCharacter();
@@ -125,11 +116,16 @@ public class CCommand {
 					viewAlways=false;
 				}
 				break;
+			case "roll":
+				System.out.println(roll());
+				break;
 			case "new":
 				createCharacter();
 				break;
 			case "delete":
-				deleteCharacter();
+				if (charLoaded()){
+					deleteCharacter();
+				}
 				break;
 			case "load":
 				int index=0;
@@ -154,11 +150,18 @@ public class CCommand {
 					exportChar(activeIndex);
 				}
 				break;
+			case "savex":
+				if (charLoaded()){
+					checkDirs();
+					saveChar(activeIndex);
+					exportChar(activeIndex);
+				}
+				break;
 			case "saveall":
 				if (charLoaded()){
 					for (int i = 0; i<chars.size(); i++){
 						saveChar(i);
-						exportChar(i);
+						//exportChar(i);
 					}
 				}
 				break;
@@ -285,6 +288,7 @@ public class CCommand {
 			case "help":
 				dispHelpMenu();
 				break;
+			case "q":
 			case "quit":
 				if (charLoaded()){
 					for (int i = 0; i<chars.size(); i++){
@@ -301,8 +305,53 @@ public class CCommand {
 			Utils.divider();
 		}
 	}
+
+/* DICE ROLLING **************************************************************************************************************/	
+
+	public static Integer roll(){
+		int sides=20;
+		int num=1;
+		int total=0;
+		String result="";
+		if (input.length==2 && !input[1].matches("\\d+")){
+			String[] a = buildString(1).split("[d]");
+			if (a.length<2){
+				System.out.println("Invalid Format");
+				return null;
+			}
+			num = Integer.parseInt(a[0].trim());
+			sides = Integer.parseInt(a[1].trim());
+		} else if(input.length==2 && input[1].matches("\\d+")){
+			num = Integer.parseInt(input[1]);
+		} else {
+			
+		}
+		Random random = new Random();
+		for (int i=0; i<num; i++){
+			int val = random.nextInt(sides)+1;
+			result += val;
+			if (i<num-1){
+				result+=" + ";
+			}
+			total +=val;
+		}
+		System.out.println("Rolling "+num+"d"+sides);
+		if (num>1){
+			System.out.println(result);
+		}
+		return total;
+	}
 	
-/* NEW CHARACTER METHODS **************************************************************************************************************/	
+	public static int roll(int num, int sides, int mod){
+		int val=0;
+		Random random = new Random();
+		for (int i=0; i<num; i++){
+			val += random.nextInt(sides)+1;
+		}
+		return val+mod;
+	}
+	
+/* NEW CHARACTER METHODS *****************************************************************************************************/	
 
 	public static Character createCharacter(){ 
 		System.out.print("[New Character]\nName: ");
@@ -1104,7 +1153,7 @@ public class CCommand {
 	public static void dispHelpMenu(){
 		System.out.println("<> = variable field\n[new][load <name>][list][delete][save <name>][saveall][import <name>][importall][export <name>][exportall]");
 		System.out.println("[stats][view][set <arguments>][inv <arguments>][spells <arguments>][equip <item>][dequip <item>]");
-		System.out.println("[heal <#>][hurt <#>][level <#>][levelup][skills <arguments>][notes <arguments>]");
+		System.out.println("[heal <#>][hurt <#>][level <#>][levelup][skills <arguments>][notes <arguments>][roll <#d#>]");
 		System.out.println("View COMMANDS.txt for details");
 	}
 }
