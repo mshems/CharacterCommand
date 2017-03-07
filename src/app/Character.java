@@ -259,7 +259,7 @@ public class Character implements Serializable{
 	
 	protected void castSpell(Spell spell, int lvl){
 		if ((this.requirePrep && spell.spellPrepared)||!this.requirePrep){
-			if (lvl == Spell.defaultLevel){
+			if (lvl == Spell.defaultLevel || spell.spellLevel == Spell.cantrip){
 				lvl = spell.spellLevel;
 			} 
 			if (lvl == Spell.cantrip){

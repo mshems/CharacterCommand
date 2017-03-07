@@ -34,6 +34,12 @@ public class CCommand {
 	public static void main(String[] args) throws NumberFormatException, IOException, ClassNotFoundException {
 		scanner = new Scanner(System.in);
 		
+		if (args.length==1){
+			if (args[0].equals("on")){
+				viewAlways = true;
+			}
+		}
+		
 /***************************************************************************
 	//add some characters and items for testing
 		Character robin = new Character("Sir Robin the Brave", "Knight of the Round Table");
@@ -77,16 +83,14 @@ public class CCommand {
 		//TODO: attacks
 		//TODO: sorcery points?
 		//TODO: proficiencies, EXP
-		//TODO: guided add spells
-		//TODO: guided charge slotss
-		//TODO: less horrifyingly basic autosave
 		
 		checkDirs();
 		importAll();
-		int autosaveCounter=0;
+		
 		while (quit == false){
 			
-			/*if (autosaveCounter==5){
+			/*int autosaveCounter=0;
+			if (autosaveCounter==5){
 				if (charLoaded()){
 					checkDirs();
 					saveChar(activeIndex);
@@ -537,24 +541,46 @@ public class CCommand {
 	}
 	
 	public static void spells(String command){
-		String spellName;
+		String spellName="";
 		int spellLevel = -1;
-		Spell castSpell;
 		int lvl;
 		int num;
 		
+		
 		switch (command){
 		case "learn":
-			spellLevel = getSpellLevel(input[input.length-1]);
-			if (spellLevel == -1){break;}
-			spellName = buildString(2);			
-			chars.get(activeIndex).learnSpell(new Spell(spellLevel, spellName));
-			break;
+			if (input.length==2){
+				System.out.print("Enter spell name: ");
+				spellName = scanner.nextLine();
+				spellLevel = getValidInt("Enter spell level: ");
+				chars.get(activeIndex).learnSpell(new Spell(spellLevel, spellName));
+				break;
+			} else {
+				spellLevel = getSpellLevel(input[input.length-1]);
+				if (spellLevel == -1 || spellLevel == -2){
+					System.out.println("Missing argument: Spell Level");
+					break;
+				}
+				spellName = buildString(2);			
+				chars.get(activeIndex).learnSpell(new Spell(spellLevel, spellName));
+				break;
+			}
 		case "forget":
-			Spell forgetSpell = getSpellByName(buildString(2));
-			chars.get(activeIndex).forgetSpell(forgetSpell);
-			break;
+			Spell forgetSpell = null;
+			if (input.length==2){
+				dispSpellbook();
+				System.out.print("Enter spell to forget: ");
+				spellName = scanner.nextLine();
+				forgetSpell = getSpellByName(spellName);
+				chars.get(activeIndex).forgetSpell(forgetSpell);
+				break;
+			} else {
+				forgetSpell = getSpellByName(buildString(2));
+				chars.get(activeIndex).forgetSpell(forgetSpell);
+				break;
+			}
 		case "cast":
+			Spell castSpell=null;
 			if (input.length>2){
 					spellName = buildString(2);
 					castSpell = getSpellByName(spellName);
@@ -565,17 +591,24 @@ public class CCommand {
 					if (spellLevel == -1){break;}
 				chars.get(activeIndex).castSpell(castSpell, spellLevel);
 			} else { 
-				//guided casting interface
-				System.out.println("[Guided casting - placeholder]");
+				System.out.print("Enter spell to cast: ");
+				spellName = scanner.nextLine();
+				spellLevel = getValidInt("Enter spell level: ");
+				castSpell = getSpellByName(spellName);
+				chars.get(activeIndex).castSpell(castSpell, spellLevel);
 				break;
 			}
 			break;
 		case "charge":
+			
 			if (input.length>=4){
 				if (!validIntInput(2) || !validIntInput(3)){break;}
 				lvl = Integer.parseInt(input[2]);
 				num = Integer.parseInt(input[3]);
 				chars.get(activeIndex).chargeSpell(lvl, num);
+			} else if (input.length==2){
+				lvl = getValidInt("Enter spell slot level: ");
+				num = getValidInt("Enter number of slots to recharge: ");
 			} else {
 				System.out.println("[Invalid command format]");
 			}
@@ -607,13 +640,18 @@ public class CCommand {
 			}
 			break;
 		case "slots":
-			if (input.length == 5 && input[2].equals("get")){
+			if (input.length == 5 && input[2].equalsIgnoreCase("get")){
 				if (!validIntInput(3) || !validIntInput(4)){
 					System.out.println("[Invalid command format]");
 					break;
 				}
 				lvl = Integer.parseInt(input[4]);
 				num = Integer.parseInt(input[3]);
+				chars.get(activeIndex).spellSlots[lvl-1].total+=num;
+				System.out.println("[Gained "+num+" level "+lvl+" spell slots]");
+			} else if (input[2].equalsIgnoreCase("get") && input.length==3){
+				lvl = getValidInt("Enter spell slot level: ");
+				num = getValidInt("Enter number of slots to gain: ");
 				chars.get(activeIndex).spellSlots[lvl-1].total+=num;
 				System.out.println("[Gained "+num+" level "+lvl+" spell slots]");
 			} else if (input.length == 2){
