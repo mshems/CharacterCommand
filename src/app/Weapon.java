@@ -1,10 +1,19 @@
 package app;
 
-public class Weapon extends Item {
+import java.util.ArrayList;
+
+public class Weapon extends Equippable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2353485545131746631L;
 	protected DiceRoll damageRoll;
 	protected int attackAbility;
-	protected int[] attributeTargets;
-	protected int[] attributeBonuses;
+	//protected int[] attributeTargets;
+	//protected int[] attributeBonuses;
+	
+	protected ArrayList<Integer> attributeTargets;
+	protected ArrayList<Integer> attributeBonuses;
 	
 	public Weapon(){
 		super();
@@ -28,7 +37,7 @@ public class Weapon extends Item {
 		if (this.attributeBonuses != null && this.attributeTargets != null){
 			int i=0;
 			for (int n : this.attributeTargets){
-				c.abilityScores[n].setBaseVal(+this.attributeBonuses[i]);	
+				c.abilityScores[n].setBaseVal(+this.attributeBonuses.get(i));	
 				i++;
 			}
 		}
@@ -40,12 +49,12 @@ public class Weapon extends Item {
 		if (this.attributeBonuses != null && this.attributeTargets != null){
 			int i=0;
 			for (int n : this.attributeTargets){
-				c.abilityScores[n].setBaseVal(-this.attributeBonuses[i]);	
+				c.abilityScores[n].setBaseVal(-this.attributeBonuses.get(i));	
 				i++;
 			}
 		}
 	}
-	public Weapon(String n, DiceRoll r, int[] aT, int[] aB) {
+	public Weapon(String n, DiceRoll r, ArrayList<Integer> aT, ArrayList<Integer> aB) {
 		super(n);
 		this.damageRoll = r;
 		this.attributeTargets = aT;
@@ -56,10 +65,35 @@ public class Weapon extends Item {
 	public String toString(){
 		String s = String.format("%dx %s", this.getItemCount(), this.getItemName());
 		if (this.damageRoll != null){
-			//s += String.format(" (%s)", this.damageRoll);
+			s += String.format(" (%s)", this.damageRoll);
 		}
 		
 		if (this.equipped==true){s= "e "+s;}else{s="- "+s;}
+		return s;
+	}
+	
+	public String effectsToString(){
+		String s="Effects:";
+		for (int i=0; i<attributeBonuses.size(); i++){
+			s+="\n["+(i+1)+"] "+Utils.getAbilNameByIndex(attributeTargets.get(i))+String.format(" %+d ", attributeBonuses.get(i));
+		}
+		return s;
+	}
+	
+	public String details(){
+		String s = String.format("[----- %s -----]", this.getItemName());
+		if (this.damageRoll != null){
+			s += String.format("\nDamage Roll: %s", this.damageRoll);
+		}
+		if (this.description!=null){
+			s+="\nDescription: "+this.description;
+		}
+		if (this.attributeBonuses!=null && this.attributeTargets!=null){
+			s+="\n"+this.effectsToString();
+		}
+		if (this.value!=0){
+			s+="\nValue: "+this.value;
+		}
 		return s;
 	}
 }
