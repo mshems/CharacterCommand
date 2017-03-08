@@ -759,161 +759,141 @@ public class CCommand {
 	}
 	
 	public static void inv(String command){
-		int count;
-		String name;
+		int count=0;
+		String name="";
+		String type="";
 		
-		switch (command){
-		case "get":
-			if (input.length>=4){
-				String type = input[2];
-				
-				count = getSpecialInt(input[input.length-1]);
-				name = buildString(3);
+		switch(command){
+			case "get":
+				if (input.length==2){
+					System.out.println("[Get new items]");
+					System.out.print("Item/Weapon/Armor/Equippable: ");
+					type = scanner.nextLine();
+					
+					if (type.equalsIgnoreCase("item") || type.equalsIgnoreCase("weapon") || type.equalsIgnoreCase("armor")|| type.equalsIgnoreCase("equip") || type.equalsIgnoreCase("equippable")){
+						System.out.print("Enter item name: ");
+						name = scanner.nextLine();
+						count = getValidInt("Enter count: ");
+					}
+				} 
+				if (input.length==3){
 
-				switch (type){
-				case "item":
-					chars.get(activeIndex).addNewItem(new Item(name), count);
-					System.out.println(String.format("[Added %dx %s]", count, name));
 					break;
-				case "weapon":
-					chars.get(activeIndex).addNewItem(new Weapon(name), count);
-					System.out.println(String.format("[Added %dx %s]", count, name));
-					break;
-				case "armor":
-					chars.get(activeIndex).addNewItem(new Armor(name), count);
-					System.out.println(String.format("[Added %dx %s]", count, name));
-					break;
-				case "equip":
-				case "equippable":
-					chars.get(activeIndex).addNewItem(new Equippable(name), count);
-					System.out.println(String.format("[Added %dx %s]", count, name));
-					break;
-				default:
-					System.out.println("> Command not recognized. Enter \"inv help\" for help");
-				break;
+				} 
+				if (input.length>=4){
+					type = input[2];
+					name = buildString(3);
+					count = getSpecialInt(input[input.length-1]);
 				}
-			} else if (input.length >=3){
-				System.out.println("[Invalid command: missing arguments]");
-			} else {
-				System.out.println("[Get new items]");
-				System.out.print("Item/Weapon/Armor/Equippable: ");
-				String type = scanner.nextLine();
-				if (type.equalsIgnoreCase("item") || type.equalsIgnoreCase("weapon") || type.equalsIgnoreCase("armor")|| type.equalsIgnoreCase("equip") || type.equalsIgnoreCase("equippable")){
-					System.out.print("Enter item name: ");
-					name = scanner.nextLine();
-					count = getValidInt("Enter count: ");
-					switch (type){
+				switch (type){
 					case "item":
 						chars.get(activeIndex).addNewItem(new Item(name), count);
-						System.out.println(String.format("[Added %dx %s]", count, name));
 						break;
 					case "weapon":
 						chars.get(activeIndex).addNewItem(new Weapon(name), count);
-						System.out.println(String.format("[Added %dx %s]", count, name));
 						break;
 					case "armor":
 						chars.get(activeIndex).addNewItem(new Armor(name), count);
-						System.out.println(String.format("[Added %dx %s]", count, name));
 						break;
 					case "equip":
 					case "equippable":
 						chars.get(activeIndex).addNewItem(new Equippable(name), count);
-						System.out.println(String.format("[Added %dx %s]", count, name));
 						break;
 					default:
 						System.out.println("> Command not recognized. Enter \"inv help\" for help");
-					break;
-					}
+						break;
 				}
-			}
-			break;
-		case "drop":
-		case "add":
-			if (input.length>=4){
-				if (!validIntInput(2)){break;}
-				count = Integer.parseInt(input[2]);
-				
-				name = buildString(3);
-				if (command.equals("drop")){ count = -count; }
-				
-				switch (name){
-				case "gp":
-				case "gold":
-					chars.get(activeIndex).addCoin(0, count);
-					break;
-				case "sp":
-				case "silver":
-					chars.get(activeIndex).addCoin(1, count);
-					break;
-				case "cp":
-				case "copper":
-					chars.get(activeIndex).addCoin(2, count);
-					break;
-				default:
-					int index = getItemIndexByName(name);
-					if (index >= 0){
-						chars.get(activeIndex).addMoreItem(index, count);
-					}
-					break;	
-				}
-					if (command.equals("drop")){
-						System.out.println(String.format("[Lost %dx %s]", -count, name));
-					} else {
-						System.out.println(String.format("[Added %dx %s]", count, name));
-					}
+				System.out.println(String.format("[Added %dx %s]", count, name));
 				break;
-			} else if (input.length == 3){
-				System.out.println("[Invalid command: missing arguments]");
-			} else {
-				System.out.println("[Add/Drop items]");
-				dispInventory();
-				
-				System.out.print("Enter item name: ");
-				name = scanner.nextLine();
-				int index;
+			case "add":
+			case "drop":
+				if (input.length>=4){
+					if (!validIntInput(2)){break;}
+					count = Integer.parseInt(input[2]);
+					
+					name = buildString(3);
+					if (command.equals("drop")){ count = -count; }
+					
 					switch (name){
 					case "gp":
 					case "gold":
-						index = 0;
+						chars.get(activeIndex).addCoin(0, count);
 						break;
 					case "sp":
 					case "silver":
-						index = 1;
+						chars.get(activeIndex).addCoin(1, count);
 						break;
 					case "cp":
 					case "copper":
-						index = 2;
+						chars.get(activeIndex).addCoin(2, count);
 						break;
 					default:
-						index = getItemIndexByName(name);
-						break;
+						int index = getItemIndexByName(name);
+						if (index >= 0){
+							chars.get(activeIndex).addMoreItem(index, count);
+						}
+						break;	
 					}
-				Item item = chars.get(activeIndex).playerInventory.get(index);
-				String str;
-				if (command.equals("drop")){
-					str = "lost";
+						if (command.equals("drop")){
+							System.out.println(String.format("[Lost %dx %s]", -count, name));
+						} else {
+							System.out.println(String.format("[Added %dx %s]", count, name));
+						}
+					break;
+				} else if (input.length == 3){
+					System.out.println("[Invalid command: missing arguments]");
 				} else {
-					str = "gained";
+					System.out.println("[Add/Drop items]");
+					dispInventory();
+					
+					System.out.print("Enter item name: ");
+					name = scanner.nextLine();
+					int index;
+						switch (name){
+						case "gp":
+						case "gold":
+							index = 0;
+							break;
+						case "sp":
+						case "silver":
+							index = 1;
+							break;
+						case "cp":
+						case "copper":
+							index = 2;
+							break;
+						default:
+							index = getItemIndexByName(name);
+							break;
+						}
+					Item item = chars.get(activeIndex).playerInventory.get(index);
+					String str;
+					if (command.equals("drop")){
+						str = "lost";
+					} else {
+						str = "gained";
+					}
+					count = getValidInt("Enter amount "+str+": ");
+					
+					if (command.equals("drop")){ count = -count; }
+					chars.get(activeIndex).addMoreItem(index, count);
+					if (command.equals("drop")){
+						System.out.println(String.format("[Lost %dx %s]", -count, item.getItemName() ));
+					} else {
+						System.out.println(String.format("[Added %dx %s]", count, item.getItemName()));
+					}
 				}
-				count = getValidInt("Enter amount "+str+": ");
-				
-				if (command.equals("drop")){ count = -count; }
-				chars.get(activeIndex).addMoreItem(index, count);
-				if (command.equals("drop")){
-					System.out.println(String.format("[Lost %dx %s]", -count, item.getItemName() ));
-				} else {
-					System.out.println(String.format("[Added %dx %s]", count, item.getItemName()));
-				}
-			}
-			break;
-		case "help":
-			System.out.println("[inv get/add/drop # name]");
-			break;
-		case "sort":
-			Collections.sort(chars.get(activeIndex).playerInventory.subList(3,chars.get(activeIndex).playerInventory.size()));
-			break;
-		default:
-			System.out.println("> Command not recognized. Enter \"inv help\" for help");
+				break;
+			case "sort":
+				Collections.sort(chars.get(activeIndex).playerInventory.subList(3,chars.get(activeIndex).playerInventory.size()));
+				System.out.println("[Inventory  sorted]");
+				break;
+			case "help":
+				System.out.println("help");
+				break;
+			default:
+				System.out.println("> Command not recognized. Enter \"inv help\" for help");
+				break;
 		}
 	}
 	
@@ -936,7 +916,9 @@ public class CCommand {
 			System.out.print("[Item not valid]\n");
 		}
 	}
+	
 /* UTILITY METHODS **************************************************************************************************************/
+	
 	public static int getValidInt(String message){
 		int n = 0;
 		while (true) {
@@ -1117,6 +1099,7 @@ public class CCommand {
 	}
 	
 /* DISPLAY METHODS **************************************************************************************************************/
+	
 	public static void dispCharList(){
 		System.out.println("[Characters]");
 		int i=1;
@@ -1141,7 +1124,7 @@ public class CCommand {
 	public static void dispSkills(){
 		System.out.println(chars.get(activeIndex).skillsToString());
 	}
-	
+	 
 	public static void dispInventory(){
 		System.out.println(chars.get(activeIndex).playerInventory);
 	}
