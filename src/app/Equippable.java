@@ -3,19 +3,21 @@ package app;
 import java.util.ArrayList;
 
 public class Equippable extends Item{
-	//protected int[] attributeTargets;
-	//protected int[] attributeBonuses;
 	
 	protected ArrayList<Integer> attributeTargets;
 	protected ArrayList<Integer> attributeBonuses;
 	
 	public Equippable(){
 		super();
+		this.attributeTargets = new ArrayList<Integer>();
+		this.attributeBonuses = new ArrayList<Integer>();
 		this.equippable = true;
 	}
 	
 	public Equippable(String n) {
 		super(n);
+		this.attributeTargets = new ArrayList<Integer>();
+		this.attributeBonuses = new ArrayList<Integer>();
 		this.equippable = true;
 	}
 	
@@ -56,6 +58,9 @@ public class Equippable extends Item{
 			s= "e "+s;
 		} else {
 			s= "- "+s;
+		}
+		if (this.attributeBonuses!=null && this.attributeTargets!=null){
+			s+="*";
 		}
 		return s;
 	}

@@ -1,15 +1,8 @@
 package app;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Armor extends Equippable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3562918064328746742L;
-	//protected int[] attributeTargets;
-	//protected int[] attributeBonuses;
 	protected ArrayList<Integer> attributeTargets;
 	protected ArrayList<Integer> attributeBonuses;
 	protected int acBase = 0;
@@ -24,11 +17,15 @@ public class Armor extends Equippable{
 
 	public Armor(){
 		super();
+		this.attributeTargets = new ArrayList<Integer>();
+		this.attributeBonuses = new ArrayList<Integer>();
 		this.equippable = true;
 	}
 	
 	public Armor(String n) {
 		super(n);
+		this.attributeTargets = new ArrayList<Integer>();
+		this.attributeBonuses = new ArrayList<Integer>();
 		this.equippable = true;
 	}
 	

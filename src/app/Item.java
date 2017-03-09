@@ -7,7 +7,7 @@ public class Item implements Serializable, Comparable<Item> {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1362036214028908831L;
+	private static final long serialVersionUID = 1;
 	private String itemName;
 	protected String description;
 	protected int value=0;

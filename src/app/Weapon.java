@@ -3,31 +3,31 @@ package app;
 import java.util.ArrayList;
 
 public class Weapon extends Equippable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2353485545131746631L;
 	protected DiceRoll damageRoll;
 	protected int attackAbility;
-	//protected int[] attributeTargets;
-	//protected int[] attributeBonuses;
 	
 	protected ArrayList<Integer> attributeTargets;
 	protected ArrayList<Integer> attributeBonuses;
 	
 	public Weapon(){
 		super();
+		this.attributeTargets = new ArrayList<Integer>();
+		this.attributeBonuses = new ArrayList<Integer>();
 		this.equippable = true;
 	}
 	
 	public Weapon(String n, DiceRoll r){
 		super(n);
+		this.attributeTargets = new ArrayList<Integer>();
+		this.attributeBonuses = new ArrayList<Integer>();
 		this.damageRoll = r;
 		this.equippable = true;
 	}
 	
 	public Weapon(String n){
 		super(n);
+		this.attributeTargets = new ArrayList<Integer>();
+		this.attributeBonuses = new ArrayList<Integer>();
 		this.equippable = true;
 	}
 	
@@ -67,7 +67,9 @@ public class Weapon extends Equippable {
 		if (this.damageRoll != null){
 			s += String.format(" (%s)", this.damageRoll);
 		}
-		
+		if (this.attributeBonuses!=null && this.attributeTargets!=null){
+			s+="*";
+		}
 		if (this.equipped==true){s= "e "+s;}else{s="- "+s;}
 		return s;
 	}
