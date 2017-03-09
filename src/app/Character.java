@@ -246,6 +246,8 @@ public class Character implements Serializable{
 	protected void addNewItem(Item newItem, int count){
 		newItem.setItemCount(count);
 		this.playerInventory.add(newItem);
+		System.out.println(String.format("[Added %dx %s]", count, newItem.getItemName()));
+
 	}
 	
 	protected void addCoin(int coinType, int count){

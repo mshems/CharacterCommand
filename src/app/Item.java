@@ -4,9 +4,13 @@ import java.io.Serializable;
 import java.util.Scanner;
 
 public class Item implements Serializable, Comparable<Item> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1;
 	private String itemName;
-	
-
+	protected String description;
+	protected int value=0;
 	private int itemCount;
 	protected boolean equippable = false;
 	protected boolean equipped;
@@ -67,6 +71,17 @@ public class Item implements Serializable, Comparable<Item> {
 	
 	public String toString(){
 		String s = String.format("- %dx %s",  this.itemCount, this.itemName);
+		return s;
+	}
+	
+	public String details(){
+		String s = String.format("[%s]", this.itemName);
+		if (this.description!=null){
+			s+="\n"+this.description;
+		}
+		if (this.value!=0){
+			s+="\n[Value: "+this.value+"]";
+		}
 		return s;
 	}
 	

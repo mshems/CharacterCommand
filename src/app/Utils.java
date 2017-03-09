@@ -4,6 +4,46 @@ public class Utils {
 	public static final String line = "---------------------------------------------------";
 	public static final void divider(){System.out.println(line);}
 	
+	public static final String getAbilNameByIndex(int index){
+		String s="";
+		switch(index){
+		case Attribute.STR:
+			return "STR";
+		case Attribute.DEX:
+			return "DEX";
+		case Attribute.CON:
+			return "CON";
+		case Attribute.WIS:
+			return "WIS";
+		case Attribute.INT:
+			return "INT";
+		case Attribute.CHA:
+			return "CHA";
+		}
+		return s;
+	}
+	
+	public static final int getAbilIndexByName(String s){
+		s = s.toLowerCase().trim().substring(0, 3);
+		int index=-1;
+		switch(s){
+		case "str":
+			return 0;
+		case "dex":
+			return 1;
+		case "con":
+			return 2;
+		case "wis":
+			return 3;
+		case "int":
+			return 4;
+		case "cha":
+			return 5;
+		}
+		return index;
+	}
+	
+	
 	public static final String[] STR = new String[]{
 			"str","strength"
 	};

@@ -1,8 +1,19 @@
 package items;
-import app.*;
+
+import java.util.ArrayList;
+
+import app.Armor;
+import app.Attribute;
 
 public class Armors {
-	public static final Object[] steadfastShield = new Object[]{"Steadfast Shield", new int[]{Attribute.CON}, new int[]{2}, Armor.shield, 2};
-
-	//public static final Armor dexcloak = new Armor("Cloak of Dexterity", new int[]{Attribute.DEX},new int[]{2});
+	public static ArrayList<Integer> aB = new ArrayList<Integer>(){{
+			add(-2);
+			add(-2);
+	}};
+	public static ArrayList<Integer> aT = new ArrayList<Integer>(){{
+			add(Attribute.CON);
+			add(Attribute.CHA);
+	}};
+	
+	public static final Armor arm1 = new Armor("Shield of Cowardice", aT, aB, Armor.shield, 2);
 }

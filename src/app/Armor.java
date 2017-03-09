@@ -1,8 +1,10 @@
 package app;
 
-public class Armor extends Item{
-	protected int[] attributeTargets;
-	protected int[] attributeBonuses;
+import java.util.ArrayList;
+
+public class Armor extends Equippable{
+	protected ArrayList<Integer> attributeTargets;
+	protected ArrayList<Integer> attributeBonuses;
 	protected int acBase = 0;
 	protected int armorWeight = 0;
 	
@@ -11,29 +13,34 @@ public class Armor extends Item{
 	public static final int medium = 2;
 	public static final int heavy = 3;
 	public static final int shield = 4;
-	public static final int bonus = 5;
+	public static final int other = 5;
 
 	public Armor(){
 		super();
+		this.attributeTargets = new ArrayList<Integer>();
+		this.attributeBonuses = new ArrayList<Integer>();
 		this.equippable = true;
 	}
 	
 	public Armor(String n) {
 		super(n);
+		this.attributeTargets = new ArrayList<Integer>();
+		this.attributeBonuses = new ArrayList<Integer>();
 		this.equippable = true;
 	}
 	
 	//create from premade
+	@SuppressWarnings("unchecked")
 	public Armor(Object[] a){
 		super((String)a[0]);
-		this.attributeTargets = (int[]) a[1];
-		this.attributeBonuses = (int[]) a[2];
+		this.attributeTargets = (ArrayList<Integer>) a[1];
+		this.attributeBonuses = (ArrayList<Integer>) a[2];
 		this.armorWeight = (int) a[3];
 		this.acBase = (int) a[4];
 		this.equippable = true;
 	}
 	
-	public Armor(String n, int[] aT, int[] aB, int armorWeight, int acBase) {
+	public Armor(String n, ArrayList<Integer> aT, ArrayList<Integer> aB, int armorWeight, int acBase) {
 		super(n);
 		this.attributeTargets = aT;
 		this.attributeBonuses = aB;
@@ -48,7 +55,7 @@ public class Armor extends Item{
 		if (this.attributeBonuses != null && this.attributeTargets != null){
 			int i=0;
 			for (int n : this.attributeTargets){
-				c.abilityScores[n].setBonus(c.abilityScores[n].getBonus()+this.attributeBonuses[i]);	
+				c.abilityScores[n].setBonus(c.abilityScores[n].getBonus()+this.attributeBonuses.get(i));	
 				i++;
 			}
 		}
@@ -66,7 +73,7 @@ public class Armor extends Item{
 				c.playerStats[Attribute.AC].setBaseVal(ac);
 			}else if (this.armorWeight == Armor.heavy) {
 				c.playerStats[Attribute.AC].setBaseVal(ac);
-			} else if (this.armorWeight == Armor.bonus){
+			} else if (this.armorWeight == Armor.other){
 				c.playerStats[Attribute.AC].setBonus(c.playerStats[Attribute.AC].getBonus()+ac);
 			} else if (this.armorWeight == Armor.shield){
 				c.playerStats[Attribute.AC].setBonus(c.playerStats[Attribute.AC].getBonus()+2);
@@ -81,7 +88,7 @@ public class Armor extends Item{
 		if (this.attributeBonuses != null && this.attributeTargets != null){
 			int i=0;
 			for (int n : this.attributeTargets){
-				c.abilityScores[n].setBonus(c.abilityScores[n].getBonus()-this.attributeBonuses[i]);	
+				c.abilityScores[n].setBonus(c.abilityScores[n].getBonus()-this.attributeBonuses.get(i));	
 				i++;
 			}
 		}
@@ -99,7 +106,7 @@ public class Armor extends Item{
 				c.playerStats[Attribute.AC].setBaseVal(ac);
 			}else if (this.armorWeight == Armor.heavy) {
 				c.playerStats[Attribute.AC].setBaseVal(ac);
-			} else if (this.armorWeight == Armor.bonus){
+			} else if (this.armorWeight == Armor.other){
 				c.playerStats[Attribute.AC].setBonus(c.playerStats[Attribute.AC].getBonus()-ac);
 			} else if (this.armorWeight == Armor.shield){
 				c.playerStats[Attribute.AC].setBonus(c.playerStats[Attribute.AC].getBonus()-2);
@@ -114,6 +121,31 @@ public class Armor extends Item{
 			s= "e "+s;
 		} else {
 			s="- "+s;
+		}
+		if (this.attributeBonuses!=null && this.attributeTargets!=null){
+			s+="*";
+		}
+		return s;
+	}
+	
+	public String effectsToString(){
+		String s="Effects:";
+		for (int i=0; i<attributeBonuses.size(); i++){
+			s+="\n["+(i+1)+"] "+Utils.getAbilNameByIndex(attributeTargets.get(i))+String.format(" %+d ", attributeBonuses.get(i));
+		}
+		return s;
+	}
+	
+	public String details(){
+		String s = String.format("[----- %s -----]", this.getItemName());
+		if (this.description!=null){
+			s+="\nDescription: "+this.description;
+		}
+		if (this.attributeBonuses!=null && this.attributeTargets!=null){
+			s+="\n"+this.effectsToString();
+		}
+		if (this.value!=0){
+			s+="\n[Value: "+this.value+"]";
 		}
 		return s;
 	}
