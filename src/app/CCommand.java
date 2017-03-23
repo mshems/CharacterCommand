@@ -299,6 +299,7 @@ public class CCommand {
 				break;
 			case "q":
 			case "quit":
+				System.out.println("Saving and Quitting");
 				if (charLoaded()){
 					for (int i = 0; i<chars.size(); i++){
 						saveChar(i);
