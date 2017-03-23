@@ -61,22 +61,22 @@ public class Armor extends Equippable{
 		}
 		if (this.acBase != 0 && this.armorWeight != Armor.none){
 			int ac=this.acBase;
-			int dexMod = (int) c.abilityScores[Attribute.DEX].getMod();
+			int dexMod = (int) c.abilityScores[Ability.DEX].getMod();
 			if (this.armorWeight == Armor.light){
-				c.playerStats[Attribute.AC].setBaseVal(ac+=dexMod);
+				c.playerStats[Ability.AC].base = (ac+=dexMod);
 			} else if (this.armorWeight == Armor.medium){
 				if (dexMod < 2){
 				ac += dexMod;
 				} else {
 					ac +=2;
 				}
-				c.playerStats[Attribute.AC].setBaseVal(ac);
+				c.playerStats[Ability.AC].base=(ac);
 			}else if (this.armorWeight == Armor.heavy) {
-				c.playerStats[Attribute.AC].setBaseVal(ac);
+				c.playerStats[Ability.AC].base=(ac);
 			} else if (this.armorWeight == Armor.other){
-				c.playerStats[Attribute.AC].setBonus(c.playerStats[Attribute.AC].getBonus()+ac);
+				c.playerStats[Ability.AC].bonus+=ac;
 			} else if (this.armorWeight == Armor.shield){
-				c.playerStats[Attribute.AC].setBonus(c.playerStats[Attribute.AC].getBonus()+2);
+				c.playerStats[Ability.AC].bonus+=2;
 			} 
 			
 		}
@@ -94,22 +94,22 @@ public class Armor extends Equippable{
 		}
 		if (this.acBase != 0 && this.armorWeight != Armor.none){
 			int ac=this.acBase;
-			int dexMod = (int) c.abilityScores[Attribute.DEX].getMod();
+			int dexMod = (int) c.abilityScores[Ability.DEX].getMod();
 			if (this.armorWeight == Armor.light){
-				c.playerStats[Attribute.AC].setBaseVal(ac-=dexMod);
+				c.playerStats[Ability.AC].base=(ac-=dexMod);
 			} else if (this.armorWeight == Armor.medium){
 				if (dexMod < 2){
 				ac -= dexMod;
 				} else {
 					ac -=2;
 				}
-				c.playerStats[Attribute.AC].setBaseVal(ac);
+				c.playerStats[Ability.AC].base=(ac);
 			}else if (this.armorWeight == Armor.heavy) {
-				c.playerStats[Attribute.AC].setBaseVal(ac);
+				c.playerStats[Ability.AC].base=(ac);
 			} else if (this.armorWeight == Armor.other){
-				c.playerStats[Attribute.AC].setBonus(c.playerStats[Attribute.AC].getBonus()-ac);
+				c.playerStats[Ability.AC].bonus-=ac;
 			} else if (this.armorWeight == Armor.shield){
-				c.playerStats[Attribute.AC].setBonus(c.playerStats[Attribute.AC].getBonus()-2);
+				c.playerStats[Ability.AC].bonus-=2;
 			} 
 			
 		}

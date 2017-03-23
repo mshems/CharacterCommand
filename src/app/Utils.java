@@ -7,17 +7,17 @@ public class Utils {
 	public static final String getAbilNameByIndex(int index){
 		String s="";
 		switch(index){
-		case Attribute.STR:
+		case Ability.STR:
 			return "STR";
-		case Attribute.DEX:
+		case Ability.DEX:
 			return "DEX";
-		case Attribute.CON:
+		case Ability.CON:
 			return "CON";
-		case Attribute.WIS:
+		case Ability.WIS:
 			return "WIS";
-		case Attribute.INT:
+		case Ability.INT:
 			return "INT";
-		case Attribute.CHA:
+		case Ability.CHA:
 			return "CHA";
 		}
 		return s;

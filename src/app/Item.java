@@ -4,14 +4,11 @@ import java.io.Serializable;
 import java.util.Scanner;
 
 public class Item implements Serializable, Comparable<Item> {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1;
-	private String itemName;
+	public String itemName;
 	protected String description;
 	protected int value=0;
-	private int itemCount;
+	public int itemCount;
 	protected boolean equippable = false;
 	protected boolean equipped;
 	
@@ -25,7 +22,7 @@ public class Item implements Serializable, Comparable<Item> {
 	
 	public Item(String itemName){
 		this.itemName = itemName;
-		this.itemCount = 0;
+		this.itemCount = 1;
 	}
 	
 	public Item(String itemName, int itemCount){

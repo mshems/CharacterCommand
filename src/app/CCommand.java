@@ -381,7 +381,7 @@ public class CCommand {
 		String classname = scanner.nextLine();
 		Character c = new Character(name, classname);
 		c.race = race;
-		for (Attribute a : c.abilityScores){
+		for (Ability a : c.abilityScores){
 			a.setBaseVal(getValidInt("Enter "+a.getName()+" score: "));
 		}
 		System.out.print("Spellcaster? [y/n]: ");
@@ -393,15 +393,15 @@ public class CCommand {
 				String str = scanner.nextLine().toLowerCase().trim().substring(0, 3);
 				
 				if (str.equals("wis")){
-					c.casterType = Attribute.WIS;
+					c.casterType = Ability.WIS;
 					break;
 				} else 
 				if (str.equals("int")){
-					c.casterType = Attribute.INT;
+					c.casterType = Ability.INT;
 					break;	
 				} else
 				if (str.equals("cha")){
-					c.casterType = Attribute.CHA;
+					c.casterType = Ability.CHA;
 					break;	
 				} else {
 					System.out.println("Attribute not found");
@@ -624,11 +624,11 @@ public class CCommand {
 							System.out.print("Weapon Ability?: ");
 							opt = scanner.nextLine().toLowerCase().trim().substring(0, 3);
 							if (opt.equals("str")){
-								editWeapon.attackAbility = Attribute.STR;
+								editWeapon.attackAbility = Ability.STR;
 								break;
 							} else 
 							if (opt.equals("dex")){
-								editWeapon.attackAbility = Attribute.DEX;
+								editWeapon.attackAbility = Ability.DEX;
 								break;	
 							}  else {
 								System.out.println("Attribute not found");
@@ -923,8 +923,8 @@ public class CCommand {
 			if (a != null){
 				try {
 					int val = getSpecialInt(input[input.length-1]);
-					a.setBaseVal(val);
-					System.out.println("["+a.getName()+" set to "+val+"]");
+					a.base =val;
+					System.out.println("["+a.name+" set to "+val+"]");
 				} catch (NumberFormatException e) {
 					System.out.println("Invalid Command Format");
 				}
@@ -949,8 +949,8 @@ public class CCommand {
 				a = getAttributeByName(tgt);
 			}
 			int value = getValidInt("Enter new value: ");
-			a.setBaseVal(value);
-			System.out.println("["+a.getName()+" set to "+value+"]");
+			a.base=value;
+			System.out.println("["+a.name+" set to "+value+"]");
 		
 		}
 		chars.get(activeIndex).updateSkills();
@@ -1139,7 +1139,7 @@ public class CCommand {
 	}
 	
 	public static Attribute getAttributeByName(String tgt){
-		for (Attribute a : chars.get(activeIndex).abilityScores){
+		for (Ability a : chars.get(activeIndex).abilityScores){
 			for (String str : a.matches){
 				if (str.equalsIgnoreCase(tgt)){
 					return a;
@@ -1312,8 +1312,8 @@ public class CCommand {
 		}
 	}
 	
-	public static void dispStatDetail(Attribute a){
-		System.out.println(a.detail());
+	public static void dispStatDetail(Attribute attribute){
+		System.out.println(attribute.detail());
 	}
 	
 	public static void dispCharacter(){
