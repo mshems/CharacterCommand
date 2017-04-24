@@ -4,6 +4,7 @@
 *.iml
 .settings
 .idea
+.classpath
 out
 
 # Windows image file caches
