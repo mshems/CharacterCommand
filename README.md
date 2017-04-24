@@ -9,7 +9,14 @@
 * Import/Export Characters
 
 ---
-#### Overview
+#### How to Launch:
+Run from source files:
+> java -cp ./bin app.CCommand
+
+Run from .JAR file:
+> java -jar CCommand.jar
+---
+#### Overview:
 Everything is done by entering certain commands. "stats" displays basic info about your character, "inv" displays your inventory, etc...
 Many commands also have additional arguments. 
 For example:
