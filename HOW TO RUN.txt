@@ -1,9 +1,0 @@
-1. Shift+Right-Click in main folder
-
-2. Click 'Open command window here'
-
-3a. Run from source files: Enter " java -cp ./bin app.CCommand "
--OR-
-3b. Run from .JAR file: Enter " java -jar CCommand.jar "
-
-4. Have fun!
