@@ -2,6 +2,7 @@ config.properties
 *.data
 *.bat
 *.jar
+META-INF
 *.bat
 out
 
