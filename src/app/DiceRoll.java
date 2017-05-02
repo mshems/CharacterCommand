@@ -1,9 +1,8 @@
 package app;
 
-import java.io.Serializable;
 import java.util.Random;
 
-public class DiceRoll implements Serializable {
+public class DiceRoll{
 	protected int count;
 	protected int sides;
 	
