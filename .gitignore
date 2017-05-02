@@ -1,9 +1,8 @@
 *.bat
 *.data
 *.project
-*.iml
+.iml
 .settings
-.idea
 .classpath
 out
 
