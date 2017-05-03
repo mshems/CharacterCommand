@@ -25,7 +25,7 @@ public class CommandHandler{
                 App.loadChar();
                 break;
             case "roll":
-                App.roll();
+                int result = App.roll();
                 break;
             case "q":
             case "quit":
@@ -41,7 +41,8 @@ public class CommandHandler{
                 if(!App.tokens.isEmpty()){
                     Help.helpMenu(App.tokens.pop());
                 } else {
-                    System.out.println("HELP :D");
+                    System.out.println(Help.COMMANDS_LIST);
+                    System.out.println("Enter 'help command' OR 'command --help' for details ");
                 }
                 break;
             default:
@@ -65,6 +66,12 @@ public class CommandHandler{
                         case "spell":
                         case "spells":
                             App.spells();
+                            break;
+                        case "learn":
+                            App.learn();
+                            break;
+                        case "forget":
+                            App.forget();
                             break;
                         case "spellbook":
                             System.out.println(activeChar.getSpellBook());

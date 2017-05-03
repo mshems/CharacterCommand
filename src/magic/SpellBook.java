@@ -24,7 +24,7 @@ public class SpellBook implements Serializable {
 	
 	public void learn(Spell spell){
 		if(!spellBook.contains(spell)){
-			spellIndex.put(spell.getSpellName().toLowerCase(), spell);
+			spellIndex.put(spell.getSpellName().toLowerCase().trim(), spell);
 			spellBook.add(spellIndex.get(spell.getSpellName().toLowerCase()));
 			Collections.sort(spellBook);
 		}

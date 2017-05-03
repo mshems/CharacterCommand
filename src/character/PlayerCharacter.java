@@ -26,10 +26,6 @@ public class PlayerCharacter implements Serializable{
 	private SpellSlot[] spellSlots;
 	private boolean unPrepOnCast;
 	
-	public PlayerCharacter(){
-		initCharacter();
-	}
-	
 	public PlayerCharacter(String name, String raceName, String className){
 		this.name=name;
 		this.className = className;
@@ -78,7 +74,7 @@ public class PlayerCharacter implements Serializable{
 	
 	private void initSpellSlots(){
 		this.spellSlots = new SpellSlot[]{
-			//new SpellSlot(0,0),
+			new SpellSlot(0,0),
 			new SpellSlot(1,0),
 			new SpellSlot(2,0),
 			new SpellSlot(3,0),
@@ -172,8 +168,8 @@ public class PlayerCharacter implements Serializable{
 		if(lvl > spell.getSpellLevel() || spell.isCantrip() || lvl <= 0){
 			lvl = spell.getSpellLevel();
 		}
-		if(spellSlots[lvl-1].getCurrVal() > 0 && !spell.isCantrip() ){
-			spellSlots[lvl-1].countDown();
+		if(spellSlots[lvl].getCurrVal() > 0 && !spell.isCantrip() ){
+			spellSlots[lvl].countDown();
 			if(unPrepOnCast){
 				spell.unprep();
 			}
