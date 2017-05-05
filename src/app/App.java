@@ -1,11 +1,9 @@
 package app;
 
 import character.*;
-import character.PlayerCharacter;
-import magic.Spell;
+import magic.*;
 import items.*;
-import utils.Help;
-import utils.Message;
+import utils.*;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -17,15 +15,16 @@ import java.util.*;
 public class App {
 
     static boolean QUIT_ALL = false;
-	private static PlayerCharacter activeChar;
-	private static String prompt = "CharacterCommand> ";
-	private static LinkedHashMap<String, PlayerCharacter> characterList;
-	private static Scanner scanner;
-	private static String[] input;
+	static PlayerCharacter activeChar;
+	static String prompt = "CharacterCommand> ";
+	static LinkedHashMap<String, PlayerCharacter> characterList;
+	static Scanner scanner;
+	static String[] input;
     static LinkedList<String> tokens;
 
 	private static PropertiesHandler propertiesHandler;
-    private static CommandHandler commandHandler;
+	static CommandHandler commandHandler;
+
 
     private static void makeTestCharacter(){
 		PlayerCharacter frodo;
@@ -55,7 +54,7 @@ public class App {
 
 		while(!QUIT_ALL){
 			if (activeChar != null){
-				prompt = "CharacterCommand @ "+activeChar.getName()+"> ";
+				prompt = "CharacterCommand @ \033[1;32m"+activeChar.getName()+"\033[0m> ";
 				if(propertiesHandler.getViewAlways()){
 					System.out.println(activeChar);
 				}
@@ -73,14 +72,14 @@ public class App {
 	}
 
 /**INITIALIZATION******************************************************************************************************/
-	 private static void initApp(){
-		propertiesHandler = new PropertiesHandler();
-		commandHandler = new CommandHandler();
-		checkDirs();
-		tokens = new LinkedList<>();
-		scanner = new Scanner(System.in);
-		characterList = new LinkedHashMap<>();
-		importAll(false);
+    private static void initApp() {
+        propertiesHandler = new PropertiesHandler();
+        commandHandler = new CommandHandler();
+        checkDirs();
+        tokens = new LinkedList<>();
+        scanner = new Scanner(System.in);
+        characterList = new LinkedHashMap<>();
+        importAll(false);
 	}
 
 /**PREFERENCES*********************************************************************************************************/

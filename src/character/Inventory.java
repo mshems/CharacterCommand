@@ -53,7 +53,7 @@ public class Inventory implements Serializable {
 
 	public String toString(){
 		String c = "\n";
-		String s="Inventory:";
+		String s="\033[1;33mInventory: \033[0m";
 		for(Item i:currency){
 			if (i.getCount()!=0){
 				c+=String.format("%s: %d  ", i.getName(), i.getCount());

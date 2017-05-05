@@ -29,7 +29,7 @@ public class CommandHandler{
                 break;
             case "q":
             case "quit":
-                if(App.getYN("Are you sure? Unsaved data will be lost ")){
+                if(App.getYN("\033[1;33mAre you sure? Unsaved data will be lost\033[0m ")){
                     App.QUIT_ALL = true;
                 }
                 break;
@@ -106,7 +106,11 @@ public class CommandHandler{
                             break;
                     }
                 } else {
-                    System.out.println(Message.ERROR_NO_LOAD);
+                    if(activeChar==null){
+                        System.out.println(Message.ERROR_NO_LOAD);
+                    } else {
+                        System.out.println(Message.ERROR_NO_COMMAND);
+                    }
                 }
                 break;
         }

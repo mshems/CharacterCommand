@@ -58,7 +58,7 @@ public class PlayerCharacter implements Serializable{
 		attributes.put("ac",new Attribute("AC",10+this.abilities.get(Ability.DEX).getMod()));
 		attributes.put("pb",new Stat ("Proficiency Bonus", 2));
 		attributes.put("ini", new Stat("INI",this.abilities.get(Ability.DEX).getMod()));
-		attributes.put("speed", new Stat("Speed",30));
+		attributes.put("spd", new Stat("Speed",30));
 		attributes.put("nac",new Stat("Natural Armor", 10));
 	}
 
@@ -309,8 +309,8 @@ public class PlayerCharacter implements Serializable{
 
     @Override
 	public String toString(){
-		String s=String.format("%s -- Level %.0f %s\n", name, level.getTotal(), className);
-		s+=String.format("%s  %s\n", attributes.get("hp"), attributes.get("ac"));
+		String s=String.format("\033[1;33m%s -- Level %.0f %s\033[0m\n", name, level.getTotal(), className);
+		s+=String.format("%s  %s  INI: %+.0f  SPD: %+.0f\n", attributes.get("hp"), attributes.get("ac"), attributes.get("ini").getTotal(), attributes.get("spd").getTotal());
 		int i=0;	
 		for(String key:abilities.keySet()){
 				s+=(abilities.get(key))+"  ";
