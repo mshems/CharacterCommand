@@ -84,9 +84,9 @@ public class App {
 
 /**INITIALIZATION******************************************************************************************************/
     private static void initApp() {
-        propertiesHandler = new PropertiesHandler();
+    	propertiesHandler = new PropertiesHandler();
         commandHandler = new CommandHandler();
-        checkDirs();
+		checkDirs();
         tokens = new LinkedList<>();
         scanner = new Scanner(System.in);
         characterList = new LinkedHashMap<>();
@@ -153,7 +153,7 @@ public class App {
 
 /*CHECKDIRS***********************************************************************************************************/
 	private static void checkDirs(){
-		if (!Files.exists(propertiesHandler.getDataDir())){
+		if (!Files.exists(propertiesHandler.readDataDir())){
 			try {
 				Files.createDirectories(propertiesHandler.getDataDir());
 			} catch (IOException e) {
