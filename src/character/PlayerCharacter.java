@@ -200,21 +200,6 @@ public class PlayerCharacter implements Serializable{
 		inventory.remove(i);
 	}
 	
-	public void printAll(){
-		System.out.println(name+" - "+level);
-		for(String key:abilities.keySet()){
-			System.out.println(abilities.get(key));
-		}
-		for(String key:attributes.keySet()){
-			System.out.println(attributes.get(key));
-		}
-		System.out.println("Skills:");
-		for(String key:skills.keySet()){
-			System.out.println(skills.get(key));
-		}
-		System.out.println(this.inventory);
-	}
-
     public String getName(){
         return name;
     }
@@ -263,8 +248,12 @@ public class PlayerCharacter implements Serializable{
         this.skills = skills;
     }
 
+    public Skill getSkill(String skillName){
+    	return this.skills.get(skillName.toLowerCase());
+	}
+
     public Item getItem(String itemName){
-        return this.inventory.get(itemName);
+        return this.inventory.get(itemName.toLowerCase());
     }
 
     public Inventory getInventory(){
@@ -276,7 +265,7 @@ public class PlayerCharacter implements Serializable{
     }
 
     public Spell getSpell(String spellName){
-        return this.spellBook.get(spellName);
+        return this.spellBook.get(spellName.toLowerCase());
     }
 
     public SpellBook getSpellBook(){
@@ -303,13 +292,14 @@ public class PlayerCharacter implements Serializable{
         this.unPrepOnCast = unPrepOnCast;
     }
 
-    public Stat getStat(String s){
-        return this.allStats.get(s);
+    public Stat getStat(String statName){
+        return this.allStats.get(statName.toLowerCase());
     }
 
     @Override
 	public String toString(){
-		String s=String.format("\033[1;33m%s -- Level %.0f %s\033[0m\n", name, level.getTotal(), className);
+		//String s=String.format("\033[1;33m%s -- Level %.0f %s\033[0m\n", name, level.getTotal(), className);
+		String s=String.format("%s -- Level %.0f %s %s\n", name, level.getTotal(), raceName, className);
 		s+=String.format("%s  %s  INI: %+.0f  SPD: %+.0f\n", attributes.get("hp"), attributes.get("ac"), attributes.get("ini").getTotal(), attributes.get("spd").getTotal());
 		int i=0;	
 		for(String key:abilities.keySet()){

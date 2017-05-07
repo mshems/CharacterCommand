@@ -3,6 +3,7 @@ package character;
 import java.io.Serializable;
 
 public class Skill implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String skillName;
 	private Ability skillAbility;
 	private double skillMod;

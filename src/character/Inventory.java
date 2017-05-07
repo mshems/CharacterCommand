@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class Inventory implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private LinkedHashMap<String, Item> contents;
 	private ArrayList<Item> currency;
 	
@@ -17,10 +18,10 @@ public class Inventory implements Serializable {
 	public Inventory(){
 		this.contents = new LinkedHashMap<String, Item>();
 		this.currency = new ArrayList<Item>();
-		currency.add(new Item("PP",0));
-		currency.add(new Item("GP",0));
-		currency.add(new Item("SP",0));
-		currency.add(new Item("CP",0));
+		currency.add(new Item("pp",0));
+		currency.add(new Item("gp",0));
+		currency.add(new Item("sp",0));
+		currency.add(new Item("cp",0));
 	}
 	
 	public void add(Item item){
@@ -30,7 +31,7 @@ public class Inventory implements Serializable {
 		this.contents.remove(item.getName().toLowerCase());
 	}
 	public Item get(String itemName){
-		return this.contents.get(itemName.toLowerCase());
+		return this.contents.get(itemName);
 	}
 	public Item getCurrency(int coin){
 		return this.currency.get(coin);
@@ -52,21 +53,24 @@ public class Inventory implements Serializable {
 
 
 	public String toString(){
-		String c = "\n";
-		String s="\033[1;33mInventory: \033[0m";
+		//String s="\033[1;33mInventory: \033[0m";
+		String s="";
 		for(Item i:currency){
 			if (i.getCount()!=0){
-				c+=String.format("%s: %d  ", i.getName(), i.getCount());
+				//s+=String.format("%s: %d  ", i.getName(), i.getCount());
+				s+=String.format("%d%s  ", i.getCount(), i.getName());
 			}
 		}
-		if (!c.equals("\n")){
-			s+=c;
+		if(!s.isEmpty()){
+			s="\n"+s;
 		}
-		for(String key:contents.keySet()){
-			s+=contents.get(key);
-		}
+		s = "Inventory: "+s;
 		if (contents.isEmpty()){
 			s+="-Empty-";
+		} else {
+			for (String key : contents.keySet()){
+				s += contents.get(key);
+			}
 		}
 		return s;
 	}

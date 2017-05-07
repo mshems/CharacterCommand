@@ -7,13 +7,15 @@ import java.io.Serializable;
 public class Item implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	private Integer value;
 	private String name;
+	private String description="";
 	private int count;
 	private boolean equippable;
+	private boolean consumable;
 
 	public static final String[] types = new String[] {
-		"item","consumable","equippable","weapon","item*","consumable*","armor","equippable*","weapon*","armor*"
+		"item","consumable","equippable","weapon","armor"
 	};
 	
 	public Item(String name){
@@ -40,18 +42,41 @@ public class Item implements Serializable {
 	public void setCount(int count) {
 		this.count = count;
 	}
+
 	public void addCount(int count){
 		this.count+=count;
 	}
-	
+
+	public Integer getValue(){
+		return value;
+	}
+	public void setValue(Integer value){
+		this.value = value;
+	}
+
+	public String getDescription(){
+		return description;
+	}
+	public void setDescription(String description){
+		this.description = description;
+	}
+
 	public void equip(PlayerCharacter c){};
 	public void dequip(PlayerCharacter c){};
+	public void use(int amount){};
 	
 	public boolean isEquippable() {
 		return equippable;
 	}
 	public void setEquippable(boolean equippable) {
 		this.equippable = equippable;
+	}
+
+	public boolean isConsumable(){
+		return consumable;
+	}
+	public void setConsumable(boolean consumable){
+		this.consumable = consumable;
 	}
 
 	public String toString(){

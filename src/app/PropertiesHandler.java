@@ -90,23 +90,30 @@ public class PropertiesHandler{
             }
         }
     }
-
+    public Path readDataDir(){
+        this.dataDir = Paths.get(properties.getProperty("dataDir", "./data"));
+        return dataDir;
+    }
     public Path getDataDir(){
-        return Paths.get(properties.getProperty("dataDir", "./data"));
+        return dataDir;
     }
     public void setDataDir(Path dataDir){
         this.dataDir = dataDir;
     }
-
+    public Path readExportDir(){
+        this.exportDir = Paths.get(properties.getProperty("exportDir", "./data"));
+        return exportDir;
+    }
     public Path getExportDir(){
-        return Paths.get(properties.getProperty("exportDir", "./data"));
+        return exportDir;
     }
     public void setExportDir(Path exportDir){
         this.exportDir = exportDir;
     }
 
-    public boolean getViewAlways(){
-        return Boolean.parseBoolean(properties.getProperty("viewAlways", "false"));
+    public boolean readViewAlways(){
+        this.viewAlways = Boolean.parseBoolean(properties.getProperty("viewAlways", "false"));
+        return viewAlways;
     }
     public void setViewAlways(boolean viewAlways){
         this.viewAlways = viewAlways;

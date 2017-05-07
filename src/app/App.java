@@ -15,22 +15,22 @@ import java.util.*;
 public class App {
 
     static boolean QUIT_ALL = false;
-	static PlayerCharacter activeChar;
-	static String prompt = "CharacterCommand> ";
+    static PlayerCharacter activeChar;
 	static LinkedHashMap<String, PlayerCharacter> characterList;
 	static Scanner scanner;
 	static String[] input;
     static LinkedList<String> tokens;
 
-	private static PropertiesHandler propertiesHandler;
+	static PropertiesHandler propertiesHandler;
 	static CommandHandler commandHandler;
-
 
     private static void makeTestCharacter(){
 		PlayerCharacter frodo;
 		frodo = new PlayerCharacter("Frodo Baggins", "Halfling", "Paladin");
 		frodo.addNewItem(new Consumable("Rations", 5));
-		Weapon sting = new Weapon("Elven Shortsword");
+
+	/*create some enchanted items*/
+		Weapon sting = new Weapon("Sting");
 			sting.addEffect(new ItemEffect(frodo.getStat(Ability.STR), 2));
 			frodo.addNewItem(sting);
 			sting.equip(frodo);
@@ -43,8 +43,16 @@ public class App {
         Equippable ring = new Equippable("Ring of Power");
 			ring.addEffect(new ItemEffect(frodo.getStat(Attribute.HP), -5));
 			frodo.addNewItem(ring);
+
+	/*learn a spell*/
 		frodo.getSpellBook().learn(new Spell("Invisibility",Spell.CANTRIP));
-		characterList.put("frodo", frodo);
+
+	/*Add starting currency*/
+		frodo.getInventory().addCurrency(Inventory.indexGP, 10);
+		frodo.getInventory().addCurrency(Inventory.indexSP, 35);
+		frodo.getInventory().addCurrency(Inventory.indexCP, 4);
+
+		characterList.put("frodo baggins", frodo);
 	}
 
 	public static void main(String[] args){
@@ -52,10 +60,13 @@ public class App {
 
 		makeTestCharacter();
 
+		String prompt = "CharacterCommand> ";
+
 		while(!QUIT_ALL){
 			if (activeChar != null){
-				prompt = "CharacterCommand @ \033[1;32m"+activeChar.getName()+"\033[0m> ";
-				if(propertiesHandler.getViewAlways()){
+				prompt = "CharacterCommand @ "+activeChar.getName()+"> ";
+				//prompt = "CharacterCommand @ \033[1;32m"+activeChar.getName()+"\033[0m> ";
+				if(propertiesHandler.readViewAlways()){
 					System.out.println(activeChar);
 				}
 			}
@@ -83,7 +94,7 @@ public class App {
 	}
 
 /**PREFERENCES*********************************************************************************************************/
-    static void prefs(){
+	static void prefs(){
 		String command = tokens.pop();
 		if(!tokens.isEmpty()){
 		 	prefs(command);
@@ -96,7 +107,7 @@ public class App {
 	private static void prefs(String command){
 		while(!tokens.isEmpty()) {
 			switch (tokens.peek()) {
-				case "-e":
+				/*case "-e":
 				case "--export":
 					tokens.pop();
 					File exportFile = Paths.get(tokens.pop()).toFile();
@@ -104,7 +115,7 @@ public class App {
 						propertiesHandler.setExportDir(exportFile.toPath());
 					}
 					System.out.println("Set export directory to "+exportFile.toString());
-					break;
+					break;*/
 				case "-d":
 				case "--data":
 					tokens.pop();
@@ -149,57 +160,62 @@ public class App {
 				e.printStackTrace();
 			}
 		}
-		if (!Files.exists(propertiesHandler.getExportDir())){
+		/*if (!Files.exists(propertiesHandler.getExportDir())){
 			try {
 				Files.createDirectories(propertiesHandler.getExportDir());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 
 /**IMPORT**************************************************************************************************************/
 	static void importCharacter(){
 		tokens.pop();
-		String characterName = "";
-		while(!tokens.isEmpty()){
-			characterName += tokens.pop()+" ";
-		}
-		characterName = characterName.trim();
-		Path charPath = Paths.get(propertiesHandler.getDataDir()+"/"+characterName+".data");
-		if(Files.exists(charPath)){
-			File charFile = charPath.toFile();
-			try {
-				ObjectInputStream inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(charFile)));
-				PlayerCharacter playerCharacter = (PlayerCharacter) inStream.readObject();
-				inStream.close();
-				if(!characterList.containsKey(playerCharacter.getName())){
-					characterList.put(playerCharacter.getName(), playerCharacter);
-					System.out.println("All characters imported");
-				}else {
-					System.out.println(playerCharacter.getName()+" already imported");
+		if(tokens.contains("--help")){
+			importAll(true);
+		} else {
+			StringBuilder nameBuilder = new StringBuilder();
+			while (!tokens.isEmpty()) {
+				nameBuilder.append(tokens.pop());
+				nameBuilder.append(" ");
+			}
+			String characterName = nameBuilder.toString().trim();
+			Path charPath = Paths.get(propertiesHandler.getDataDir() + "/" + characterName + ".data");
+			if (Files.exists(charPath)){
+				File charFile = charPath.toFile();
+				try{
+					ObjectInputStream inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(charFile)));
+					PlayerCharacter playerCharacter = (PlayerCharacter) inStream.readObject();
+					inStream.close();
+					if (!characterList.containsKey(playerCharacter.getName().toLowerCase())){
+						characterList.put(playerCharacter.getName().toLowerCase(), playerCharacter);
+						System.out.println("All characters imported");
+					} else {
+						System.out.println(playerCharacter.getName() + " already imported");
+					}
+				} catch (IOException | ClassNotFoundException e) {
+					e.printStackTrace();
 				}
-			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
 			}
 		}
 	}
 
-	static void importAll(boolean verbose) {
-		File path = propertiesHandler.getDataDir().toFile();
-		for(File file:path.listFiles()){
-			if (file.isFile()&&file.getName().endsWith(".data")){
-		    	try {
+	private static void importAll(boolean verbose) {
+		File dataDirFile = propertiesHandler.getDataDir().toFile();
+		for (File file : dataDirFile.listFiles()){
+			if (file.isFile() && file.getName().endsWith(".data")){
+				try{
 					ObjectInputStream inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
 					PlayerCharacter playerCharacter = (PlayerCharacter) inStream.readObject();
 					inStream.close();
-					if(!characterList.containsKey(playerCharacter.getName())){
+					if (!characterList.containsKey(playerCharacter.getName().toLowerCase())){
 						characterList.put(playerCharacter.getName().toLowerCase(), playerCharacter);
-						if(verbose) {
+						if (verbose){
 							System.out.println("All characters imported");
 						}
-					}else {
-						System.out.println(playerCharacter.getName()+" already imported");
+					} else {
+						System.out.println(playerCharacter.getName() + " already imported");
 					}
 				} catch (IOException | ClassNotFoundException e) {
 					e.printStackTrace();
@@ -209,13 +225,14 @@ public class App {
 	}
 	
 /**SAVE****************************************************************************************************************/
-	static void saveChar(PlayerCharacter c) {
+	//TODO: add 'save --all' functionality
+	static void saveChar(PlayerCharacter pc) {
 		try {
-			String dataFile = propertiesHandler.getDataDir()+"/"+c.getName()+".data";
+			String dataFile = propertiesHandler.getDataDir()+"/"+pc.getName()+".data";
 			ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(dataFile)));
-			out.writeObject(c);
+			out.writeObject(pc);
 			out.close();
-			System.out.println("Saved "+c.getName());
+			System.out.println("Saved "+pc.getName());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -272,7 +289,6 @@ public class App {
 		characterList.put(c.getName().toLowerCase(), c);
 		System.out.println("Created "+c.getName());
 		activeChar = c;
-		//return c;
 	}
 	
 /**SKILLS**************************************************************************************************************/
@@ -291,35 +307,43 @@ public class App {
 				case "v":
 				case "view":
 					skill = getSkillByName();
-					System.out.println(skill);
+					if(skill!=null){
+						System.out.println(skill);
+					}
 					exit=true;
 					break;
 				case "t":
 				case "train":
 					skill = getSkillByName();
-					skill.train(activeChar);
-					System.out.println("Gained proficiency in "+skill.getName());
+					if(skill!=null){
+						skill.train(activeChar);
+						System.out.println("Gained proficiency in "+skill.getName());
+					}
 					exit=true;
 					break;
 				case "f":
 				case "forget":
 					skill = getSkillByName();
-					skill.untrain(activeChar);
-					System.out.println("Lost proficiency in "+skill.getName());
+					if(skill!=null){
+						skill.untrain(activeChar);
+						System.out.println("Lost proficiency in "+skill.getName());
+					}
 					exit=true;
 					break;
 				case "e":
 				case "expertise":
 					skill = getSkillByName();
-					skill.expert(activeChar);
-					System.out.println("Gained expertise in "+skill.getName());
+					if(skill!=null){
+						skill.expert(activeChar);
+						System.out.println("Gained expertise in "+skill.getName());
+					}
 					exit=true;
 					break;
 				case "va":
 				case "view all":
 					System.out.println("Skills:");
-					for(String key:activeChar.getSkills().keySet()){
-						System.out.println("- "+activeChar.getSkills().get(key));
+					for(Skill s:activeChar.getSkills().values()){
+						System.out.println("- "+s);
 					}
 					exit=true;
 					break;
@@ -332,16 +356,13 @@ public class App {
 					exit = false;
 					break;
 				}
-				if(exit){
-					break;
-				}
 			}
 		}
 	}
 
 	private static void skills(String command){
-		String skillName = "";
-		Skill skill;
+		StringBuilder nameBuilder = new StringBuilder();
+    	Skill skill;
 		boolean expert = false;
 		boolean forget = false;
 		boolean train = false;
@@ -385,7 +406,8 @@ public class App {
 					System.out.println("ERROR: Invalid flag '"+tokens.pop()+"'");
 					System.out.println("Enter 'skill --help' for help");
 				} else {
-					skillName += tokens.pop()+" ";
+					nameBuilder.append(tokens.pop());
+					nameBuilder.append(" ");
 				}
 				break;
 			}
@@ -393,12 +415,12 @@ public class App {
 		if(help){
             System.out.println(Help.SKILL);
 		} else {
-			skillName = skillName.trim().toLowerCase();
-			skill = activeChar.getSkills().get(skillName);
+			String skillName = nameBuilder.toString().trim();
+			skill = activeChar.getSkill(skillName);
 			if (viewAll){
 				System.out.println("Skills:");
-				for(String key:activeChar.getSkills().keySet()){
-					System.out.println("- "+activeChar.getSkills().get(key));
+				for(Skill s:activeChar.getSkills().values()){
+					System.out.println("- "+s);
 				}
 			}
 			if(skill!=null){
@@ -516,7 +538,7 @@ public class App {
 
 	private static void learn(String command){
 		tokens.pop();
-		String spellName = "";
+		StringBuilder nameBuilder = new StringBuilder();
 		Integer spellLevel = null;
 		boolean help=false;
 		while(!tokens.isEmpty()){
@@ -539,7 +561,8 @@ public class App {
 					if (tokens.peek().startsWith("-")){
 						System.out.println("ERROR: Invalid flag '"+tokens.pop()+"'");
 					}else {
-						spellName += tokens.pop()+" ";
+						nameBuilder.append(tokens.pop());
+						nameBuilder.append(" ");
 					}
 			}
 		}
@@ -548,7 +571,7 @@ public class App {
 		}
 
 		if(!help){
-			Spell spell = new Spell(spellName.trim(), spellLevel);
+			Spell spell = new Spell(nameBuilder.toString().trim(), spellLevel);
 			learnSpell(spell);
 		} else {
 			System.out.println(Help.LEARN);
@@ -576,7 +599,7 @@ public class App {
 	}
 
 	private static void forget(String command){
-		String spellName = "";
+		StringBuilder nameBuilder = new StringBuilder();
 		boolean help=false;
 		while(!tokens.isEmpty()){
 			switch(tokens.peek()){
@@ -588,12 +611,13 @@ public class App {
 					if (tokens.peek().startsWith("-")){
 						System.out.println("ERROR: Invalid flag '"+tokens.pop()+"'");
 					}else {
-						spellName += tokens.pop()+" ";
+						nameBuilder.append(tokens.pop());
+						nameBuilder.append(" ");
 					}
 			}
 		}
 		if(!help){
-			Spell spell = activeChar.getSpell(spellName.trim().toLowerCase());
+			Spell spell = activeChar.getSpell(nameBuilder.toString().trim());
 			if(spell!=null){
 				forgetSpell(spell);
 			} else {
@@ -621,16 +645,18 @@ public class App {
 		} else {
 			Integer castLevel = -1;
 			Spell spell = getSpellByName();
-			if(!spell.isCantrip()){
-				castLevel = getValidInt("Cast at level: ");
+			if(spell!=null){
+				if (!spell.isCantrip()){
+					castLevel = getValidInt("Cast at level: ");
+				}
+				castSpell(spell, "spellName", castLevel);
 			}
-			castSpell(spell, "spellName", castLevel);
 		}
 	}
 
 	private static void cast(String command){
 		Spell spell;
-		String spellName = "";
+		StringBuilder nameBuilder = new StringBuilder();
 		Integer castLevel = -1;
 		boolean help = false;
 		while (!tokens.isEmpty()){
@@ -653,14 +679,16 @@ public class App {
 				if (tokens.peek().startsWith("-")){
 					System.out.println("ERROR: Invalid flag '"+tokens.pop()+"'");
 				}else {
-					spellName += tokens.pop()+" ";
+					nameBuilder.append(tokens.pop());
+					nameBuilder.append(" ");
 				}
 			}
 		}
 		if(help){
             System.out.println(Help.CAST);
 		} else {
-			spell = activeChar.getSpell(spellName.trim());
+			String spellName = nameBuilder.toString().trim();
+			spell = activeChar.getSpell(spellName);
 			castSpell(spell, spellName, castLevel);
 		}
 	}
@@ -701,7 +729,7 @@ public class App {
 			} else {
 				amount = getValidInt("HP lost: ");
 			}
-			heal(command, amount, false);
+			heal(command, amount);
 		}
 	}
 
@@ -738,52 +766,130 @@ public class App {
 				break;
 			}
 		}
-		if(amount!=null || healAll){
-			heal(command, amount, healAll);
-		} else {
-			if (help){
-                if(command.equals("heal")){
-                    System.out.println(Help.HEAL);
-                }
-                if(command.equals("hurt")){
-                    System.out.println(Help.HURT);
-                }
-			} else {
-				System.out.println(Message.ERROR_SYNTAX+"\nEnter '"+command+" --help' for help");
+		if (help){
+			if(command.equals("heal")){
+				System.out.println(Help.HEAL);
 			}
+			if(command.equals("hurt")){
+				System.out.println(Help.HURT);
+			}
+		} else if(amount!=null){
+			if (healAll){
+				healAll(command);
+			} else {
+				heal(command, amount);
+			}
+		} else {
+			System.out.println(Message.ERROR_SYNTAX+"\nEnter '"+command+" --help' for help");
 		}
 	}
 
-	private static void heal(String command, int amount, boolean healAll){
+	private static void heal(String command, int amount){
 		switch (command){
 		case "heal":
-			if (healAll){
-				activeChar.fullHeal();
-				System.out.println("HP fully restored");
-			} else {
 				activeChar.heal(amount);
 				System.out.println(String.format("Gained %d HP", amount));
-			}
 			break;
 		case "hurt":
-			if (healAll){
-				activeChar.fullHurt();
-				System.out.println("No HP remaining");
-			} else {
 				activeChar.hurt(amount);
 				System.out.println(String.format("Lost %d HP", amount));
-			}
 			break;
 		default:
 			break;
 		}
 	}
-	
+	private static void healAll(String command){
+		switch (command){
+			case "heal":
+					activeChar.fullHeal();
+					System.out.println("HP fully restored");
+				break;
+			case "hurt":
+					activeChar.fullHurt();
+					System.out.println("No HP remaining");
+				break;
+			default:
+				break;
+		}
+	}
+
+/**USE*****************************************************************************************************************/
+	static void use(){
+		String command = tokens.pop();
+		if(!tokens.isEmpty()){
+			use(command);
+		} else {
+			System.out.println("manual use placeholder -- use command arguments for now");
+		}
+	}
+
+	private static void use(String command){
+		Item item;
+		StringBuilder nameBuilder = new StringBuilder();
+		Integer amount = 1; //default
+		boolean help = false;
+
+		while(!tokens.isEmpty()){
+			switch(tokens.peek()){
+				case "-c":
+				case "--count":
+					tokens.pop();
+					if (tokens.isEmpty()){
+						System.out.println(Message.ERROR_NO_ARG+": amount");
+					} else {
+						amount = getIntToken();
+					}
+					break;
+				case "--help":
+					help = true;
+					tokens.pop();
+					break;
+				default:
+					if (tokens.peek().startsWith("-")){
+						System.out.println("ERROR: Invalid flag '"+tokens.pop()+"'");
+					} else {
+						nameBuilder.append(tokens.pop());
+						nameBuilder.append(" ");
+					}
+					break;
+			}
+		}
+		if (!help){
+			String itemName = nameBuilder.toString().trim();
+				item = activeChar.getItem(itemName);
+			if (item!=null && amount !=null){
+				if (item.isConsumable()){
+					item.use(amount);
+					System.out.println("Used "+amount+"x "+item.getName());
+					if(item.getCount()<=0){
+						activeChar.getInventory().remove(item);
+					}
+				} else {
+					System.out.println(Message.ERROR_NOT_CON);
+				}
+			} else {
+				System.out.println(Message.MSG_NO_ITEM);
+			}
+		} else {
+			System.out.println(Help.USE);
+		}
+	}
+
+
 /**EQUIP/DEQUIP********************************************************************************************************/
 	static void equip(){
+		String command = tokens.pop();
+		if(!tokens.isEmpty()){
+			equip(command);
+		}else {
+			System.out.println("manual equip/dequip placeholder -- use command arguments for now");
+		}
+	}
+
+
+	private static void equip(String equipDequip){
 		Item item;
-		String equipDequip = tokens.pop();
-		String itemName = "";
+		StringBuilder nameBuilder = new StringBuilder();
 		boolean help = false;
 		
 		while(!tokens.isEmpty()){
@@ -791,21 +897,15 @@ public class App {
 				help = true;
 				tokens.pop();
 			}
-			itemName += tokens.pop()+" ";
+			nameBuilder.append(tokens.pop());
+			nameBuilder.append(" ");
 		}
 		if (!help){
-			itemName = itemName.trim();
-			if (itemName.equals("")){
-				item = getItemByName();
-			} else {
-				item = activeChar.getItem(itemName);
-				if (item == null) {
-					System.out.println(Message.MSG_NO_ITEM);
-				}
-			}
+			String itemName = nameBuilder.toString().trim();
+			item = activeChar.getItem(itemName);
 			if (item!=null){
 				if (item.isEquippable()){
-					if (equipDequip.equals("equip")){
+					if (equipDequip.equalsIgnoreCase("equip")){
 						activeChar.equip(item);
 						System.out.println(item.getName()+" equipped");
 					} else {
@@ -815,9 +915,11 @@ public class App {
 				} else {
 					System.out.println(Message.ERROR_NOT_EQUIP);
 				}
+			} else {
+				System.out.println(Message.MSG_NO_ITEM);
 			}
 		} else {
-			if(equipDequip.equals("equip")){
+			if(equipDequip.equalsIgnoreCase("equip")){
 				System.out.println(Help.EQUIP);
 			} else {
 				System.out.println(Help.DEQUIP);
@@ -834,15 +936,16 @@ public class App {
 		} else {
 			String itemName;
 			String itemType = null;
-			Integer itemCount = null;
+			Integer itemCount;
 			Integer ac = null;
             Armor.ArmorType at=null;
 			ArrayList<ItemEffect> fxList = null;
+
 			System.out.println("Item | Equippable | Weapon | Armor | Consumable");
 			while(true){
 				System.out.print("Item type: ");
-				String s = scanner.nextLine().trim().toLowerCase();
-				if(s.equals("quit")){
+				String s = scanner.nextLine().trim();
+				if(s.equalsIgnoreCase("quit")){
 					quit_get = true;
 					break;
 				} else if(checkStringInSet(s, Item.types)){
@@ -858,7 +961,7 @@ public class App {
                     System.out.println("Light | Medium | Heavy | Shield | Other");
                     while(at==null) {
 						System.out.print("Armor type: ");
-						String s = scanner.nextLine();
+						String s = scanner.nextLine().trim();
                         switch (s){
                             case "l":
                             case "light":
@@ -889,7 +992,7 @@ public class App {
                 }
 
 				System.out.print("Item name: ");
-                itemName = scanner.nextLine();
+                itemName = scanner.nextLine().trim();
                 itemCount = getValidInt("Count: ");
 
                 if((itemType.equals("weapon"))||(itemType.equals("armor"))||(itemType.equals("equippable"))){
@@ -902,10 +1005,11 @@ public class App {
                             String s = scanner.nextLine();
                             if(s.equalsIgnoreCase("cancel")){
                                 quit_get_tgt=true;
+                                break;
                             } else {
                                 fxTgt = activeChar.getStat(s);
                             }
-                            if(fxTgt!=null || quit_get){
+                            if(fxTgt!=null){
                                 break;
                             } else {
                                 System.out.println("ERROR: Effect target not found");
@@ -945,7 +1049,7 @@ public class App {
                         armor.setEffects(fxList);
                         if (at != null){
                             armor.setArmorType(at);
-                            if (ac != null && at != Armor.ArmorType.SHIELD){
+                            if (at != Armor.ArmorType.SHIELD){
                                 armor.setAC(ac);
                             }
                             activeChar.addNewItem(armor);
@@ -960,7 +1064,7 @@ public class App {
 	}
 
 	private static void get(String command){
-		String itemName = "";
+		StringBuilder nameBuilder = new StringBuilder();
 		String itemType = null;
 		Integer itemCount = null;
 		Integer ac=null;
@@ -977,6 +1081,8 @@ public class App {
 				if (tokens.isEmpty()){
 					System.out.println(Message.ERROR_NO_ARG+": count");
 					itemCount = null;
+					//todo: test this
+					quit = true;
 				} else {
 					itemCount = getIntToken();
 				}
@@ -1006,8 +1112,12 @@ public class App {
                         fxTgt = activeChar.getStat(tokens.pop());
                     }
                     if(fxTgt!=null){
-                        int fxBon = getIntToken();
-                        fxList.add(new ItemEffect(fxTgt, fxBon));
+                        Integer fxBon = getIntToken();
+                        if(fxBon!=null){
+							fxList.add(new ItemEffect(fxTgt, fxBon));
+						} else {
+                        	quit = true;
+						}
                     } else {
                         System.out.println("ERROR: Effect target not found");
                     }
@@ -1051,10 +1161,8 @@ public class App {
                             tokens.pop();
                             break;
                         default:
-                            if (!tokens.peek().startsWith("-")){
-                                tokens.pop();
-                            }
                             System.out.println("ERROR: Not a valid armor type");
+                            quit = true;
                             break;
                     }
                     break;
@@ -1067,7 +1175,8 @@ public class App {
 				if (tokens.peek().startsWith("-")){
 					System.out.println("ERROR: Invalid flag '"+tokens.pop()+"'");
 				} else {
-					itemName += tokens.pop()+" ";
+					nameBuilder.append(tokens.pop());
+					nameBuilder.append(" ");
 				}
 				break;
 			}
@@ -1081,15 +1190,16 @@ public class App {
 			itemType = "item";
 		}
 		/*DEFAULT VALUES****************/
-        if (help){
+
+		if (help){
             System.out.println(Help.GET);
         } else {
+        	String itemName = nameBuilder.toString().trim();
             if (itemName.equals("")){
                 quit = true;
                 System.out.println(Message.ERROR_NO_ARG + ": item_name");
             }
             if (!quit){
-                itemName = itemName.trim();
                 switch (itemType){
                     case "i":
                     case "item":
@@ -1140,7 +1250,7 @@ public class App {
 		if (!tokens.isEmpty()){
 			addDrop(addDrop);
 		} else {
-			Integer itemCount = null;
+			Integer itemCount;
 			item = getItemByName();
 			itemCount = getValidInt("Amount: ");
 			if (item!=null){
@@ -1171,7 +1281,7 @@ public class App {
 
 	private static void addDrop(String addDrop){
 		Item item = null;
-		String itemName = "";
+		StringBuilder nameBuilder = new StringBuilder();
 		Integer itemCount = null;
 		boolean dropAll = false;
 		boolean help = false;
@@ -1198,7 +1308,8 @@ public class App {
 				if (tokens.peek().startsWith("-")){
 					System.out.println("ERROR: Invalid flag '"+tokens.pop()+"'");
 				} else {
-					itemName += tokens.pop()+" ";
+					nameBuilder.append(tokens.pop());
+					nameBuilder.append(" ");
 				}
 				break;
 			}
@@ -1209,8 +1320,8 @@ public class App {
 		}
 		/*DEFAULT VALUES****************/
 		if(!help){
-			itemName = itemName.trim();
-			if (itemCount != null || dropAll){
+			String itemName = nameBuilder.toString().trim();
+			//if (itemCount != null || dropAll){
 				switch (itemName.toLowerCase()){
                     case "pp":
                     case "platinum":
@@ -1235,9 +1346,7 @@ public class App {
 				if (item!=null){
 					addDropItem(item, itemCount, dropAll, addDrop);
 				}
-			} else {
-				System.out.println(Message.ERROR_NO_ARG+": count");
-			}
+			//}
 		} else {
 		    if(addDrop.equals("add")){
                 System.out.println(Help.ADD);
@@ -1297,7 +1406,7 @@ public class App {
 
 	private static boolean checkStringInSet(String in, String[] a){
 	    for (String s: a){
-			if (in.equals(s)){
+			if (s.equalsIgnoreCase(in)){
 				return true;
 			}
 		}
@@ -1305,76 +1414,70 @@ public class App {
 	}
 
 	private static Skill getSkillByName(){
-		Skill skill = null;
-		String skillName = "";
-		while (skill==null){
+		Skill skill;
+		while (true){
 			System.out.println("Skill name:");
-			skillName = scanner.nextLine().trim();
+			String skillName = scanner.nextLine().trim();
 			if(skillName.equalsIgnoreCase("quit")){
-				return skill;
+				return null;
 			} else {
-				skill = activeChar.getSkills().get(skillName);
+				skill = activeChar.getSkill(skillName);
 				if (skill==null){
 					System.out.println(Message.MSG_NO_SKILL);
 				} else {
-					break;
+					return skill;
 				}
 			}
 		}
-		return skill;
 	}
 
 	private static Spell getSpellByName(){
-		String spellName;
-		Spell spell = null;
-		while (spell==null){
-				System.out.print("Name: ");
-				spellName = scanner.nextLine().trim();
-				if(spellName.equalsIgnoreCase("quit")){
-					return spell;
+		Spell spell;
+		while (true){
+			System.out.print("Name: ");
+			String spellName = scanner.nextLine().trim();
+			if(spellName.equalsIgnoreCase("quit")){
+				return null;
+			} else {
+				spell = activeChar.getSpell(spellName);
+				if (spell==null){
+					System.out.println(Message.MSG_NO_SPELL);
 				} else {
-					spell = activeChar.getSpell(spellName);
-					if (spell==null){
-						System.out.println(Message.MSG_NO_SPELL);
-					} else {
-						break;
-					}
+					return spell;
 				}
+			}
 		}
-		return spell;
 	}
 
 	private static Item getItemByName(){
-		Item item = null;
-		String itemName;
-		while (item==null){
-				System.out.print("Name: ");
-				itemName = scanner.nextLine().trim();
-				if(itemName.equalsIgnoreCase("quit")){
-					return item;
-				} else {
-					item = activeChar.getItem(itemName);
-					if (item==null){
-						for (Item i:activeChar.getInventory().getCurrency()){
-							if (i.getName().equalsIgnoreCase(itemName)){
-								return i;
-							}
+		Item item;
+		while (true){
+			System.out.print("Name: ");
+			String itemName = scanner.nextLine().trim();
+			if(itemName.equalsIgnoreCase("quit")){
+				return null;
+			} else {
+				item = activeChar.getItem(itemName);
+				if (item==null){
+					for (Item coin:activeChar.getInventory().getCurrency()){
+						if (coin.getName().equalsIgnoreCase(itemName)){
+							return coin;
 						}
-						System.out.println(Message.MSG_NO_ITEM);
-					} else {
-						break;
 					}
+					System.out.println(Message.MSG_NO_ITEM);
+				} else {
+					return item;
 				}
+			}
 		}
-		return item;
 	}
 
 	private static int getValidInt(String message){
-		int n = 0;
+		int val;
 		while (true) {
 			System.out.print(message);
 			if (scanner.hasNextInt()){
-				n = scanner.nextInt();
+				val = scanner.nextInt();
 				scanner.nextLine();
 				break;
 			} else {
@@ -1382,16 +1485,14 @@ public class App {
 				scanner.nextLine();
 			}
 		}
-		return n;
+		return val;
 	}
 
 	static void dispCharacterList(){
-		int i = 1;
 		if(!characterList.isEmpty()){
             System.out.println("Characters:");
             for (PlayerCharacter c : characterList.values()){
-                System.out.println("[" + i + "] " + c.getName());
-                i++;
+                System.out.println("- " + c.getName());
             }
         }else{
             System.out.println("No characters available");
@@ -1413,52 +1514,56 @@ public class App {
 	
 /**DICE ROLLING********************************************************************************************************/
 	static Integer roll(){
+		tokens.pop();
 		int sides;
 		int num;
 		int total=0;
 		int mod=0;
 		String result="";
-		if (input.length==1){
+		if(!tokens.isEmpty()){
+			if (tokens.contains("--help")){
+				System.out.println(Help.ROLL);
+				return 0;
+			} else {
+				String token = tokens.pop();
+				//TODO: command-line argument version?
+				if(token.matches("(\\d+d\\d+)|(\\d+d\\d+[\\+|\\-]\\d+)")){
+					String[] a = input[1].split("(d)|(?=[+|-])");
+					num = Integer.parseInt(a[0]);
+					sides = Integer.parseInt(a[1]);
+					if (a.length == 3){
+						mod = Integer.parseInt(a[2]);
+					}
+				}else {
+					System.out.println(Message.ERROR_SYNTAX);
+					return 0;
+				}
+			}
+		} else {
 			num = getValidInt("Enter number of dice: ");
 			sides = getValidInt("Enter number of sides: ");
 			mod = getValidInt("Enter any bonuses: ");
-		} else if (input.length==2) {
-			if (input[1].matches("(\\d+d\\d+)|(\\d+d\\d+[\\+|\\-]\\d+)")){
-				String[] a = input[1].split("(d)|(?=[+|-])");
-				num=Integer.parseInt(a[0]);
-				sides=Integer.parseInt(a[1]);
-				if (a.length==3){
-					mod=Integer.parseInt(a[2]);
-				}		
-			} else {
-				if(input[1].equals("--help")){
-					System.out.println(Help.ROLL);
-				}else {
-					System.out.println("Invalid format");
-				}
-				return 0;
-			}
-		} else {
-			System.out.println("Invalid format");
-			return 0;
 		}
+
 		Random random = new Random();
-		for (int i=0; i<num; i++){
-			int val = random.nextInt(sides)+1;
+		for (int i = 0; i < num; i++){
+			int val = random.nextInt(sides) + 1;
 			result += val;
-			if (i<num-1){
-				result+=" + ";
+			if (i < num - 1){
+				result += " + ";
 			}
-			total +=val;
+			total += val;
 		}
-		if (mod!=0){
-			System.out.println(String.format("Rolling %dd%d%+d", num,sides,mod));
-			System.out.println(String.format("%s (%+d) = %d", result,mod,total+mod));
+		if (mod != 0){
+			System.out.println(String.format("Rolling %dd%d%+d", num, sides, mod));
+			System.out.println(String.format("%s (%+d) = %d", result, mod, total + mod));
 		} else {
-			System.out.println(String.format("Rolling %dd%d", num,sides));
-			if (num>1){System.out.println(result+" = "+total);}
+			System.out.println(String.format("Rolling %dd%d", num, sides));
+			if (num > 1){
+				System.out.println(result + " = " + total);
+			}
 		}
-		return total+mod;
+		return total + mod;
 	}
 
 	private static Integer roll(int num, int sides, int mod){

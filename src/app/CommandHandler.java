@@ -15,9 +15,6 @@ public class CommandHandler{
             case "import":
                 App.importCharacter();
                 break;
-            case "importall":
-                App.importAll(true);
-                break;
             case "list":
                 App.dispCharacterList();
                 break;
@@ -26,12 +23,6 @@ public class CommandHandler{
                 break;
             case "roll":
                 int result = App.roll();
-                break;
-            case "q":
-            case "quit":
-                if(App.getYN("\033[1;33mAre you sure? Unsaved data will be lost\033[0m ")){
-                    App.QUIT_ALL = true;
-                }
                 break;
             case "prefs":
                 App.prefs();
@@ -42,7 +33,13 @@ public class CommandHandler{
                     Help.helpMenu(App.tokens.pop());
                 } else {
                     System.out.println(Help.COMMANDS_LIST);
-                    System.out.println("Enter 'help command' OR 'command --help' for details ");
+                }
+                break;
+            case "q":
+            case "quit":
+                //if(App.getYN("\033[1;33mAre you sure? Unsaved data will be lost\033[0m ")){
+                if(App.getYN("Are you sure? Unsaved data will be lost ")){
+                    App.QUIT_ALL = true;
                 }
                 break;
             default:
@@ -56,12 +53,16 @@ public class CommandHandler{
                             System.out.println(activeChar);
                             System.out.println(activeChar.getInventory());
                             break;
+                        case "s":
                         case "stats":
                             System.out.println(activeChar);
                             break;
                         case "equip":
                         case "dequip":
                             App.equip();
+                            break;
+                        case "use":
+                            App.use();
                             break;
                         case "spell":
                         case "spells":
