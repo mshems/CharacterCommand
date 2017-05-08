@@ -2,6 +2,7 @@ config.properties
 *.data
 *.txt
 *.bat
+*.cmd
 *.jar
 data
 .idea/workspace.xml
