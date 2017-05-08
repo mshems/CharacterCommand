@@ -1,5 +1,5 @@
 # CharacterCommand
-A Command-Line D&amp;D Character Manager
+### A Command-Line D&amp;D Character Manager
 Create, edit, save, and export multiple characters, all via a command-line interface!
 #### Featuring:
 - Items, Equipment, and Enchantments
