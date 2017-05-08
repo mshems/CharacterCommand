@@ -54,6 +54,7 @@ public class Inventory implements Serializable {
 
 	public String toString(){
 		//String s="\033[1;33mInventory: \033[0m";
+		String newLine = System.lineSeparator();
 		String s="";
 		for(Item i:currency){
 			if (i.getCount()!=0){
@@ -62,14 +63,18 @@ public class Inventory implements Serializable {
 			}
 		}
 		if(!s.isEmpty()){
-			s="\n"+s;
+			s=newLine+s;
 		}
 		s = "Inventory: "+s;
 		if (contents.isEmpty()){
 			s+="-Empty-";
 		} else {
-			for (String key : contents.keySet()){
-				s += contents.get(key);
+			for (Item item : contents.values()){
+                if (item.isEquipped()){
+                    s += newLine+"e "+item;
+                } else {
+                    s += newLine+"- "+item;
+                }
 			}
 		}
 		return s;

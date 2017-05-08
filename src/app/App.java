@@ -14,6 +14,7 @@ import java.util.*;
 @SuppressWarnings("unused")
 public class App {
 
+	private static String newLine = System.lineSeparator();
     static boolean QUIT_ALL = false;
     static PlayerCharacter activeChar;
 	static LinkedHashMap<String, PlayerCharacter> characterList;
@@ -172,33 +173,42 @@ public class App {
 /**IMPORT**************************************************************************************************************/
 	static void importCharacter(){
 		tokens.pop();
-		if(tokens.contains("--help")){
-			importAll(true);
+		String characterName=null;
+		if(!tokens.isEmpty()){
+		    if (tokens.contains("--help")){
+                System.out.println(Help.IMPORT);
+            } else if (tokens.contains("--all")){
+                importAll(true);
+            } else {
+                StringBuilder nameBuilder = new StringBuilder();
+                while (!tokens.isEmpty()) {
+                    nameBuilder.append(tokens.pop());
+                    nameBuilder.append(" ");
+                }
+                characterName = nameBuilder.toString().trim();
+            }
 		} else {
-			StringBuilder nameBuilder = new StringBuilder();
-			while (!tokens.isEmpty()) {
-				nameBuilder.append(tokens.pop());
-				nameBuilder.append(" ");
-			}
-			String characterName = nameBuilder.toString().trim();
-			Path charPath = Paths.get(propertiesHandler.getDataDir() + "/" + characterName + ".data");
-			if (Files.exists(charPath)){
-				File charFile = charPath.toFile();
-				try{
-					ObjectInputStream inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(charFile)));
-					PlayerCharacter playerCharacter = (PlayerCharacter) inStream.readObject();
-					inStream.close();
-					if (!characterList.containsKey(playerCharacter.getName().toLowerCase())){
-						characterList.put(playerCharacter.getName().toLowerCase(), playerCharacter);
-						System.out.println("All characters imported");
-					} else {
-						System.out.println(playerCharacter.getName() + " already imported");
-					}
-				} catch (IOException | ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+            System.out.println("manual import placeholder -- use command arguments for now");
+        }
+        if(characterName!=null){
+            Path charPath = Paths.get(propertiesHandler.getDataDir() + "/" + characterName + ".data");
+            if (Files.exists(charPath)){
+                File charFile = charPath.toFile();
+                try{
+                    ObjectInputStream inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(charFile)));
+                    PlayerCharacter playerCharacter = (PlayerCharacter) inStream.readObject();
+                    inStream.close();
+                    if (!characterList.containsKey(playerCharacter.getName().toLowerCase())){
+                        characterList.put(playerCharacter.getName().toLowerCase(), playerCharacter);
+                        System.out.println("Imported "+playerCharacter.getName());
+                    } else {
+                        System.out.println(playerCharacter.getName() + " already imported");
+                    }
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 	}
 
 	private static void importAll(boolean verbose) {
@@ -211,10 +221,9 @@ public class App {
 					inStream.close();
 					if (!characterList.containsKey(playerCharacter.getName().toLowerCase())){
 						characterList.put(playerCharacter.getName().toLowerCase(), playerCharacter);
-						if (verbose){
-							System.out.println("All characters imported");
-						}
-					} else {
+
+					}
+					if(verbose){
 						System.out.println(playerCharacter.getName() + " already imported");
 					}
 				} catch (IOException | ClassNotFoundException e) {
@@ -222,8 +231,64 @@ public class App {
 				}
 			}
 		}
+        if (verbose){
+            System.out.println("All characters imported");
+        }
 	}
-	
+
+/**IMPORT**************************************************************************************************************/
+	static void export(){
+        tokens.pop();
+        String characterName=null;
+        if(!tokens.isEmpty()){
+            if(tokens.contains("--help")){
+                System.out.println(Help.EXPORT);
+            } else if (tokens.contains("--all")){
+                exportAll(true);
+            } else {
+                StringBuilder nameBuilder = new StringBuilder();
+                while (!tokens.isEmpty()) {
+                    nameBuilder.append(tokens.pop());
+                    nameBuilder.append(" ");
+                }
+            characterName = nameBuilder.toString().trim();
+            }
+        } else {
+            System.out.println("manual export placeholder -- use command arguments for now");
+        }
+        if(characterName!=null && characterList.containsKey(characterName.toLowerCase())){
+            PlayerCharacter pc = characterList.get(characterName.toLowerCase());
+            Path path = Paths.get(propertiesHandler.getExportDir()+ "/" + characterName + ".txt");
+            try{
+                BufferedWriter writer = new BufferedWriter(new FileWriter(path.toString()));
+                writer.write(pc.export());
+                writer.close();
+                System.out.println("Exported "+pc.getName());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("ERROR");
+            //TODO: error message
+        }
+    }
+
+    private static void exportAll(boolean verbose) {
+        for (PlayerCharacter pc:characterList.values()){
+            try{
+                Path path = Paths.get(propertiesHandler.getExportDir()+ "/" + pc.getName() + ".txt");
+                BufferedWriter writer = new BufferedWriter(new FileWriter(path.toString()));
+                writer.write(pc.export());
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if(verbose){
+            System.out.println("All characters exported");
+        }
+    }
+
 /**SAVE****************************************************************************************************************/
 	//TODO: add 'save --all' functionality
 	static void saveChar(PlayerCharacter pc) {
@@ -780,7 +845,7 @@ public class App {
 				heal(command, amount);
 			}
 		} else {
-			System.out.println(Message.ERROR_SYNTAX+"\nEnter '"+command+" --help' for help");
+			System.out.println(Message.ERROR_SYNTAX+newLine+"Enter '"+command+" --help' for help");
 		}
 	}
 

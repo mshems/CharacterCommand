@@ -296,20 +296,35 @@ public class PlayerCharacter implements Serializable{
         return this.allStats.get(statName.toLowerCase());
     }
 
+    public String skillsToString(){
+        String newLine = System.lineSeparator();
+        String s = "Skills: ";
+        for(Skill skill:getSkills().values()){
+            s += newLine+"- "+skill;
+        }
+        return s;
+    }
+
     @Override
 	public String toString(){
-		//String s=String.format("\033[1;33m%s -- Level %.0f %s\033[0m\n", name, level.getTotal(), className);
-		String s=String.format("%s -- Level %.0f %s %s\n", name, level.getTotal(), raceName, className);
-		s+=String.format("%s  %s  INI: %+.0f  SPD: %+.0f\n", attributes.get("hp"), attributes.get("ac"), attributes.get("ini").getTotal(), attributes.get("spd").getTotal());
+        String newLine = System.lineSeparator();
+        //String s=String.format("\033[1;33m%s -- Level %.0f %s\033[0m\n", name, level.getTotal(), className);
+		String s=String.format("%s -- Level %.0f %s %s"+newLine, name, level.getTotal(), raceName, className);
+		s+=String.format("%s  %s  INI: %+.0f  SPD: %+.0f"+newLine, attributes.get("hp"), attributes.get("ac"), attributes.get("ini").getTotal(), attributes.get("spd").getTotal());
 		int i=0;	
 		for(String key:abilities.keySet()){
 				s+=(abilities.get(key))+"  ";
 				if (i == 2){
-					s+="\n";
+					s+=newLine;
 				}
 				i++;
 			}
-		
 		return s;
 	}
+
+	public String export(){
+        String newLine = System.lineSeparator();
+        String s = this+newLine+inventory+newLine+skillsToString()+newLine+spellBook;
+	    return s;
+    }
 }

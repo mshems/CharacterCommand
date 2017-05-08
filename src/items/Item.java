@@ -11,6 +11,7 @@ public class Item implements Serializable {
 	private String name;
 	private String description="";
 	private int count;
+	private boolean equipped = false;
 	private boolean equippable;
 	private boolean consumable;
 
@@ -71,7 +72,9 @@ public class Item implements Serializable {
 	public void setEquippable(boolean equippable) {
 		this.equippable = equippable;
 	}
-
+	public boolean isEquipped(){
+		return equipped;
+	}
 	public boolean isConsumable(){
 		return consumable;
 	}
@@ -80,7 +83,7 @@ public class Item implements Serializable {
 	}
 
 	public String toString(){
-		String s = String.format("\n- %dx %s", this.getCount(), this.getName());
+		String s = String.format("%dx %s", this.getCount(), this.getName());
 		return s;
 	}
 }

@@ -1,151 +1,157 @@
 package utils;
 
 public class Help{
+    private static final String newLine = System.lineSeparator();
     public static final String PREFS="Usage:" +
-            "\n  prefs [options]                            manage application preferences" +
-            "\nOptions:" +
-            "\n  -e, --export <export_directory>            set directory for exported .txt files" +
-            "\n  -d, --data <data_directory>                set directory for character files" +
-            "\n  -va, --viewalways <true/false>             display character after each command" +
-            "\n  --help";
+            newLine+"  prefs [options]                            manage application preferences" +
+            newLine+"Options:" +
+            newLine+"  -e, --export <export_directory>            set directory for exported .txt files" +
+            newLine+"  -d, --data <data_directory>                set directory for character files" +
+            newLine+"  -va, --viewalways <true/false>             display character after each command" +
+            newLine+"  --help";
     public static final String IMPORT="Usage:" +
-            "\n  import [options]                           import from .data file" +
-            "\nOptions:" +
-            "\n  --all                                      import all .data files" +
-            "\n  --help";
+            newLine+"  import [character_name][options]           import from .data file" +
+            newLine+"Options:" +
+            newLine+"  --all                                      import all .data files" +
+            newLine+"  --help";
+    public static final String EXPORT="Usage:" +
+            newLine+"  export [character_name][options]           export to .txt file" +
+            newLine+"Options:" +
+            newLine+"  --all                                      export all characters" +
+            newLine+"  --help";
     public static final String SAVE="Usage:" +
-            "\n  import [options]                           save to .data file" +
-            "\nOptions:" +
-            "\n  --all                                      save all characters" +
-            "\n  --help";
+            newLine+"  import [options]                           save to .data file" +
+            newLine+"Options:" +
+            newLine+"  --all                                      save all characters" +
+            newLine+"  --help";
     public static final String STATS="Usage:" +
-            "\n  stats [options]                            show stats" +
-            "\nOptions:" +
-            "\n  --help";
+            newLine+"  stats [options]                            show stats" +
+            newLine+"Options:" +
+            newLine+"  --help";
     public static final String NEW="Usage:" +
-            "\n  new [options]                              create a character" +
-            "\nOptions:" +
-            "\n  --help";
+            newLine+"  new [options]                              create a character" +
+            newLine+"Options:" +
+            newLine+"  --help";
     public static final String LOAD="Usage:" +
-            "\n  load [options]                             load a character" +
-            "\nOptions:" +
-            "\n  --help";
+            newLine+"  load [options]                             load a character" +
+            newLine+"Options:" +
+            newLine+"  --help";
     public static final String LIST="Usage:" +
-            "\n  list [options]                             show imported characters" +
-            "\nOptions:" +
-            "\n  --help";
+            newLine+"  list [options]                             show imported characters" +
+            newLine+"Options:" +
+            newLine+"  --help";
     public static final String INV="Usage:" +
-            "\n  inv [options]                              show inventory" +
-            "\nOptions:" +
-            "\n  --help";
+            newLine+"  inv [options]                              show inventory" +
+            newLine+"Options:" +
+            newLine+"  --help";
     public static final String VIEW="Usage:" +
-            "\n  view [options]                             show overview" +
-            "\nOptions:" +
-            "\n  --help";
+            newLine+"  view [options]                             show overview" +
+            newLine+"Options:" +
+            newLine+"  --help";
     public static final String GET="Usage:" +
-            "\n  get [options, <item_name>]                 get a new item" +
-            "\nOptions:" +
-            "\n  -c, --count <item_count>                   " +
-            "\n  -t, --type <item_type>                     " +
-            "\n     item_type:" +
-            "\n         i ,item" +
-            "\n         c, consumable" +
-            "\n         e, equippable" +
-            "\n         a, armor" +
-            "\n         w, weapon" +
-            "\n  -e, --effect <fx_tgt> <fx_bonus>           " +
-            "\n     fx_tgt:   name of stat affected         " +
-            "\n     fx_bonus: bonus applied to fx_target    " +
-            "\n  -at, --armortype <armor_type>              type of armor" +
-            "\n     armor_type:" +
-            "\n         l, light" +
-            "\n         m, medium" +
-            "\n         h, heavy" +
-            "\n         s, shield" +
-            "\n         o, other" +
-            "\n  -ac, --armorclass <armor_class>            base AC of the armor" +
-            "\n  --help";
+            newLine+"  get [options, <item_name>]                 get a new item" +
+            newLine+"Options:" +
+            newLine+"  -c, --count <item_count>                   " +
+            newLine+"  -t, --type <item_type>                     " +
+            newLine+"     item_type:" +
+            newLine+"         i ,item" +
+            newLine+"         c, consumable" +
+            newLine+"         e, equippable" +
+            newLine+"         a, armor" +
+            newLine+"         w, weapon" +
+            newLine+"  -e, --effect <fx_tgt> <fx_bonus>           " +
+            newLine+"     fx_tgt:   name of stat affected         " +
+            newLine+"     fx_bonus: bonus applied to fx_target    " +
+            newLine+"  -at, --armortype <armor_type>              type of armor" +
+            newLine+"     armor_type:" +
+            newLine+"         l, light" +
+            newLine+"         m, medium" +
+            newLine+"         h, heavy" +
+            newLine+"         s, shield" +
+            newLine+"         o, other" +
+            newLine+"  -ac, --armorclass <armor_class>            base AC of the armor" +
+            newLine+"  --help";
     public static final String ADD="Usage:" +
-            "\n  add [options]                              add more of an existing item" +
-            "\nOptions:" +
-            "\n  -c, --count <item_count>                   " +
-            "\n  --help";
+            newLine+"  add [options]                              add more of an existing item" +
+            newLine+"Options:" +
+            newLine+"  -c, --count <item_count>                   " +
+            newLine+"  --help";
     public static final String DROP="Usage:" +
-            "\n  drop [options]                             drop items from inventory" +
-            "\nOptions:" +
-            "\n  -c, --count <item_count>                   " +
-            "\n  --all                                      toggle dropping all of specified item " +
-            "\n  --help";
+            newLine+"  drop [options]                             drop items from inventory" +
+            newLine+"Options:" +
+            newLine+"  -c, --count <item_count>                   " +
+            newLine+"  --all                                      toggle dropping all of specified item " +
+            newLine+"  --help";
     public static final String SKILL="Usage:" +
-            "\n  skill [options, <skill_name>]              view and train skills" +
-            "\nOptions:" +
-            "\n  -t, --train                                gain proficiency" +
-            "\n  -f, --forget                               lose proficiency" +
-            "\n  -e, --expert                               gain expertise" +
-            "\n  -v  --view                                 view the specified skill" +
-            "\n  -va, --viewall                             view all skills" +
-            "\n  --help";
+            newLine+"  skill [options, <skill_name>]              view and train skills" +
+            newLine+"Options:" +
+            newLine+"  -t, --train                                gain proficiency" +
+            newLine+"  -f, --forget                               lose proficiency" +
+            newLine+"  -e, --expert                               gain expertise" +
+            newLine+"  -v  --view                                 view the specified skill" +
+            newLine+"  -va, --viewall                             view all skills" +
+            newLine+"  --help";
     public static final String LEVELUP="Usage:" +
-            "\n  levelup [options]                          level up character" +
-            "\nOptions:" +
-            "\n  -l, --level <level_number>                 " +
-            "\n  --help";
+            newLine+"  levelup [options]                          level up character" +
+            newLine+"Options:" +
+            newLine+"  -l, --level <level_number>                 " +
+            newLine+"  --help";
     public static final String HEAL="Usage:" +
-            "\n  heal [options]                             gain hp" +
-            "\nOptions:" +
-            "\n  -hp, --health <hp_healed>                  " +
-            "\n  --all                                      toggles healing to max hp" +
-            "\n  --help";
+            newLine+"  heal [options]                             gain hp" +
+            newLine+"Options:" +
+            newLine+"  -hp, --health <hp_healed>                  " +
+            newLine+"  --all                                      toggles healing to max hp" +
+            newLine+"  --help";
     public static final String HURT="Usage:" +
-            "\n  hurt [options]                             lose hp" +
-            "\nOptions:" +
-            "\n  -hp, --health <hp_lost>                    " +
-            "\n  --all                                      toggle dropping to 0 hp" +
-            "\n  --help";
+            newLine+"  hurt [options]                             lose hp" +
+            newLine+"Options:" +
+            newLine+"  -hp, --health <hp_lost>                    " +
+            newLine+"  --all                                      toggle dropping to 0 hp" +
+            newLine+"  --help";
     public static final String EQUIP="Usage:" +
-            "\n  equip [item_name]                          equip items" +
-            "\nOptions:" +
-            "\n  --help";
+            newLine+"  equip [item_name]                          equip items" +
+            newLine+"Options:" +
+            newLine+"  --help";
     public static final String DEQUIP="Usage:" +
-            "\n  dequip [item_name]                         dequip items" +
-            "\nOptions:" +
-            "\n  --help";
+            newLine+"  dequip [item_name]                         dequip items" +
+            newLine+"Options:" +
+            newLine+"  --help";
     public static final String USE="Usage:" +
-            "\n  use [options, <item_name>]                 use items" +
-            "\nOptions:" +
-            "\n  -c, --count <amount>" +
-            "\n  --help";
+            newLine+"  use [options, <item_name>]                 use items" +
+            newLine+"Options:" +
+            newLine+"  -c, --count <amount>" +
+            newLine+"  --help";
     public static final String ROLL="Usage:" +
-            "\n  roll <num_dice>d<num_sides>[modifier] [options]" +
-            "\n     num_dice:  # of dice to roll" +
-            "\n     num_sides: # of sides" +
-            "\n     modifier:  optional modifier to result of roll (eg: +5, -2, etc...)" +
-            "\nOptions:" +
-            "\n  --help";
+            newLine+"  roll <num_dice>d<num_sides>[modifier] [options]" +
+            newLine+"     num_dice:  # of dice to roll" +
+            newLine+"     num_sides: # of sides" +
+            newLine+"     modifier:  optional modifier to result of roll (eg: +5, -2, etc...)" +
+            newLine+"Options:" +
+            newLine+"  --help";
     public static final String SPELLS="Usage:" +
-            "\n  spell [options]" +
-            "\nOptions:" +
-            "\n  --learn" +
-            "\n  --forget" +
-            "\n  --cast" +
-            "\n  --help";
+            newLine+"  spell [options]" +
+            newLine+"Options:" +
+            newLine+"  --learn" +
+            newLine+"  --forget" +
+            newLine+"  --cast" +
+            newLine+"  --help";
     public static final String CAST="Usage:" +
-            "\n  cast [options, <spell_name>]               cast a spell" +
-            "\n  spell --cast [options, <spell_name>]       " +
-            "\nOptions:" +
-            "\n  -l, --level <level_num>                    " +
-            "\n  --help";
+            newLine+"  cast [options, <spell_name>]               cast a spell" +
+            newLine+"  spell --cast [options, <spell_name>]       " +
+            newLine+"Options:" +
+            newLine+"  -l, --level <level_num>                    " +
+            newLine+"  --help";
     public static final String LEARN="Usage:" +
-            "\n  learn [options, <spell_name>]" +
-            "\n  spell --learn [options, <spell_name>]" +
-            "\nOptions:" +
-            "\n  -l, --level" +
-            "\n  --help";
+            newLine+"  learn [options, <spell_name>]" +
+            newLine+"  spell --learn [options, <spell_name>]" +
+            newLine+"Options:" +
+            newLine+"  -l, --level" +
+            newLine+"  --help";
     public static final String FORGET="Usage:" +
-            "\n  forget [options, <spell_name>]" +
-            "\n  spell --forget [options, <spell_name>]" +
-            "\nOptions:" +
-            "\n  --help";
+            newLine+"  forget [options, <spell_name>]" +
+            newLine+"  spell --forget [options, <spell_name>]" +
+            newLine+"Options:" +
+            newLine+"  --help";
 
 
 
@@ -163,6 +169,9 @@ public class Help{
                 break;
             case "import":
                 System.out.println(IMPORT);
+                break;
+            case "export":
+                System.out.println(EXPORT);
                 break;
             case "n":
             case "new":
@@ -238,29 +247,30 @@ public class Help{
     }
 
     public static final String COMMANDS_LIST ="Commands List:" +
-            "\n  import.............import a character from .data file" +
-            "\n  load...............load a character to modify" +
-            "\n  list...............show list of all imported characters" +
-            "\n  save...............save character to a .data file" +
-            "\n  new................create a new character" +
-            "\n  view...............show overview" +
-            "\n  stats..............show stats" +
-            "\n  skills.............edit/view skills" +
-            "\n  inv................show inventory" +
-            "\n  get................get new items" +
-            "\n  add/drop...........add/drop items from inventory" +
-            "\n  equip/dequip.......equip/dequip items in inventory" +
-            "\n  heal/hurt..........heal/hurt HP" +
-            "\n  use................use items in inventory" +
-            "\n  spell..............edit/view spells" +
-            "\n  cast...............cast a spell" +
-            "\n  learn..............learn a spell" +
-            "\n  forget.............forget a spell" +
-            "\n  levelup............increase character level" +
-            "\n  roll...............roll dice" +
-            "\n  prefs..............edit program preferences" +
-            "\n  help...............help menu" +
-            "\n  quit...............quit the program" +
-            "\nEnter 'help command' for details";
+            newLine+"  import.............import a character from .data file" +
+            newLine+"  export.............export a character to a .txt file" +
+            newLine+"  load...............load a character to modify" +
+            newLine+"  list...............show list of all imported characters" +
+            newLine+"  save...............save character to a .data file" +
+            newLine+"  new................create a new character" +
+            newLine+"  view...............show overview" +
+            newLine+"  stats..............show stats" +
+            newLine+"  skills.............edit/view skills" +
+            newLine+"  inv................show inventory" +
+            newLine+"  get................get new items" +
+            newLine+"  add/drop...........add/drop items from inventory" +
+            newLine+"  equip/dequip.......equip/dequip items in inventory" +
+            newLine+"  heal/hurt..........heal/hurt HP" +
+            newLine+"  use................use items in inventory" +
+            newLine+"  spell..............edit/view spells" +
+            newLine+"  cast...............cast a spell" +
+            newLine+"  learn..............learn a spell" +
+            newLine+"  forget.............forget a spell" +
+            newLine+"  levelup............increase character level" +
+            newLine+"  roll...............roll dice" +
+            newLine+"  prefs..............edit program preferences" +
+            newLine+"  help...............help menu" +
+            newLine+"  quit...............quit the program" +
+            newLine+"Enter 'help <command_name>' for details";
 
 }

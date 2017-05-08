@@ -43,8 +43,8 @@ public class Equippable extends Item {
             }
         }
 	}
-
-	public boolean isEquipped(PlayerCharacter c) {
+	@Override
+	public boolean isEquipped() {
 		return equipped;
 	}
 	public void setEquipped(boolean equipped) {
@@ -64,14 +64,9 @@ public class Equippable extends Item {
 	    this.effects.add(effect);
 	}
 	
-	@Override
+	/*@Override
 	public String toString(){
 		String s = String.format("%dx %s", this.getCount(), this.getName());
-		if (this.equipped){
-			s = "\ne "+s;
-		} else {
-			s = "\n- "+s;
-		}
 		return s;
-	}
+	}*/
 }

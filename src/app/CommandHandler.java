@@ -48,6 +48,9 @@ public class CommandHandler{
                         case "save":
                             App.saveChar(activeChar);
                             break;
+                        case "export":
+                            App.export();
+                            break;
                         case "v":
                         case "view":
                             System.out.println(activeChar);

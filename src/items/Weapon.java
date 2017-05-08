@@ -20,10 +20,9 @@ public class Weapon extends Equippable{
 	
 	@Override
 	public String toString(){
-		String s = "";
-		s=super.toString();
+		String s =super.toString();
 		if (damage!=null){
-			s+="["+damage+"]";
+			s+=" ["+damage+"]";
 		}
 		return s;
 	}

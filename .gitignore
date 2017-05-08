@@ -2,6 +2,7 @@ config.properties
 *.data
 *.bat
 *.jar
+data
 .idea/workspace.xml
 .idea/tasks.xml
 META-INF
