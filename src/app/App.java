@@ -5,17 +5,13 @@ import magic.*;
 import items.*;
 import utils.*;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 @SuppressWarnings("unused")
 public class App {
 
 	private static String newLine = System.lineSeparator();
-    static boolean QUIT_ALL = false;
+	static boolean QUIT_ALL = false;
     static PlayerCharacter activeChar;
 	static LinkedHashMap<String, PlayerCharacter> characterList;
 	static Scanner scanner;
@@ -23,326 +19,60 @@ public class App {
     static LinkedList<String> tokens;
 
 	static PropertiesHandler propertiesHandler;
-	static CommandHandler commandHandler;
-
-    private static void makeTestCharacter(){
-		PlayerCharacter frodo;
-		frodo = new PlayerCharacter("Frodo Baggins", "Halfling", "Paladin");
-		frodo.addNewItem(new Consumable("Rations", 5));
-
-	/*create some enchanted items*/
-		Weapon sting = new Weapon("Sting");
-			sting.addEffect(new ItemEffect(frodo.getStat(Ability.STR), 2));
-			frodo.addNewItem(sting);
-			sting.equip(frodo);
-		Armor mith = new Armor("Mithril Chainmail");
-			mith.addEffect(new ItemEffect(frodo.getStat(Ability.CON),2));
-			mith.setArmorType(Armor.ArmorType.L_ARMOR);
-       		mith.setAC(14);
-			frodo.addNewItem(mith);
-			mith.equip(frodo);
-        Equippable ring = new Equippable("Ring of Power");
-			ring.addEffect(new ItemEffect(frodo.getStat(Attribute.HP), -5));
-			frodo.addNewItem(ring);
-
-	/*learn a spell*/
-		frodo.getSpellBook().learn(new Spell("Invisibility",Spell.CANTRIP));
-
-	/*Add starting currency*/
-		frodo.getInventory().addCurrency(Inventory.indexGP, 10);
-		frodo.getInventory().addCurrency(Inventory.indexSP, 35);
-		frodo.getInventory().addCurrency(Inventory.indexCP, 4);
-
-		characterList.put("frodo baggins", frodo);
-	}
+	private static CommandHandler commandHandler;
+    static IOHandler ioHandler;
 
 	public static void main(String[] args){
-		initApp();
-
+		String prompt;
+	    initApp();
 		makeTestCharacter();
 
-		String prompt = "CharacterCommand> ";
-
 		while(!QUIT_ALL){
-			if (activeChar != null){
+		    if (activeChar != null){
 				prompt = "CharacterCommand @ "+activeChar.getName()+"> ";
-				//prompt = "CharacterCommand @ \033[1;32m"+activeChar.getName()+"\033[0m> ";
 				if(propertiesHandler.readViewAlways()){
 					System.out.println(activeChar);
 				}
-			}
-			System.out.print(prompt);
-			input = scanner.nextLine()
-					.trim()
-					.split("\\s+");
-			Collections.addAll(tokens, input);
-
+			} else {
+                prompt = "CharacterCommand> ";
+            }
+            getCommand(prompt);
 			commandHandler.doCommand(tokens.peek(), activeChar);
-			tokens.clear();
 		}
-		scanner.close();
 	}
+
+/**GET COMMAND*********************************************************************************************************/
+	private static void getCommand(String prompt){
+        System.out.print(prompt);
+        input = scanner.nextLine()
+                .trim()
+                .split("\\s+");
+        Collections.addAll(tokens, input);
+    }
 
 /**INITIALIZATION******************************************************************************************************/
     private static void initApp() {
     	propertiesHandler = new PropertiesHandler();
         commandHandler = new CommandHandler();
-		checkDirs();
+		ioHandler= new IOHandler();
+        IOHandler.checkDirs();
         tokens = new LinkedList<>();
         scanner = new Scanner(System.in);
         characterList = new LinkedHashMap<>();
-        importAll(false);
-	}
-
-/**PREFERENCES*********************************************************************************************************/
-	static void prefs(){
-		String command = tokens.pop();
-		if(!tokens.isEmpty()){
-		 	prefs(command);
-		} else {
-			//TODO: prefs
-			System.out.println("manual prefs editing placeholder -- use command arguments for now");
-		}
-	}
-
-	private static void prefs(String command){
-		while(!tokens.isEmpty()) {
-			switch (tokens.peek()) {
-				/*case "-e":
-				case "--export":
-					tokens.pop();
-					File exportFile = Paths.get(tokens.pop()).toFile();
-					if(exportFile.isDirectory()){
-						propertiesHandler.setExportDir(exportFile.toPath());
-					}
-					System.out.println("Set export directory to "+exportFile.toString());
-					break;*/
-				case "-d":
-				case "--data":
-					tokens.pop();
-					File dataFile = Paths.get(tokens.pop()).toFile();
-					if(dataFile.isDirectory()){
-						propertiesHandler.setDataDir(dataFile.toPath());
-					}
-					System.out.println("Set data directory to "+dataFile.toString());
-					break;
-				case "-v":
-				case "--viewAlways":
-					tokens.pop();
-					if (tokens.peek().equalsIgnoreCase("true") || tokens.peek().equalsIgnoreCase("false")) {
-						String token = tokens.pop();
-					    propertiesHandler.setViewAlways(Boolean.parseBoolean(token));
-						System.out.println("Set 'viewAlways' to "+token);
-					} else {
-						System.out.println("ERROR: Argument must be 'true' or 'false'");
-					}
-					break;
-				case "--help":
-					tokens.pop();
-					System.out.println(Help.PREFS);
-					break;
-				default:
-					if (tokens.peek().startsWith("-")) {
-						System.out.println("ERROR: Invalid flag '" + tokens.pop() + "'");
-						System.out.println("Enter 'prefs --help' for help");
-					}
-					break;
-			}
-		}
-		propertiesHandler.writeProperties();
-	}
-
-/*CHECKDIRS***********************************************************************************************************/
-	private static void checkDirs(){
-		if (!Files.exists(propertiesHandler.readDataDir())){
-			try {
-				Files.createDirectories(propertiesHandler.getDataDir());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		/*if (!Files.exists(propertiesHandler.getExportDir())){
-			try {
-				Files.createDirectories(propertiesHandler.getExportDir());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}*/
-	}
-
-/**IMPORT**************************************************************************************************************/
-	static void importCharacter(){
-		tokens.pop();
-		String characterName=null;
-		if(!tokens.isEmpty()){
-		    if (tokens.contains("--help")){
-                System.out.println(Help.IMPORT);
-            } else if (tokens.contains("--all")){
-                importAll(true);
-            } else {
-                StringBuilder nameBuilder = new StringBuilder();
-                while (!tokens.isEmpty()) {
-                    nameBuilder.append(tokens.pop());
-                    nameBuilder.append(" ");
-                }
-                characterName = nameBuilder.toString().trim();
-            }
-		} else {
-            System.out.println("manual import placeholder -- use command arguments for now");
-        }
-        if(characterName!=null){
-            Path charPath = Paths.get(propertiesHandler.getDataDir() + "/" + characterName + ".data");
-            if (Files.exists(charPath)){
-                File charFile = charPath.toFile();
-                try{
-                    ObjectInputStream inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(charFile)));
-                    PlayerCharacter playerCharacter = (PlayerCharacter) inStream.readObject();
-                    inStream.close();
-                    if (!characterList.containsKey(playerCharacter.getName().toLowerCase())){
-                        characterList.put(playerCharacter.getName().toLowerCase(), playerCharacter);
-                        System.out.println("Imported "+playerCharacter.getName());
-                    } else {
-                        System.out.println(playerCharacter.getName() + " already imported");
-                    }
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-	}
-
-	private static void importAll(boolean verbose) {
-		File dataDirFile = propertiesHandler.getDataDir().toFile();
-		for (File file : dataDirFile.listFiles()){
-			if (file.isFile() && file.getName().endsWith(".data")){
-				try{
-					ObjectInputStream inStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
-					PlayerCharacter playerCharacter = (PlayerCharacter) inStream.readObject();
-					inStream.close();
-					if (!characterList.containsKey(playerCharacter.getName().toLowerCase())){
-						characterList.put(playerCharacter.getName().toLowerCase(), playerCharacter);
-
-					}
-					if(verbose){
-						System.out.println(playerCharacter.getName() + " already imported");
-					}
-				} catch (IOException | ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-        if (verbose){
-            System.out.println("All characters imported");
-        }
-	}
-
-/**IMPORT**************************************************************************************************************/
-	static void export(){
-        tokens.pop();
-        String characterName=null;
-        if(!tokens.isEmpty()){
-            if(tokens.contains("--help")){
-                System.out.println(Help.EXPORT);
-            } else if (tokens.contains("--all")){
-                exportAll(true);
-            } else {
-                StringBuilder nameBuilder = new StringBuilder();
-                while (!tokens.isEmpty()) {
-                    nameBuilder.append(tokens.pop());
-                    nameBuilder.append(" ");
-                }
-            characterName = nameBuilder.toString().trim();
-            }
-        } else {
-            System.out.println("manual export placeholder -- use command arguments for now");
-        }
-        if(characterName!=null && characterList.containsKey(characterName.toLowerCase())){
-            PlayerCharacter pc = characterList.get(characterName.toLowerCase());
-            Path path = Paths.get(propertiesHandler.getExportDir()+ "/" + characterName + ".txt");
-            try{
-                BufferedWriter writer = new BufferedWriter(new FileWriter(path.toString()));
-                writer.write(pc.export());
-                writer.close();
-                System.out.println("Exported "+pc.getName());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("ERROR");
-            //TODO: error message
-        }
-    }
-
-    private static void exportAll(boolean verbose) {
-        for (PlayerCharacter pc:characterList.values()){
-            try{
-                Path path = Paths.get(propertiesHandler.getExportDir()+ "/" + pc.getName() + ".txt");
-                BufferedWriter writer = new BufferedWriter(new FileWriter(path.toString()));
-                writer.write(pc.export());
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if(verbose){
-            System.out.println("All characters exported");
-        }
-    }
-
-/**SAVE****************************************************************************************************************/
-	//TODO: add 'save --all' functionality
-	static void saveChar(PlayerCharacter pc) {
-		try {
-			String dataFile = propertiesHandler.getDataDir()+"/"+pc.getName()+".data";
-			ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(dataFile)));
-			out.writeObject(pc);
-			out.close();
-			System.out.println("Saved "+pc.getName());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-/**LOAD****************************************************************************************************************/
-    static void loadChar(){
-		String command = tokens.pop();
-		if (!tokens.isEmpty()){
-			loadChar(command);
-		} else {
-			System.out.print("Enter name of character to load, or enter 'new' to create a new character: ");
-			String characterName = scanner.nextLine().toLowerCase();
-			if (characterName.equalsIgnoreCase("new")) {
-				createCharacter();
-			} else if (!characterName.equalsIgnoreCase("quit")) {
-				if (characterList.get(characterName) != null) {
-					activeChar = characterList.get(characterName);
-					System.out.println(characterName + " loaded");
-				} else {
-					System.out.println("ERROR: Character not found");
-				}
-			}
-		}
-	}
-
-	private static void loadChar(String command){
-		String characterName = "";
-		while (!tokens.isEmpty()){
-			characterName += tokens.pop()+" ";
-		}
-		characterName = characterName.trim().toLowerCase();
-		if (characterList.get(characterName) != null) {
-			activeChar = characterList.get(characterName);
-			System.out.println(activeChar.getName() + " loaded");
-		} else {
-			System.out.println("ERROR: Character not found");
-		}
+        ioHandler.importAll(false);
 	}
 
 /**CREATE CHARACTER****************************************************************************************************/
 	static void createCharacter(){
-		System.out.print("Character name: ");
-		String name = scanner.nextLine().trim();
-        System.out.print("Race: ");
+        String name;
+	    while(true) {
+            System.out.print("Character name: ");
+            name = scanner.nextLine().trim();
+            if(isValidName(name)){
+                break;
+            }
+        }
+		System.out.print("Race: ");
         String raceName = scanner.nextLine();
 		System.out.print("Class: ");
 		String className = scanner.nextLine();
@@ -406,11 +136,8 @@ public class App {
 					break;
 				case "va":
 				case "view all":
-					System.out.println("Skills:");
-					for(Skill s:activeChar.getSkills().values()){
-						System.out.println("- "+s);
-					}
-					exit=true;
+                    System.out.println(activeChar.skillsToString());
+                    exit=true;
 					break;
 				case "quit":
 					exit=true;
@@ -483,11 +210,8 @@ public class App {
 			String skillName = nameBuilder.toString().trim();
 			skill = activeChar.getSkill(skillName);
 			if (viewAll){
-				System.out.println("Skills:");
-				for(Skill s:activeChar.getSkills().values()){
-					System.out.println("- "+s);
-				}
-			}
+                System.out.println(activeChar.skillsToString());
+            }
 			if(skill!=null){
 				if (!forget){
 					if (expert){
@@ -927,7 +651,7 @@ public class App {
 					item.use(amount);
 					System.out.println("Used "+amount+"x "+item.getName());
 					if(item.getCount()<=0){
-						activeChar.getInventory().remove(item);
+						activeChar.removeItem(item);
 					}
 				} else {
 					System.out.println(Message.ERROR_NOT_CON);
@@ -1146,7 +870,6 @@ public class App {
 				if (tokens.isEmpty()){
 					System.out.println(Message.ERROR_NO_ARG+": count");
 					itemCount = null;
-					//todo: test this
 					quit = true;
 				} else {
 					itemCount = getIntToken();
@@ -1260,7 +983,7 @@ public class App {
             System.out.println(Help.GET);
         } else {
         	String itemName = nameBuilder.toString().trim();
-            if (itemName.equals("")){
+            if (itemName.isEmpty()){
                 quit = true;
                 System.out.println(Message.ERROR_NO_ARG + ": item_name");
             }
@@ -1405,7 +1128,7 @@ public class App {
                         addDropCoin(Inventory.indexCP, "Copper", itemCount, dropAll, addDrop);
                         break;
                     default:
-                        item = activeChar.getInventory().get(itemName);
+                        item = activeChar.getItem(itemName);
                         break;
 				}
 				if (item!=null){
@@ -1428,10 +1151,10 @@ public class App {
 			System.out.println(String.format("Dropped %dx %s", -itemCount, itemName));
 		}
 		if (dropAll){
-			activeChar.getInventory().getCurrency(coinType).setCount(0);
+			activeChar.getCurrency(coinType).setCount(0);
 			System.out.println(String.format("Dropped all %s", itemName));
 		} else {
-			activeChar.getInventory().addCurrency(coinType, itemCount);
+			activeChar.addCurrency(coinType, itemCount);
 			if (addDrop.equals("add")){
 				System.out.println(String.format("Added %dx %s", itemCount, itemName));
 			}
@@ -1444,7 +1167,7 @@ public class App {
 			System.out.println(String.format("Dropped %dx \"%s\"", -itemCount, item.getName()));
 		}
 		if (dropAll){
-			activeChar.dropAllItem(item);
+			activeChar.removeItem(item);
 			System.out.println(String.format("Dropped all \"%s\"", item.getName()));
 		} else {
 			activeChar.addDropItem(item, itemCount);
@@ -1524,7 +1247,7 @@ public class App {
 			} else {
 				item = activeChar.getItem(itemName);
 				if (item==null){
-					for (Item coin:activeChar.getInventory().getCurrency()){
+					for (Item coin:activeChar.getCurrency()){
 						if (coin.getName().equalsIgnoreCase(itemName)){
 							return coin;
 						}
@@ -1537,7 +1260,7 @@ public class App {
 		}
 	}
 
-	private static int getValidInt(String message){
+	static int getValidInt(String message){
 		int val;
 		while (true) {
 			System.out.print(message);
@@ -1566,7 +1289,7 @@ public class App {
 
 	static boolean getYN(String message){
         while(true) {
-            System.out.println(message + "[Y/N]: ");
+            System.out.print(message + "[Y/N]: ");
             String yn = scanner.nextLine();
             if (yn.equalsIgnoreCase("y")){
                 return true;
@@ -1576,64 +1299,49 @@ public class App {
             }
         }
     }
+
+    static String toFileName(String s){
+	    return s.replaceAll(".*[^a-zA-Z0-9)(].*", "_");
+    }
+
+    private static boolean isValidName(String name){
+        if(name.isEmpty() || name.matches("\\s+") || name.matches(".*[^a-zA-Z0-9)(\\s+].*")){
+            System.out.println("Not a valid name");
+            return false;
+        } else {
+            return true;
+        }
+    }
 	
-/**DICE ROLLING********************************************************************************************************/
-	static Integer roll(){
-		tokens.pop();
-		int sides;
-		int num;
-		int total=0;
-		int mod=0;
-		String result="";
-		if(!tokens.isEmpty()){
-			if (tokens.contains("--help")){
-				System.out.println(Help.ROLL);
-				return 0;
-			} else {
-				String token = tokens.pop();
-				//TODO: command-line argument version?
-				if(token.matches("(\\d+d\\d+)|(\\d+d\\d+[\\+|\\-]\\d+)")){
-					String[] a = input[1].split("(d)|(?=[+|-])");
-					num = Integer.parseInt(a[0]);
-					sides = Integer.parseInt(a[1]);
-					if (a.length == 3){
-						mod = Integer.parseInt(a[2]);
-					}
-				}else {
-					System.out.println(Message.ERROR_SYNTAX);
-					return 0;
-				}
-			}
-		} else {
-			num = getValidInt("Enter number of dice: ");
-			sides = getValidInt("Enter number of sides: ");
-			mod = getValidInt("Enter any bonuses: ");
-		}
+/**TEST CHARACTER******************************************************************************************************/
+private static void makeTestCharacter(){
+    PlayerCharacter frodo;
+    frodo = new PlayerCharacter("Frodo Baggins", "Halfling", "Paladin");
+    frodo.addNewItem(new Consumable("Rations", 5));
 
-		Random random = new Random();
-		for (int i = 0; i < num; i++){
-			int val = random.nextInt(sides) + 1;
-			result += val;
-			if (i < num - 1){
-				result += " + ";
-			}
-			total += val;
-		}
-		if (mod != 0){
-			System.out.println(String.format("Rolling %dd%d%+d", num, sides, mod));
-			System.out.println(String.format("%s (%+d) = %d", result, mod, total + mod));
-		} else {
-			System.out.println(String.format("Rolling %dd%d", num, sides));
-			if (num > 1){
-				System.out.println(result + " = " + total);
-			}
-		}
-		return total + mod;
-	}
+	/*create some enchanted items*/
+    Weapon sting = new Weapon("Sting");
+    sting.addEffect(new ItemEffect(frodo.getStat(Ability.STR), 2));
+    frodo.addNewItem(sting);
+    sting.equip(frodo);
+    Armor mith = new Armor("Mithril Chainmail");
+    mith.addEffect(new ItemEffect(frodo.getStat(Ability.CON),2));
+    mith.setArmorType(Armor.ArmorType.L_ARMOR);
+    mith.setAC(14);
+    frodo.addNewItem(mith);
+    mith.equip(frodo);
+    Equippable ring = new Equippable("Ring of Power");
+    ring.addEffect(new ItemEffect(frodo.getStat(Attribute.HP), -5));
+    frodo.addNewItem(ring);
 
-	private static Integer roll(int num, int sides, int mod){
-		DiceRoll roll = new DiceRoll(num, sides);
-		int total = roll.roll();
-		return total+mod;
-	}
+	/*learn a spell*/
+    frodo.getSpellBook().learn(new Spell("Invisibility",Spell.CANTRIP));
+
+	/*Add starting currency*/
+    frodo.addCurrency(Inventory.indexGP, 10);
+    frodo.addCurrency(Inventory.indexSP, 35);
+    frodo.addCurrency(Inventory.indexCP, 4);
+
+    characterList.put("frodo baggins", frodo);
+}
 }

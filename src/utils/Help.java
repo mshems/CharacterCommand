@@ -5,7 +5,7 @@ public class Help{
     public static final String PREFS="Usage:" +
             newLine+"  prefs [options]                            manage application preferences" +
             newLine+"Options:" +
-            newLine+"  -e, --export <export_directory>            set directory for exported .txt files" +
+            newLine+"  -e, --toTextFile <export_directory>            set directory for exported .txt files" +
             newLine+"  -d, --data <data_directory>                set directory for character files" +
             newLine+"  -va, --viewalways <true/false>             display character after each command" +
             newLine+"  --help";
@@ -15,9 +15,9 @@ public class Help{
             newLine+"  --all                                      import all .data files" +
             newLine+"  --help";
     public static final String EXPORT="Usage:" +
-            newLine+"  export [character_name][options]           export to .txt file" +
+            newLine+"  toTextFile [character_name][options]           toTextFile to .txt file" +
             newLine+"Options:" +
-            newLine+"  --all                                      export all characters" +
+            newLine+"  --all                                      toTextFile all characters" +
             newLine+"  --help";
     public static final String SAVE="Usage:" +
             newLine+"  import [options]                           save to .data file" +
@@ -170,7 +170,7 @@ public class Help{
             case "import":
                 System.out.println(IMPORT);
                 break;
-            case "export":
+            case "toTextFile":
                 System.out.println(EXPORT);
                 break;
             case "n":
@@ -248,7 +248,7 @@ public class Help{
 
     public static final String COMMANDS_LIST ="Commands List:" +
             newLine+"  import.............import a character from .data file" +
-            newLine+"  export.............export a character to a .txt file" +
+            newLine+"  toTextFile.............toTextFile a character to a .txt file" +
             newLine+"  load...............load a character to modify" +
             newLine+"  list...............show list of all imported characters" +
             newLine+"  save...............save character to a .data file" +

@@ -5,6 +5,7 @@ import magic.SpellSlot;
 import items.Item;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 @SuppressWarnings("unused")
@@ -184,7 +185,11 @@ public class PlayerCharacter implements Serializable{
 	public void addNewItem(Item item){
 		this.inventory.add(item);
 	}
-	
+
+	public void addCurrency(int coin, int amt){
+		this.inventory.addCurrency(coin, amt);
+	}
+
 	public void addDropItem(Item i, int amount){
 		if (i != null){
 			int c = i.getCount()+amount;
@@ -196,8 +201,8 @@ public class PlayerCharacter implements Serializable{
 		}
 	}
 	
-	public void dropAllItem(Item i){
-		inventory.remove(i);
+	public void removeItem(Item i){
+		this.inventory.remove(i);
 	}
 	
     public String getName(){
@@ -228,24 +233,8 @@ public class PlayerCharacter implements Serializable{
         return abilities;
     }
 
-    public void setAbilities(LinkedHashMap<String, Ability> abilities){
-        this.abilities = abilities;
-    }
-
     public LinkedHashMap<String, Stat> getAttributes(){
         return attributes;
-    }
-
-    public void setAttributes(LinkedHashMap<String, Stat> attributes){
-        this.attributes = attributes;
-    }
-
-    public LinkedHashMap<String, Skill> getSkills(){
-        return skills;
-    }
-
-    public void setSkills(LinkedHashMap<String, Skill> skills){
-        this.skills = skills;
     }
 
     public Skill getSkill(String skillName){
@@ -256,12 +245,16 @@ public class PlayerCharacter implements Serializable{
         return this.inventory.get(itemName.toLowerCase());
     }
 
-    public Inventory getInventory(){
-        return inventory;
+    public Item getCurrency(int coin){
+        return this.inventory.getCurrency(coin);
     }
 
-    public void setInventory(Inventory inventory){
-        this.inventory = inventory;
+    public Inventory getInventory(){
+        return this.inventory;
+    }
+
+    public ArrayList<Item> getCurrency(){
+        return this.inventory.getCurrency();
     }
 
     public Spell getSpell(String spellName){
@@ -272,16 +265,8 @@ public class PlayerCharacter implements Serializable{
         return spellBook;
     }
 
-    public void setSpellBook(SpellBook spellBook){
-        this.spellBook = spellBook;
-    }
-
     public SpellSlot[] getSpellSlots(){
         return spellSlots;
-    }
-
-    public void setSpellSlots(SpellSlot[] spellSlots){
-        this.spellSlots = spellSlots;
     }
 
     public boolean isUnPrepOnCast(){
@@ -299,7 +284,7 @@ public class PlayerCharacter implements Serializable{
     public String skillsToString(){
         String newLine = System.lineSeparator();
         String s = "Skills: ";
-        for(Skill skill:getSkills().values()){
+        for(Skill skill:skills.values()){
             s += newLine+"- "+skill;
         }
         return s;
@@ -313,18 +298,17 @@ public class PlayerCharacter implements Serializable{
 		s+=String.format("%s  %s  INI: %+.0f  SPD: %+.0f"+newLine, attributes.get("hp"), attributes.get("ac"), attributes.get("ini").getTotal(), attributes.get("spd").getTotal());
 		int i=0;	
 		for(String key:abilities.keySet()){
-				s+=(abilities.get(key))+"  ";
-				if (i == 2){
-					s+=newLine;
-				}
-				i++;
-			}
+            s+=(abilities.get(key))+"  ";
+            if (i == 2){
+                s+=newLine;
+            }
+            i++;
+        }
 		return s;
 	}
 
-	public String export(){
+	public String toTextFile(){
         String newLine = System.lineSeparator();
-        String s = this+newLine+inventory+newLine+skillsToString()+newLine+spellBook;
-	    return s;
+        return this+newLine+inventory+newLine+skillsToString()+newLine+spellBook;
     }
 }

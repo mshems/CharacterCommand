@@ -10,6 +10,7 @@ public class Message{
 	public static final String ERROR_NOT_INT = 		"ERROR: Not an integer value";
 	public static final String ERROR_INPUT = 		"ERROR: Invalid input";
 	public static final String ERROR_NO_COMMAND =	"ERROR: Command not found";
+	public static final String ERROR_NO_CHAR =		"ERROR: Character not found";
 	public static final String ERROR_NO_ARG =       "ERROR: Missing argument(s)";
 	public static final String ERROR_NOT_EQUIP =    "ERROR: Item not equippable";
 	public static final String ERROR_NOT_CON =    "ERROR: Item not consumable";

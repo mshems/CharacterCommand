@@ -13,19 +13,19 @@ public class CommandHandler{
                 App.createCharacter();
                 break;
             case "import":
-                App.importCharacter();
+                App.ioHandler.importCharacter();
                 break;
             case "list":
                 App.dispCharacterList();
                 break;
             case "load":
-                App.loadChar();
+                App.ioHandler.loadChar();
                 break;
             case "roll":
-                int result = App.roll();
+                DiceRoll.doRoll();
                 break;
             case "prefs":
-                App.prefs();
+                App.propertiesHandler.prefs();
                 break;
             case "help":
                 App.tokens.pop();
@@ -40,16 +40,17 @@ public class CommandHandler{
                 //if(App.getYN("\033[1;33mAre you sure? Unsaved data will be lost\033[0m ")){
                 if(App.getYN("Are you sure? Unsaved data will be lost ")){
                     App.QUIT_ALL = true;
+                    App.scanner.close();
                 }
                 break;
             default:
                 if(activeChar!=null){
                     switch (command){
                         case "save":
-                            App.saveChar(activeChar);
+                            App.ioHandler.saveChar();
                             break;
                         case "export":
-                            App.export();
+                            App.ioHandler.export();
                             break;
                         case "v":
                         case "view":
@@ -118,5 +119,6 @@ public class CommandHandler{
                 }
                 break;
         }
+        App.tokens.clear();
     }
 }
