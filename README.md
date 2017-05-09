@@ -8,6 +8,8 @@ Create, edit, save, and export multiple characters, all via a command-line inter
 - Dice rolling
 - and more!
 
+##### For a list of commands, enter: 'help'
+##### For details, enter: 'help <command_name>'
 ___
 ### To compile and run from source code (from repository):
 ###### 1. Create a new folder named 'bin' (or your choice)
