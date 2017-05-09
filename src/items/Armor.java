@@ -6,7 +6,7 @@ import character.Attribute;
 import character.PlayerCharacter;
 
 public class Armor extends Equippable{
-
+    private static final long serialVersionUID = 1L;
 	private Integer AC;
     public ArmorType armorType;
 

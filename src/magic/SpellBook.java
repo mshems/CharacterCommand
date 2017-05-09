@@ -6,32 +6,38 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 
 public class SpellBook implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private LinkedHashMap<String, Spell> spellIndex;
-	private ArrayList<Spell> spellBook;
+	private ArrayList<Spell> spellList;
 	
 	public SpellBook(){
 		spellIndex = new LinkedHashMap<String, Spell>();
-		spellBook = new ArrayList<Spell>();
+		spellList = new ArrayList<Spell>();
 	}
 	
-	public boolean isKnown(Spell spell){
+	public boolean contains(Spell spell){
 		if(spellIndex.containsKey(spell.getSpellName().toLowerCase())){
 			return true;
 		} else {
 			return false;
 		}
 	}
+
+	public boolean isEmpty(){
+		return spellIndex.isEmpty();
+	}
 	
 	public void learn(Spell spell){
-		if(!spellBook.contains(spell)){
-			spellIndex.put(spell.getSpellName().toLowerCase().trim(), spell);
-			spellBook.add(spellIndex.get(spell.getSpellName().toLowerCase()));
-			Collections.sort(spellBook);
+		String key = spell.getSpellName().toLowerCase();
+		if(!spellIndex.containsKey(key)){
+			spellIndex.put(key, spell);
+			spellList.add(spellIndex.get(key));
+			Collections.sort(spellList);
 		}
 	}
 	
 	public void forget(Spell spell){
-		spellBook.remove(spell);
+		spellList.remove(spell);
 		spellIndex.remove(spell.getSpellName().toLowerCase());
 	}
 	
@@ -42,7 +48,7 @@ public class SpellBook implements Serializable {
 	public String toString(){
 		String newLine = System.lineSeparator();
 		String s="Spellbook:";
-		for(Spell spell:spellBook){
+		for(Spell spell:spellList){
 			s+=newLine+spell;
 		}
 		return s;

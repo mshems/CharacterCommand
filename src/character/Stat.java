@@ -60,7 +60,7 @@ public class Stat implements Serializable {
 	}
 
 	public double getTotal(){
-		return (this.baseVal);
+		return (this.baseVal+this.bonusVal);
 	}
 	
 	@Override 

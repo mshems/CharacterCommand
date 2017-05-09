@@ -12,7 +12,10 @@ public class PropertiesHandler{
     private Path dataDir;
     private Path exportDir;
     private boolean viewAlways;
+    private boolean resume;
+    private String last;
     private Properties properties;
+
 
     public PropertiesHandler(){
         this.properties = new Properties();
@@ -29,6 +32,8 @@ public class PropertiesHandler{
                 properties.setProperty("dataDir", "./data");
                 properties.setProperty("exportDir", "./data");
                 properties.setProperty("viewAlways", "false");
+                properties.setProperty("resume", "false");
+                properties.setProperty("last", "");
 
                 properties.store(out, null);
             } catch (IOException e) {
@@ -56,6 +61,8 @@ public class PropertiesHandler{
             this.dataDir = Paths.get(properties.getProperty("dataDir", "./data"));
             this.exportDir = Paths.get(properties.getProperty("exportDir", "./data"));
             this.viewAlways = Boolean.parseBoolean(properties.getProperty("viewAlways", "false"));
+            this.resume = Boolean.parseBoolean(properties.getProperty("resume", "false"));
+            this.last = properties.getProperty("last", "");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -78,6 +85,8 @@ public class PropertiesHandler{
             properties.setProperty("dataDir", dataDir.toString());
             properties.setProperty("exportDir", exportDir.toString());
             properties.setProperty("viewAlways", Boolean.toString(viewAlways));
+            properties.setProperty("resume", Boolean.toString(resume));
+            properties.setProperty("last", last);
 
             properties.store(out, null);
         } catch (IOException e){
@@ -109,30 +118,50 @@ public class PropertiesHandler{
                 case "-e":
                 case "--export":
                     App.tokens.pop();
-                    File exportFile = Paths.get(App.tokens.pop()).toFile();
-                    if(exportFile.isDirectory()){
-                        App.propertiesHandler.setExportDir(exportFile.toPath());
+                    if(!App.tokens.isEmpty()){
+                        File exportFile = Paths.get(App.tokens.pop()).toFile();
+                        if (exportFile.isDirectory()){
+                            this.exportDir = exportFile.toPath();
+                        }
+                        System.out.println("Set toTextFile directory to " + exportFile.toString());
                     }
-                    System.out.println("Set toTextFile directory to "+exportFile.toString());
                     break;
                 case "-d":
                 case "--data":
                     App.tokens.pop();
-                    File dataFile = Paths.get(App.tokens.pop()).toFile();
-                    if(dataFile.isDirectory()){
-                        App.propertiesHandler.setDataDir(dataFile.toPath());
+                    if(!App.tokens.isEmpty()){
+                        File dataFile = Paths.get(App.tokens.pop()).toFile();
+                        if (dataFile.isDirectory()){
+                            this.dataDir = dataFile.toPath();
+                        }
+                        System.out.println("Set data directory to " + dataFile.toString());
                     }
-                    System.out.println("Set data directory to "+dataFile.toString());
                     break;
                 case "-v":
+                case "-va":
                 case "--viewAlways":
                     App.tokens.pop();
-                    if (App.tokens.peek().equalsIgnoreCase("true") || App.tokens.peek().equalsIgnoreCase("false")) {
+                    if(!App.tokens.isEmpty()){
                         String token = App.tokens.pop();
-                        App.propertiesHandler.setViewAlways(Boolean.parseBoolean(token));
-                        System.out.println("Set 'viewAlways' to "+token);
-                    } else {
-                        System.out.println("ERROR: Argument must be 'true' or 'false'");
+                        if (token.equalsIgnoreCase("true") || token.equalsIgnoreCase("false")){
+                            this.viewAlways = Boolean.parseBoolean(token);
+                            System.out.println("Set 'viewAlways' to " + token);
+                        } else {
+                            System.out.println("ERROR: Argument must be 'true' or 'false'");
+                        }
+                    }
+                    break;
+                case "-r":
+                case "--resume":
+                    App.tokens.pop();
+                    if(!App.tokens.isEmpty()){
+                        String token = App.tokens.pop();
+                        if (token.equalsIgnoreCase("true") || token.equalsIgnoreCase("false")){
+                            this.resume = Boolean.parseBoolean(token);
+                            System.out.println("Set 'resume' to " + token);
+                        } else {
+                            System.out.println("ERROR: Argument must be 'true' or 'false'");
+                        }
                     }
                     break;
                 case "--help":
@@ -142,39 +171,31 @@ public class PropertiesHandler{
                 default:
                     if (App.tokens.peek().startsWith("-")) {
                         System.out.println("ERROR: Invalid flag '" + App.tokens.pop() + "'");
-                        System.out.println("Enter 'prefs --help' for help");
+                    } else {
+                        App.tokens.pop();
                     }
                     break;
             }
         }
-        App.propertiesHandler.writeProperties();
-    }
-    public Path readDataDir(){
-        this.dataDir = Paths.get(properties.getProperty("dataDir", "./data"));
-        return dataDir;
+        this.writeProperties();
     }
     public Path getDataDir(){
         return dataDir;
     }
-    public void setDataDir(Path dataDir){
-        this.dataDir = dataDir;
-    }
-    public Path readExportDir(){
-        this.exportDir = Paths.get(properties.getProperty("exportDir", "./data"));
-        return exportDir;
-    }
     public Path getExportDir(){
         return exportDir;
     }
-    public void setExportDir(Path exportDir){
-        this.exportDir = exportDir;
-    }
-
-    public boolean readViewAlways(){
+    public boolean isViewAlways(){
         this.viewAlways = Boolean.parseBoolean(properties.getProperty("viewAlways", "false"));
         return viewAlways;
     }
-    public void setViewAlways(boolean viewAlways){
-        this.viewAlways = viewAlways;
+    public boolean isResume(){
+        return resume;
+    }
+    public String getLast(){
+        return last;
+    }
+    public void setLast(String last){
+        this.last = last;
     }
 }

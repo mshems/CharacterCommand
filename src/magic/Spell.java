@@ -3,13 +3,21 @@ package magic;
 import java.io.Serializable;
 
 public class Spell implements Comparable<Spell>, Serializable{
+	private static final long serialVersionUID = 1L;
 	private String spellName;
 	private int spellLevel;
 	protected boolean spellPrepared;
 	
 	public static final int CANTRIP = 0;
-	
+	public static final int MAX_LEVEL = 9;
+
 	public Spell(String name, int level){
+		if(level > MAX_LEVEL){
+			level = MAX_LEVEL;
+		}
+		if(level < CANTRIP){
+			level = CANTRIP;
+		}
 		this.spellLevel = level;
 		this.spellName = name;
 	}

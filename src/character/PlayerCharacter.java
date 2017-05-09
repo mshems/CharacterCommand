@@ -26,6 +26,7 @@ public class PlayerCharacter implements Serializable{
 	private SpellBook spellBook;
 	private SpellSlot[] spellSlots;
 	private boolean unPrepOnCast;
+	private boolean spellcaster=true;
 	
 	public PlayerCharacter(String name, String raceName, String className){
 		this.name=name;
@@ -90,30 +91,30 @@ public class PlayerCharacter implements Serializable{
 	
 	private void initSkills(){
 		skills = new LinkedHashMap<>();
-		skills.put("str saves",new Skill("STR Saves",this.abilities.get(Ability.STR)));
-		skills.put("athletics",new Skill("Athletics",this.abilities.get(Ability.STR)));
-		skills.put("dex saves",new Skill("DEX Saves",this.abilities.get(Ability.DEX)));
-		skills.put("acrobatics",new Skill("Acrobatics",this.abilities.get(Ability.DEX)));
-		skills.put("sleight of hand",new Skill("Sleight of Hand",this.abilities.get(Ability.DEX)));
-		skills.put("stealth",new Skill("Stealth",this.abilities.get(Ability.DEX)));
-		skills.put("con saves",new Skill("CON Saves",this.abilities.get(Ability.CON)));
-		skills.put("int saves",new Skill("INT Saves",this.abilities.get(Ability.INT)));
-		skills.put("arcana",new Skill("Arcana",this.abilities.get(Ability.INT)));
-		skills.put("history",new Skill("History",this.abilities.get(Ability.INT)));
-		skills.put("investigation",new Skill("Investigation",this.abilities.get(Ability.INT)));
-		skills.put("nature",new Skill("Nature",this.abilities.get(Ability.INT)));
-		skills.put("religion",new Skill("Religion",this.abilities.get(Ability.INT)));
-		skills.put("wis saves",new Skill("WIS Saves",this.abilities.get(Ability.WIS)));
-		skills.put("animal handling",new Skill("Animal Handling",this.abilities.get(Ability.WIS)));
-		skills.put("insight",new Skill("Insight",this.abilities.get(Ability.WIS)));
-		skills.put("medicine",new Skill("Medicine",this.abilities.get(Ability.WIS)));
-		skills.put("perception",new Skill("Perception",this.abilities.get(Ability.WIS)));
-		skills.put("survival",new Skill("Survival",this.abilities.get(Ability.WIS)));
-		skills.put("cha saves",new Skill("CHA Saves",this.abilities.get(Ability.CHA)));
-		skills.put("deception",new Skill("Deception",this.abilities.get(Ability.CHA)));
-		skills.put("intimidation",new Skill("Intimidation",this.abilities.get(Ability.CHA)));
-		skills.put("performance",new Skill("Performance",this.abilities.get(Ability.CHA)));
-		skills.put("persuasion",new Skill("Persuasion",this.abilities.get(Ability.CHA)));
+		skills.put("str saves",new Skill("STR Saves",this.abilities.get(Ability.STR),this));
+		skills.put("athletics",new Skill("Athletics",this.abilities.get(Ability.STR),this));
+		skills.put("dex saves",new Skill("DEX Saves",this.abilities.get(Ability.DEX),this));
+		skills.put("acrobatics",new Skill("Acrobatics",this.abilities.get(Ability.DEX),this));
+		skills.put("sleight of hand",new Skill("Sleight of Hand",this.abilities.get(Ability.DEX),this));
+		skills.put("stealth",new Skill("Stealth",this.abilities.get(Ability.DEX),this));
+		skills.put("con saves",new Skill("CON Saves",this.abilities.get(Ability.CON),this));
+		skills.put("int saves",new Skill("INT Saves",this.abilities.get(Ability.INT),this));
+		skills.put("arcana",new Skill("Arcana",this.abilities.get(Ability.INT),this));
+		skills.put("history",new Skill("History",this.abilities.get(Ability.INT),this));
+		skills.put("investigation",new Skill("Investigation",this.abilities.get(Ability.INT),this));
+		skills.put("nature",new Skill("Nature",this.abilities.get(Ability.INT),this));
+		skills.put("religion",new Skill("Religion",this.abilities.get(Ability.INT),this));
+		skills.put("wis saves",new Skill("WIS Saves",this.abilities.get(Ability.WIS),this));
+		skills.put("animal handling",new Skill("Animal Handling",this.abilities.get(Ability.WIS),this));
+		skills.put("insight",new Skill("Insight",this.abilities.get(Ability.WIS),this));
+		skills.put("medicine",new Skill("Medicine",this.abilities.get(Ability.WIS),this));
+		skills.put("perception",new Skill("Perception",this.abilities.get(Ability.WIS),this));
+		skills.put("survival",new Skill("Survival",this.abilities.get(Ability.WIS),this));
+		skills.put("cha saves",new Skill("CHA Saves",this.abilities.get(Ability.CHA),this));
+		skills.put("deception",new Skill("Deception",this.abilities.get(Ability.CHA),this));
+		skills.put("intimidation",new Skill("Intimidation",this.abilities.get(Ability.CHA),this));
+		skills.put("performance",new Skill("Performance",this.abilities.get(Ability.CHA),this));
+		skills.put("persuasion",new Skill("Persuasion",this.abilities.get(Ability.CHA),this));
 	}
 	
 	public void heal(int amt){
@@ -155,6 +156,17 @@ public class PlayerCharacter implements Serializable{
 		} else if (this.level.getBaseVal() > 4){
 			this.attributes.get("pb").setBaseVal(3);
 		}*/
+		updateSkills();
+	}
+
+	private void updateSkills(){
+		for(Skill skill:skills.values()){
+			skill.update(this);
+		}
+	}
+
+	public void updateStats(){
+		allStats.get("ini").setBaseVal(abilities.get(Ability.DEX).getMod());
 	}
 	
 	public void equip(Item i){
@@ -196,12 +208,18 @@ public class PlayerCharacter implements Serializable{
 			if (c>0){
 				i.setCount(c);
 			} else {
+				if(i.isEquippable() && i.isEquipped()){
+					i.dequip(this);
+				}
 				this.inventory.remove(i);
 			}
 		}
 	}
 	
 	public void removeItem(Item i){
+		if(i.isEquippable() && i.isEquipped()){
+			i.dequip(this);
+		}
 		this.inventory.remove(i);
 	}
 	
@@ -229,7 +247,15 @@ public class PlayerCharacter implements Serializable{
         this.level = level;
     }
 
-    public LinkedHashMap<String, Ability> getAbilities(){
+	public boolean isSpellcaster(){
+		return spellcaster;
+	}
+
+	public void setSpellcaster(boolean spellcaster){
+		this.spellcaster = spellcaster;
+	}
+
+	public LinkedHashMap<String, Ability> getAbilities(){
         return abilities;
     }
 
@@ -269,6 +295,10 @@ public class PlayerCharacter implements Serializable{
         return spellSlots;
     }
 
+    public void setSpellSlots(SpellSlot[] spellSlots){
+    	this.spellSlots = spellSlots;
+	}
+
     public boolean isUnPrepOnCast(){
         return unPrepOnCast;
     }
@@ -280,6 +310,17 @@ public class PlayerCharacter implements Serializable{
     public Stat getStat(String statName){
         return this.allStats.get(statName.toLowerCase());
     }
+
+    public String spellSlotsToString(){
+		String newLine = System.lineSeparator();
+		String s="Spell Slots: ";
+		for(SpellSlot spellSlot:spellSlots){
+			if(spellSlot.getMaxVal()>0 && spellSlot.getLevel()>0){
+				s += newLine + spellSlot;
+			}
+		}
+    	return s;
+	}
 
     public String skillsToString(){
         String newLine = System.lineSeparator();
@@ -309,6 +350,11 @@ public class PlayerCharacter implements Serializable{
 
 	public String toTextFile(){
         String newLine = System.lineSeparator();
-        return this+newLine+inventory+newLine+skillsToString()+newLine+spellBook;
+        String s = this+newLine+skillsToString()+newLine+inventory;
+        if(!spellBook.isEmpty()&&spellcaster){
+        	s+=newLine+spellBook;
+        	s+=newLine+spellSlotsToString();
+		}
+        return s;
     }
 }

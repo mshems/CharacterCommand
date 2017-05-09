@@ -67,7 +67,7 @@ public class Inventory implements Serializable {
 		}
 		s = "Inventory: "+s;
 		if (contents.isEmpty()){
-			s+="-Empty-";
+			s+=newLine+"-Empty-";
 		} else {
 			for (Item item : contents.values()){
                 if (item.isEquipped()){

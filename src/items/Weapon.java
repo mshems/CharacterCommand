@@ -3,6 +3,7 @@ package items;
 import app.DiceRoll;
 
 public class Weapon extends Equippable{
+	private static final long serialVersionUID = 1L;
 	private DiceRoll damage;
 	
 	public Weapon(String name){

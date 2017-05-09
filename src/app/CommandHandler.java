@@ -68,6 +68,12 @@ public class CommandHandler{
                         case "use":
                             App.use();
                             break;
+                        case "spellslots":
+                            System.out.println(activeChar.spellSlotsToString());
+                            break;
+                        case "charge":
+                            App.charge();
+                            break;
                         case "spell":
                         case "spells":
                             App.spells();
@@ -105,6 +111,11 @@ public class CommandHandler{
                         case "heal":
                         case "hurt":
                             App.heal();
+                            break;
+                        case "sq":
+                            App.ioHandler.saveChar();
+                            App.QUIT_ALL = true;
+                            App.scanner.close();
                             break;
                         default:
                             System.out.println(Message.ERROR_NO_COMMAND);

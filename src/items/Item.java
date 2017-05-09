@@ -16,7 +16,7 @@ public class Item implements Serializable {
 	private boolean consumable;
 
 	public static final String[] types = new String[] {
-		"item","consumable","equippable","weapon","armor"
+		"item","consumable","equippable","weapon","armor","c","i","e","w","a"
 	};
 	
 	public Item(String name){

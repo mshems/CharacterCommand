@@ -2,12 +2,14 @@ package utils;
 
 public class Help{
     private static final String newLine = System.lineSeparator();
+
     public static final String PREFS="Usage:" +
             newLine+"  prefs [options]                            manage application preferences" +
             newLine+"Options:" +
-            newLine+"  -e, --toTextFile <export_directory>            set directory for exported .txt files" +
+            newLine+"  -e, --toTextFile <export_directory>        set directory for exported .txt files" +
             newLine+"  -d, --data <data_directory>                set directory for character files" +
             newLine+"  -va, --viewalways <true/false>             display character after each command" +
+            newLine+"  -r, --resume <true/false>                  reopen last character on startup " +
             newLine+"  --help";
     public static final String IMPORT="Usage:" +
             newLine+"  import [character_name][options]           import from .data file" +
@@ -15,9 +17,9 @@ public class Help{
             newLine+"  --all                                      import all .data files" +
             newLine+"  --help";
     public static final String EXPORT="Usage:" +
-            newLine+"  toTextFile [character_name][options]           toTextFile to .txt file" +
+            newLine+"  toTextFile [character_name][options]       export to .txt file" +
             newLine+"Options:" +
-            newLine+"  --all                                      toTextFile all characters" +
+            newLine+"  --all                                      export all characters" +
             newLine+"  --help";
     public static final String SAVE="Usage:" +
             newLine+"  import [options]                           save to .data file" +
@@ -248,7 +250,7 @@ public class Help{
 
     public static final String COMMANDS_LIST ="Commands List:" +
             newLine+"  import.............import a character from .data file" +
-            newLine+"  toTextFile.............toTextFile a character to a .txt file" +
+            newLine+"  export.............export a character to a .txt file" +
             newLine+"  load...............load a character to modify" +
             newLine+"  list...............show list of all imported characters" +
             newLine+"  save...............save character to a .data file" +
@@ -263,6 +265,8 @@ public class Help{
             newLine+"  heal/hurt..........heal/hurt HP" +
             newLine+"  use................use items in inventory" +
             newLine+"  spell..............edit/view spells" +
+            newLine+"  spellslots.........view spell slots" +
+            newLine+"  charge.............recharge spell slots" +
             newLine+"  cast...............cast a spell" +
             newLine+"  learn..............learn a spell" +
             newLine+"  forget.............forget a spell" +

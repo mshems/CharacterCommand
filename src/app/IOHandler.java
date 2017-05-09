@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 
 public class IOHandler{
     static void checkDirs(){
-        if (!Files.exists(App.propertiesHandler.readDataDir())){
+        if (!Files.exists(App.propertiesHandler.getDataDir())){
             try {
                 Files.createDirectories(App.propertiesHandler.getDataDir());
             } catch (IOException e) {

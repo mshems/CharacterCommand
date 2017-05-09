@@ -1,6 +1,7 @@
 package character;
 
 public class CounterStat extends Stat {
+	private static final long serialVersionUID = 1L;
 	private double currVal;
 	
 	public CounterStat(){
@@ -13,16 +14,28 @@ public class CounterStat extends Stat {
 	}
 	
 	public void countUp(){
-		this.currVal++;
+		if(this.currVal<getMaxVal()){
+			this.currVal++;
+		}
 	}
 	public void countDown(){
-		this.currVal--;
+		if(this.currVal>0){
+			this.currVal--;
+		}
 	}
 	public void countUp(double amt){
-		this.currVal+=amt;
+		if(this.currVal+amt<getMaxVal()){
+			this.currVal += amt;
+		} else {
+			currVal = getMaxVal();
+		}
 	}
 	public void countDown(double amt){
-		this.currVal-=amt;
+		if(this.currVal-amt>0){
+			this.currVal -= amt;
+		} else {
+			this.currVal = 0;
+		}
 	}
 
 	public void setCurrVal(double val){

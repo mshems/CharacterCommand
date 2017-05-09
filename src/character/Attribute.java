@@ -1,6 +1,7 @@
 package character;
 
 public class Attribute extends Stat {
+	private static final long serialVersionUID = 1L;
 	public static final String HP = "hp";
 	public static final String AC = "ac";
 	public static final String PB = "pb";

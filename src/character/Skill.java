@@ -10,7 +10,7 @@ public class Skill implements Serializable {
 	private boolean trained;
 	private boolean expert;
 	
-	public Skill(String name, Ability a){
+	public Skill(String name, Ability a, PlayerCharacter pc){
 		this.skillName=name;
 		this.skillAbility = a;
 		this.skillMod = 0;
@@ -18,33 +18,33 @@ public class Skill implements Serializable {
 		this.expert = false;
 	}
 	
-	public void update(PlayerCharacter c){
+	public void update(PlayerCharacter pc){
 		this.skillMod=0;
 		if (this.trained){
-			this.skillMod += c.getAttributes().get("pb").getBaseVal();
+			this.skillMod += pc.getStat(Attribute.PB).getBaseVal();
 		}
 		if (this.expert){
-			this.skillMod += c.getAttributes().get("pb").getBaseVal();
+			this.skillMod += pc.getStat(Attribute.PB).getBaseVal();
 		}
 	}
 	
-	public void train(PlayerCharacter c){
+	public void train(PlayerCharacter pc){
 		this.trained = true;
-		this.update(c);
+		this.update(pc);
 	}
-	public void untrain(PlayerCharacter c){
+	public void untrain(PlayerCharacter pc){
 		this.trained = false;
 		this.expert = false;
-		this.update(c);
+		this.update(pc);
 	}
-	public void expert(PlayerCharacter c){
+	public void expert(PlayerCharacter pc){
 		this.expert = true;
 		this.trained = true;
-		this.update(c);
+		this.update(pc);
 	}
-	public void unexpert(PlayerCharacter c){
+	public void unexpert(PlayerCharacter pc){
 		this.expert = false;
-		this.update(c);
+		this.update(pc);
 	}
 	
 	public String getName(){
