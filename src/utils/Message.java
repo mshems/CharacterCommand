@@ -15,7 +15,8 @@ public class Message{
 	public static final String ERROR_NOT_EQUIP =    "ERROR: Item not equippable";
 	public static final String ERROR_NOT_CON =    "ERROR: Item not consumable";
 
-	
+
+	public static final String MSG_NOT_CAST = "Not a spellcaster";
 	public static final String MSG_NO_ITEM = "No item by that name";
     public static final String MSG_NO_SPELL = "No spell by that name";
     public static final String MSG_NO_SKILL = "No skill by that name";

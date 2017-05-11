@@ -130,9 +130,31 @@ public class Help{
             newLine+"     modifier:  optional modifier to result of roll (eg: +5, -2, etc...)" +
             newLine+"Options:" +
             newLine+"  --help";
+    public static final String SPELLSLOTS="Usage:" +
+            newLine+"  spellslots [options]" +
+            newLine+"Options:" +
+            newLine+"  --charge" +
+            newLine+"  --set [options]" +
+            newLine+"    -l, --level <level_num>" +
+            newLine+"    -m, --max <max_slots>" +
+            newLine+"  --help";
+    public static final String SETSLOTS="Usage:" +
+            newLine+"  spellslots --set [options]" +
+            newLine+"Options:" +
+            newLine+"  -l, --level <level_num>" +
+            newLine+"  -m, --max <max_slots>" +
+            newLine+"  --help";
+    public static final String CHARGE="Usage:"+
+            newLine+"  cast [options]" +
+            newLine+"Options:" +
+            newLine+"  -l, --level <level_num>" +
+            newLine+"  -c, --count <max_slots>" +
+            newLine+"  --all" +
+            newLine+"  --help";
     public static final String SPELLS="Usage:" +
             newLine+"  spell [options]" +
             newLine+"Options:" +
+            newLine+"  --slots" +
             newLine+"  --learn" +
             newLine+"  --forget" +
             newLine+"  --cast" +
@@ -210,6 +232,12 @@ public class Help{
             case "spells":
                 System.out.println(SPELLS);
                 break;
+            case "spellslots":
+                System.out.println(SPELLSLOTS);
+                break;
+            case "charge":
+                System.out.println(CHARGE);
+                break;
             case "cast":
                 System.out.println(CAST);
                 break;
@@ -240,9 +268,6 @@ public class Help{
             case "levelup":
                 System.out.println(LEVELUP);
                 break;
-            /*case "--list":
-                System.out.println(COMMANDS_LIST);
-                break;*/
             default:
                 break;
         }
@@ -265,7 +290,7 @@ public class Help{
             newLine+"  heal/hurt..........heal/hurt HP" +
             newLine+"  use................use items in inventory" +
             newLine+"  spell..............edit/view spells" +
-            newLine+"  spellslots.........view spell slots" +
+            newLine+"  spellslots.........edit/view spell slots" +
             newLine+"  charge.............recharge spell slots" +
             newLine+"  cast...............cast a spell" +
             newLine+"  learn..............learn a spell" +

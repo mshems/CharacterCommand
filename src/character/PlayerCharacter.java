@@ -18,15 +18,17 @@ public class PlayerCharacter implements Serializable{
 	private String className;
 	private String raceName;
 	private Stat level;
+	private Ability spellAbility;
 	private LinkedHashMap<String, Ability> abilities;
 	private LinkedHashMap<String, Stat> attributes;
 	private LinkedHashMap<String, Skill> skills;
 	private LinkedHashMap<String, Stat> allStats;
+	private LinkedHashMap<String, Stat> magicStats;
 	private Inventory inventory;
 	private SpellBook spellBook;
 	private SpellSlot[] spellSlots;
 	private boolean unPrepOnCast;
-	private boolean spellcaster=true;
+	private boolean spellcaster=false;
 	
 	public PlayerCharacter(String name, String raceName, String className){
 		this.name=name;
@@ -52,6 +54,13 @@ public class PlayerCharacter implements Serializable{
 		for(String s:Ability.ABILITY_NAMES){
 			abilities.put(s.toLowerCase(), new Ability(s,10));
 		}
+	}
+
+	public void initMagicStats(Ability spellAbility){
+		magicStats = new LinkedHashMap<>();
+		this.spellAbility = spellAbility;
+		magicStats.put("ssdc", new Stat("Spell Save DC", 8+attributes.get(Attribute.PB).getTotal()+spellAbility.getMod()));
+		magicStats.put("sam", new Stat("Spell Attack Mod",attributes.get(Attribute.PB).getTotal()+spellAbility.getMod()));
 	}
 	
 	private void initAttributes(){
@@ -147,15 +156,6 @@ public class PlayerCharacter implements Serializable{
 		double lvl = level.getTotal();
 		double pb = Math.floor(lvl/4)+2;
 		this.attributes.get(Attribute.PB).setBaseVal(pb);
-		/*if (this.level.getBaseVal() > 16){
-			this.attributes.get("pb").setBaseVal(6);
-		} else if (this.level.getBaseVal() > 12){
-			this.attributes.get("pb").setBaseVal(5);
-		} else if (this.level.getBaseVal() > 8){
-			this.attributes.get("pb").setBaseVal(4);
-		} else if (this.level.getBaseVal() > 4){
-			this.attributes.get("pb").setBaseVal(3);
-		}*/
 		updateSkills();
 	}
 
@@ -299,6 +299,10 @@ public class PlayerCharacter implements Serializable{
     	this.spellSlots = spellSlots;
 	}
 
+	public void setSpellAbility(Ability spellAbility){
+    	this.spellAbility = spellAbility;
+	}
+
     public boolean isUnPrepOnCast(){
         return unPrepOnCast;
     }
@@ -310,6 +314,12 @@ public class PlayerCharacter implements Serializable{
     public Stat getStat(String statName){
         return this.allStats.get(statName.toLowerCase());
     }
+
+    public String spellStatsToString(){
+		String newLine = System.lineSeparator();
+		 return String.format("Spell Save DC: %.0f  Spell Atk Mod: %.0f", magicStats.get("ssdc").getTotal(), magicStats.get("sam").getTotal());
+
+	}
 
     public String spellSlotsToString(){
 		String newLine = System.lineSeparator();
@@ -337,7 +347,10 @@ public class PlayerCharacter implements Serializable{
         //String s=String.format("\033[1;33m%s -- Level %.0f %s\033[0m\n", name, level.getTotal(), className);
 		String s=String.format("%s -- Level %.0f %s %s"+newLine, name, level.getTotal(), raceName, className);
 		s+=String.format("%s  %s  INI: %+.0f  SPD: %+.0f"+newLine, attributes.get("hp"), attributes.get("ac"), attributes.get("ini").getTotal(), attributes.get("spd").getTotal());
-		int i=0;	
+		if(spellcaster){
+			s+=spellStatsToString()+newLine;
+		}
+		int i=0;
 		for(String key:abilities.keySet()){
             s+=(abilities.get(key))+"  ";
             if (i == 2){

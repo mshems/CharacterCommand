@@ -69,26 +69,38 @@ public class CommandHandler{
                             App.use();
                             break;
                         case "spellslots":
-                            System.out.println(activeChar.spellSlotsToString());
+                            if(App.checkCaster(App.activeChar)){
+                                App.spellSlots();
+                            }
                             break;
                         case "charge":
-                            App.charge();
+                            if(App.checkCaster(App.activeChar)){
+                                App.charge();
+                            }
                             break;
                         case "spell":
                         case "spells":
-                            App.spells();
+                            if(App.checkCaster(App.activeChar)){
+                                App.spells();
+                            }
                             break;
                         case "learn":
-                            App.learn();
+                                App.learn();
                             break;
                         case "forget":
-                            App.forget();
+                            if(App.checkCaster(App.activeChar)){
+                                App.forget();
+                            }
                             break;
                         case "spellbook":
-                            System.out.println(activeChar.getSpellBook());
+                            if(App.checkCaster(App.activeChar)){
+                                System.out.println(activeChar.getSpellBook());
+                            }
                             break;
                         case "cast":
-                            App.cast();
+                            if(App.checkCaster(App.activeChar)){
+                                App.cast();
+                            }
                             break;
                         case "levelup":
                             App.levelUp();

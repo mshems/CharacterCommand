@@ -50,6 +50,9 @@ public class CounterStat extends Stat {
 	}
 	public void setMaxVal(double val){
 		this.setBaseVal(val);
+		if(this.currVal>getMaxVal()){
+			this.currVal = getMaxVal();
+		}
 	}
 	
 	@Override 

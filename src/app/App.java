@@ -9,7 +9,6 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public class App {
-	//TODO: charge, spellslots help menu + help commands
 	private static String newLine = System.lineSeparator();
 	static boolean QUIT_ALL = false;
     static PlayerCharacter activeChar;
@@ -94,6 +93,20 @@ public class App {
 			Ability a = c.getAbilities().get(key);
 			a.setBaseVal(getValidInt("Enter "+a.getName()+" score: "));
 		}
+		if(getYN("Spellcaster? ")){
+			Ability spellAbility = null;
+			while (spellAbility == null) {
+				System.out.print("Spellcasting ability: ");
+				String abilityName = scanner.nextLine();
+				spellAbility = c.getAbilities().get(abilityName);
+				if (spellAbility == null){
+					System.out.println("ERROR: Ability not found");
+				} else {
+					c.setSpellcaster(true);
+					c.initMagicStats(spellAbility);
+				}
+			}
+		}
 		c.updateStats();
 		characterList.put(c.getName().toLowerCase(), c);
 		System.out.println("Created "+c.getName());
@@ -155,12 +168,12 @@ public class App {
 						System.out.println(activeChar.skillsToString());
 						exit=true;
 						break;
-					case "quit":
+					case "cancel":
 						exit=true;
 						break;
 					default:
 						System.out.println(Message.ERROR_SYNTAX);
-						System.out.println("Enter 'quit' to quit");
+						System.out.println("Enter 'cancel' to exit");
 						exit = false;
 						break;
 					}
@@ -262,7 +275,7 @@ public class App {
 		boolean help = false;
 		if (tokens.isEmpty()){
 			activeChar.levelUp();
-			System.out.println(activeChar.getName()+" is now level "+activeChar.getLevel().getBaseVal());
+			System.out.println(String.format("%s is now level %.0f", activeChar.getName(), activeChar.getLevel().getBaseVal()));
 		} else {
 			Integer level = null;
 			
@@ -293,7 +306,7 @@ public class App {
 			if (!help){
 				if (level!=null){
 					activeChar.level(level);
-					System.out.println(activeChar.getName()+" is now level "+activeChar.getLevel().getBaseVal());
+					System.out.println(String.format("%s is now level %.0f", activeChar.getName(), activeChar.getLevel().getBaseVal()));
 				} else {
 					System.out.println("ERROR: Invalid input");
 				}
@@ -304,12 +317,102 @@ public class App {
 	}
 
 /**SPELL SLOTS*********************************************************************************************************/
+	static void spellSlots(){
+		tokens.pop();
+		if(!tokens.isEmpty()){
+			switch (tokens.peek()){
+				case "--charge":
+					charge();
+					break;
+				case "--get":
+				case "--set":
+					setSlots();
+					break;
+				case "--help":
+					System.out.println(Help.SPELLSLOTS);
+					break;
+				default:
+					break;
+			}
+		} else {
+			System.out.println(activeChar.spellSlotsToString());
+		}
+	}
+
+	private static void setSlots(){
+		String command = tokens.pop();
+		if(!tokens.isEmpty()){
+			setSlots(command);
+		} else {
+			int level = getValidInt("Enter spell slot level: ");
+			int max = getValidInt("Enter new spell slot maximum: ");
+			activeChar.getSpellSlots()[level].setMaxVal(max);
+			System.out.println("Maximum level "+level+" spell slots set to "+max);
+		}
+	}
+
+	private static void setSlots(String command){
+		Integer level = null;
+		Integer max = null;
+		boolean help = false;
+		while (!tokens.isEmpty()) {
+			switch (tokens.peek()){
+				case "-l":
+				case "--level":
+					tokens.pop();
+					if (tokens.isEmpty()){
+						System.out.println(Message.ERROR_NO_ARG+": level");
+					} else {
+						level = getIntToken();
+						if(level > Spell.MAX_LEVEL){
+							level =  Spell.MAX_LEVEL;
+						}
+						if(level <  Spell.CANTRIP){
+							level =  Spell.CANTRIP;
+						}
+					}
+					break;
+				case "-m":
+				case "--max":
+					tokens.pop();
+					if (tokens.isEmpty()){
+						System.out.println(Message.ERROR_NO_ARG+": count");
+					} else {
+						max = getIntToken();
+					}
+					break;
+				case "--help":
+					tokens.pop();
+					help=true;
+					break;
+				default:
+					if (tokens.peek().startsWith("-")){
+						System.out.println("ERROR: Invalid flag '"+tokens.pop()+"'");
+					} else {
+						tokens.pop();
+					}
+					break;
+			}
+		}
+		if(help){
+			System.out.println(Help.SETSLOTS);
+		} else {
+			if (level != null && max != null){
+				activeChar.getSpellSlots()[level].setMaxVal(max);
+				System.out.println("Maximum level "+level+" spell slots set to "+max);
+			}
+		}
+	}
+
+
 	static void charge(){
 		String command = tokens.pop();
 		if(!tokens.isEmpty()){
 			charge(command);
 		} else {
-
+			int level = getValidInt("Enter spell slot level: ");
+			int count = getValidInt("Enter number of slots to recharge: ");
+			System.out.println("Recharged "+count+" level "+level+" spell slots");
 		}
 	}
 
@@ -362,7 +465,7 @@ public class App {
 			}
 		}
 		if(help){
-			System.out.println("charge --help menu placeholder");
+			System.out.println(Help.CHARGE);
 		} else {
 			if(level==null && count==null){
 				if(all){
@@ -420,6 +523,12 @@ public class App {
 				case "--cast":
 					cast();
 					break;
+				case "--stats":
+					System.out.println(activeChar.spellStatsToString());
+					break;
+				case "--slots":
+					spellSlots();
+					break;
 				case "--help":
 					System.out.println(Help.SPELLS);
 					break;
@@ -451,6 +560,7 @@ public class App {
 	private static void learn(String command){
 		StringBuilder nameBuilder = new StringBuilder();
 		Integer spellLevel = null;
+		boolean learnmagic=false;
 		boolean help=false;
 		while(!tokens.isEmpty()){
 			switch(tokens.peek()){
@@ -463,6 +573,11 @@ public class App {
 					} else {
 						spellLevel = getIntToken();
 					}
+					break;
+				case "-m":
+				case "--magic":
+					tokens.pop();
+					learnmagic = true;
 					break;
 				case "--help":
 					tokens.pop();
@@ -478,16 +593,42 @@ public class App {
 					break;
 			}
 		}
-		if(spellLevel == null){
-			spellLevel = Spell.CANTRIP;	//default level
+		if(learnmagic){
+			learnMagic();
 		}
-		if(help){
-			System.out.println(Help.LEARN);
+		if(activeChar.isSpellcaster()){
+			if (spellLevel == null){
+				spellLevel = Spell.CANTRIP;    //default level
+			}
+			if (help){
+				System.out.println(Help.LEARN);
+			} else {
+				String spellName = nameBuilder.toString().trim();
+				if (!spellName.isEmpty()){
+					Spell spell = new Spell(spellName, spellLevel);
+					learnSpell(spell);
+				}
+			}
 		} else {
-			String spellName = nameBuilder.toString().trim();
-			if(!spellName.isEmpty()){
-				Spell spell = new Spell(spellName, spellLevel);
-				learnSpell(spell);
+			System.out.println(Message.MSG_NOT_CAST);
+		}
+	}
+
+	private static void learnMagic(){
+		Ability spellAbility = null;
+		while (spellAbility == null) {
+			System.out.print("Spellcasting ability: ");
+			String abilityName = scanner.nextLine();
+			if (abilityName.equalsIgnoreCase("cancel")){
+				break;
+			} else {
+				spellAbility = activeChar.getAbilities().get(abilityName);
+				if (spellAbility == null){
+					System.out.println("ERROR: Ability not found");
+				} else {
+					activeChar.setSpellcaster(true);
+					activeChar.initMagicStats(spellAbility);
+				}
 			}
 		}
 	}
@@ -654,7 +795,6 @@ public class App {
 		Integer amount=null;
 		boolean healAll=false;
 		boolean help = false;
-		
 		while(!tokens.isEmpty()){
 			switch (tokens.peek()){
 			case "-hp":
@@ -736,7 +876,19 @@ public class App {
 		if(!tokens.isEmpty()){
 			use(command);
 		} else {
-			System.out.println("manual use placeholder -- use command arguments for now");
+			Item item = getItemByName();
+			if(item != null){
+				if (item.isConsumable()){
+					int amount = getValidInt("Amount: ");
+					item.use(amount);
+					System.out.println("Used " + amount + "x " + item.getName());
+					if (item.getCount() <= 0){
+						activeChar.removeItem(item);
+					}
+				} else {
+					System.out.println(Message.ERROR_NOT_CON);
+				}
+			}
 		}
 	}
 
@@ -745,7 +897,6 @@ public class App {
 		StringBuilder nameBuilder = new StringBuilder();
 		Integer amount = 1; //default
 		boolean help = false;
-
 		while(!tokens.isEmpty()){
 			switch(tokens.peek()){
 				case "-c":
@@ -778,7 +929,7 @@ public class App {
 				if (item.isConsumable()){
 					item.use(amount);
 					System.out.println("Used "+amount+"x "+item.getName());
-					if(item.getCount()<=0){
+					if(item.getCount() <= 0){
 						activeChar.removeItem(item);
 					}
 				} else {
@@ -799,12 +950,27 @@ public class App {
 		if(!tokens.isEmpty()){
 			equip(command);
 		}else {
-			System.out.println("manual equip/dequip placeholder -- use command arguments for now");
+			Item item = getItemByName();
+			if(item!=null){
+				if(item.isEquippable()){
+					if (command.equalsIgnoreCase("equip")){
+						activeChar.equip(item);
+						System.out.println(item.getName()+" equipped");
+					} else {
+						activeChar.dequip(item);
+						System.out.println(item.getName()+" dequipped");
+					}
+				} else {
+					System.out.println(Message.ERROR_NOT_EQUIP);
+				}
+			} else {
+				System.out.println(Message.MSG_NO_ITEM);
+			}
 		}
 	}
 
 
-	private static void equip(String equipDequip){
+	private static void equip(String command){
 		Item item;
 		StringBuilder nameBuilder = new StringBuilder();
 		boolean help = false;
@@ -822,7 +988,7 @@ public class App {
 			item = activeChar.getItem(itemName);
 			if (item!=null){
 				if (item.isEquippable()){
-					if (equipDequip.equalsIgnoreCase("equip")){
+					if (command.equalsIgnoreCase("equip")){
 						activeChar.equip(item);
 						System.out.println(item.getName()+" equipped");
 					} else {
@@ -836,7 +1002,7 @@ public class App {
 				System.out.println(Message.MSG_NO_ITEM);
 			}
 		} else {
-			if(equipDequip.equalsIgnoreCase("equip")){
+			if(command.equalsIgnoreCase("equip")){
 				System.out.println(Help.EQUIP);
 			} else {
 				System.out.println(Help.DEQUIP);
@@ -862,7 +1028,7 @@ public class App {
 			while(true){
 				System.out.print("Item type: ");
 				String s = scanner.nextLine().toLowerCase().trim();
-				if(s.equals("quit")){
+				if(s.equals("cancel")){
 					quit_get = true;
 					break;
 				} else if(s.equals("coin")){
@@ -1251,7 +1417,7 @@ public class App {
 		}
 	}
 
-	private static void addDrop(String addDrop){
+	private static void addDrop(String command){
 		Item item = null;
 		StringBuilder nameBuilder = new StringBuilder();
 		Integer itemCount = null;
@@ -1297,39 +1463,39 @@ public class App {
 				switch (itemName.toLowerCase()){
                     case "pp":
                     case "platinum":
-                        addDropCoin(Inventory.indexPL, itemCount, dropAll, addDrop);
+                        addDropCoin(Inventory.indexPL, itemCount, dropAll, command);
                         break;
                     case "gp":
                     case "gold":
-                        addDropCoin(Inventory.indexGP, itemCount, dropAll, addDrop);
+                        addDropCoin(Inventory.indexGP, itemCount, dropAll, command);
                         break;
                     case "sp":
                     case "silver":
-                        addDropCoin(Inventory.indexSP, itemCount, dropAll, addDrop);
+                        addDropCoin(Inventory.indexSP, itemCount, dropAll, command);
                         break;
                     case "cp":
                     case "copper":
-                        addDropCoin(Inventory.indexCP, itemCount, dropAll, addDrop);
+                        addDropCoin(Inventory.indexCP, itemCount, dropAll, command);
                         break;
                     default:
                         item = activeChar.getItem(itemName);
                         break;
 				}
 				if (item!=null){
-					addDropItem(item, itemCount, dropAll, addDrop);
+					addDropItem(item, itemCount, dropAll, command);
 				}
 			//}
 		} else {
-		    if(addDrop.equals("add")){
+		    if(command.equals("add")){
                 System.out.println(Help.ADD);
             }
-            if(addDrop.equals("drop")){
+            if(command.equals("drop")){
                 System.out.println(Help.DROP);
             }
 		}
 	}
 
-	private static void addDropCoin(int coinType, Integer itemCount, boolean dropAll, String addDrop){
+	private static void addDropCoin(int coinType, Integer itemCount, boolean dropAll, String command){
 		String itemName="";
 		switch (coinType){
 			case Inventory.indexPL:
@@ -1345,7 +1511,7 @@ public class App {
 				itemName = "Copper";
 				break;
 		}
-		if (addDrop.equals("drop") && !dropAll){
+		if (command.equals("drop") && !dropAll){
 			itemCount = -itemCount;
 			System.out.println(String.format("Dropped %dx %s", -itemCount, itemName));
 		}
@@ -1354,14 +1520,14 @@ public class App {
 			System.out.println(String.format("Dropped all %s", itemName));
 		} else {
 			activeChar.addCurrency(coinType, itemCount);
-			if (addDrop.equals("add")){
+			if (command.equals("add")){
 				System.out.println(String.format("Added %dx %s", itemCount, itemName));
 			}
 		}
 	}
 
-	private static void addDropItem(Item item, Integer itemCount, boolean dropAll, String addDrop){
-		if (addDrop.equals("drop") && !dropAll){
+	private static void addDropItem(Item item, Integer itemCount, boolean dropAll, String command){
+		if (command.equals("drop") && !dropAll){
 			itemCount = -itemCount;
 			System.out.println(String.format("Dropped %dx \"%s\"", -itemCount, item.getName()));
 		}
@@ -1370,7 +1536,7 @@ public class App {
 			System.out.println(String.format("Dropped all \"%s\"", item.getName()));
 		} else {
 			activeChar.addDropItem(item, itemCount);
-			if (addDrop.equals("add")){
+			if (command.equals("add")){
 				System.out.println(String.format("Added %dx \"%s\"", itemCount, item.getName()));
 			}
 		}
@@ -1405,7 +1571,7 @@ public class App {
 		while (true){
 			System.out.println("Skill name:");
 			String skillName = scanner.nextLine().trim();
-			if(skillName.equalsIgnoreCase("quit")){
+			if(skillName.equalsIgnoreCase("cancel")){
 				return null;
 			} else {
 				skill = activeChar.getSkill(skillName);
@@ -1423,7 +1589,7 @@ public class App {
 		while (true){
 			System.out.print("Spell name: ");
 			String spellName = scanner.nextLine().trim();
-			if(spellName.equalsIgnoreCase("quit")){
+			if(spellName.equalsIgnoreCase("cancel")){
 				return null;
 			} else {
 				spell = activeChar.getSpell(spellName);
@@ -1441,7 +1607,7 @@ public class App {
 		while (true){
 			System.out.print("Item name: ");
 			String itemName = scanner.nextLine().trim();
-			if(itemName.equalsIgnoreCase("quit")){
+			if(itemName.equalsIgnoreCase("cancel")){
 				return null;
 			} else {
 				for (Item coin:activeChar.getCurrency()){
@@ -1490,14 +1656,23 @@ public class App {
         while(true) {
             System.out.print(message + "[Y/N]: ");
             String yn = scanner.nextLine();
-            if (yn.equalsIgnoreCase("y")){
+            if (yn.equalsIgnoreCase("y") || yn.equalsIgnoreCase("yes")){
                 return true;
             }
-            if (yn.equalsIgnoreCase("n")){
+            if (yn.equalsIgnoreCase("n") || yn.equalsIgnoreCase("no")){
                 return false;
             }
         }
     }
+
+    static boolean checkCaster(PlayerCharacter pc){
+		if (pc.isSpellcaster()){
+			return true;
+		} else {
+			System.out.println(Message.MSG_NOT_CAST);
+			return false;
+		}
+	}
 
     static String toFileName(String s){
 	    return s.replaceAll(".*[^a-zA-Z0-9)(].*", "_");
@@ -1535,23 +1710,26 @@ private static void makeTestCharacter(){
 
 	/*learn a spell*/
     frodo.getSpellBook().learn(new Spell("Invisibility",Spell.CANTRIP));
+	frodo.getSpellBook().learn(new Spell("Blight",3));
 
     /*get spellslots*/
 	SpellSlot[] spellSlots = new SpellSlot[]{
-			new SpellSlot(0,6),
-			new SpellSlot(1,5),
+			new SpellSlot(0,0),
+			new SpellSlot(1,4),
 			new SpellSlot(2,3),
 			new SpellSlot(3,2),
-			new SpellSlot(4,1),
-			new SpellSlot(5,1),
+			new SpellSlot(4,0),
+			new SpellSlot(5,0),
 			new SpellSlot(6,0),
 			new SpellSlot(7,0),
 			new SpellSlot(8,0),
 			new SpellSlot(9,0)
 	};
 	frodo.setSpellSlots(spellSlots);
+	frodo.initMagicStats(frodo.getAbilities().get(Ability.WIS));
+	frodo.setSpellcaster(true);
 
-	/*Add starting currency*/
+	/*Add currency*/
     frodo.addCurrency(Inventory.indexGP, 10);
     frodo.addCurrency(Inventory.indexSP, 35);
     frodo.addCurrency(Inventory.indexCP, 4);
