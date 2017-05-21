@@ -1,9 +1,11 @@
 package magic;
 
+import app.App;
+
 import java.io.Serializable;
 
 public class Spell implements Comparable<Spell>, Serializable{
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = App.version;
 	private String spellName;
 	private int spellLevel;
 	protected boolean spellPrepared;

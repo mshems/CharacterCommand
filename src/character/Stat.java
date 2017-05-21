@@ -1,9 +1,11 @@
 package character;
 
+import app.App;
+
 import java.io.Serializable;
 
 public class Stat implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = App.version;
 	private String name;
 	private double baseVal;
 	private double bonusVal;

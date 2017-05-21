@@ -9,6 +9,10 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public class App {
+	/**
+	 * version 0.2.3
+	 */
+	public static final long version = 203L;
 	private static String newLine = System.lineSeparator();
 	static boolean QUIT_ALL = false;
     static PlayerCharacter activeChar;

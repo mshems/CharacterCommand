@@ -1,7 +1,9 @@
 package character;
 
+import app.App;
+
 public class Attribute extends Stat {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = App.version;
 	public static final String HP = "hp";
 	public static final String AC = "ac";
 	public static final String PB = "pb";

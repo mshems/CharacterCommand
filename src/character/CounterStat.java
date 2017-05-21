@@ -1,7 +1,9 @@
 package character;
 
+import app.App;
+
 public class CounterStat extends Stat {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = App.version;
 	private double currVal;
 	
 	public CounterStat(){

@@ -1,12 +1,14 @@
 package magic;
 
+import app.App;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 
 public class SpellBook implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = App.version;
 	private LinkedHashMap<String, Spell> spellIndex;
 	private ArrayList<Spell> spellList;
 	

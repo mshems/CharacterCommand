@@ -1,12 +1,13 @@
 package items;
 
+import app.App;
 import character.Ability;
 import character.Stat;
 import character.Attribute;
 import character.PlayerCharacter;
 
 public class Armor extends Equippable{
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = App.version;
 	private Integer AC;
     public ArmorType armorType;
 

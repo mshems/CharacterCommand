@@ -6,7 +6,7 @@ import utils.Message;
 import java.util.Random;
 
 public class DiceRoll{
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = App.version;
 	protected int count;
 	protected int sides;
 	

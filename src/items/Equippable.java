@@ -1,11 +1,12 @@
 package items;
 
+import app.App;
 import character.PlayerCharacter;
 
 import java.util.ArrayList;
 
 public class Equippable extends Item {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = App.version;
 	private boolean equipped;
 	private ArrayList<ItemEffect> effects;
 
