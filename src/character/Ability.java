@@ -31,4 +31,15 @@ public class Ability extends Attribute implements Serializable{
 	public String toString(){
 		return String.format("%s: %.0f (%+.0f)", this.getName(), this.getTotal(), this.getMod());
 	}
+
+	public String detailString() {
+		String newLine = System.lineSeparator();
+		return String.format("%s"+newLine+"Base value: %.0f"+newLine+"Bonuses: %.0f"+newLine+"Total: %.0f (%+.0f)",
+				this.getName(),
+				this.getBaseVal(),
+				this.getBonusVal(),
+				this.getTotal(),
+				this.getMod()
+		);
+	}
 }

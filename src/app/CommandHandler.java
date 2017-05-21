@@ -4,7 +4,7 @@ import character.PlayerCharacter;
 import utils.Help;
 import utils.Message;
 
-public class CommandHandler{
+class CommandHandler{
 
     void doCommand(String command, PlayerCharacter activeChar){
         switch(command){
@@ -47,6 +47,7 @@ public class CommandHandler{
             default:
                 if(activeChar!=null){
                     switch (command){
+                        case "s":
                         case "save":
                             App.ioHandler.saveChar();
                             break;
@@ -56,15 +57,15 @@ public class CommandHandler{
                         case "v":
                         case "view":
                             System.out.println(activeChar);
-                            System.out.println(activeChar.getInventory());
+                            //System.out.println(activeChar.getInventory());
                             break;
-                        case "set":
+                        //case "set":
+                        case "edit":
                             App.set();
                             break;
-                        case "s":
                         case "stat":
                         case "stats":
-                            System.out.println(activeChar);
+                            App.stats();
                             break;
                         case "equip":
                         case "dequip":
@@ -72,6 +73,9 @@ public class CommandHandler{
                             break;
                         case "use":
                             App.use();
+                            break;
+                        case "ap":
+                            App.abilityPoints();
                             break;
                         case "ss":
                         case "spellslot":
@@ -142,11 +146,11 @@ public class CommandHandler{
                             break;
                     }
                 } else {
-                    if(activeChar==null){
+                    //if(activeChar==null){
                         System.out.println(Message.ERROR_NO_LOAD);
-                    } else {
-                        System.out.println(Message.ERROR_NO_COMMAND);
-                    }
+                    //} else {
+                        //System.out.println(Message.ERROR_NO_COMMAND);
+                    //}
                 }
                 break;
         }

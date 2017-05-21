@@ -59,5 +59,13 @@ public class CounterStat extends Stat {
 	public String toString(){
 		return String.format("%s: %.0f/%.0f", this.getName(), this.getCurrVal(), this.getMaxVal());
 	}
+	public String detailString() {
+		String newLine = System.lineSeparator();
+		return String.format("%s"+newLine+"Current value: %.0f"+newLine+"Max value: %.0f",
+				this.getName(),
+				this.currVal,
+				this.getMaxVal()
+		);
+	}
 }
 

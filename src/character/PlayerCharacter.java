@@ -17,7 +17,6 @@ public class PlayerCharacter implements Serializable{
 	private String name;
 	private String className;
 	private String raceName;
-	private Stat level;
 	private Ability spellAbility;
 
 	private LinkedHashMap<String, Ability> abilities;
@@ -37,7 +36,6 @@ public class PlayerCharacter implements Serializable{
 		this.name=name;
 		this.className = className;
 		this.raceName = raceName;
-		level = new Stat("Level", 1);
 		inventory = new Inventory();
 		spellBook = new SpellBook();
 		initAbilities();
@@ -58,12 +56,14 @@ public class PlayerCharacter implements Serializable{
 
 	private void initAttributes(){
 		attributes = new LinkedHashMap<>();
+		attributes.put("lvl", new Stat("Level", 1));
 		attributes.put("hp",new CounterStat("Hit Points",10));
 		attributes.put("ac",new Attribute("Armor Class",10+this.abilities.get(Ability.DEX).getMod()));
 		attributes.put("pb",new Stat ("Proficiency Bonus", 2));
 		attributes.put("ini", new Stat("Initiative",this.abilities.get(Ability.DEX).getMod()));
 		attributes.put("spd", new Stat("Speed",30));
 		attributes.put("nac",new Stat("Natural Armor", 10));
+		attributes.put("ap", new CounterStat("Ability Points", 0));
 	}
 
 	private void initAllStats(){
@@ -128,7 +128,7 @@ public class PlayerCharacter implements Serializable{
 
 
 	private void updateProficiency(){
-		double lvl = level.getTotal();
+		double lvl = attributes.get("lvl").getTotal();
 		double pb = Math.floor(lvl/4)+2;
 		this.attributes.get(Attribute.PB).setBaseVal(pb);
 		updateSkills();
@@ -165,11 +165,11 @@ public class PlayerCharacter implements Serializable{
 	}
 	
 	public void levelUp(){
-		level.incrementBaseVal();
+		attributes.get("lvl").incrementBaseVal();
 		updateProficiency();
 	}
 	public void levelUp(int lvl){
-		level.setBaseVal(lvl);
+		attributes.get("lvl").setBaseVal(lvl);
 		updateProficiency();
 	}
 	
@@ -257,13 +257,17 @@ public class PlayerCharacter implements Serializable{
 	public String toString(){
         String newLine = System.lineSeparator();
         //String s=String.format("\033[1;33m%s -- Level %.0f %s\033[0m\n", name, level.getTotal(), className);
-		String s=String.format("%s -- Level %.0f %s %s"+newLine, name, level.getTotal(), raceName, className);
-		s+=String.format("%s  %s  INI: %+.0f  SPD: %+.0f PB: %+.0f"+newLine,
+		String s=String.format("%s -- Level %.0f %s %s"+newLine, name, attributes.get("lvl").getTotal(), raceName, className);
+		s+=String.format("%s  %s  INI: %+.0f  SPD: %+.0f  PB: %+.0f"+newLine,
 				attributes.get("hp"),
 				attributes.get("ac"),
 				attributes.get("ini").getTotal(),
 				attributes.get("spd").getTotal(),
-				attributes.get("pb").getTotal());
+				attributes.get("pb").getTotal()
+		);
+		if(attributes.get("ap").getTotal()>0){
+			s+=attributes.get("ap")+"  ";
+		}
 		if(spellcaster){
 			s+=spellStatsToString()+newLine;
 		}
@@ -305,11 +309,7 @@ public class PlayerCharacter implements Serializable{
 	}
 
 	public Stat getLevel(){
-		return level;
-	}
-
-	public void setLevel(Stat level){
-		this.level = level;
+		return attributes.get("lvl");
 	}
 
 	public boolean isSpellcaster(){

@@ -65,7 +65,17 @@ public class Stat implements Serializable {
 	
 	@Override 
 	public String toString(){
-		return String.format("%s: %.0f", this.getName(), this.getTotal());
+		return String.format("%s: %.0f", this.name, this.getTotal());
+	}
+
+	public String detailString() {
+		String newLine = System.lineSeparator();
+		return String.format("%s"+newLine+"Base value: %.0f"+newLine+"Bonuses: %.0f"+newLine+"Total: %.0f",
+				this.name,
+				this.baseVal,
+				this.bonusVal,
+				this.getTotal()
+		);
 	}
 }
 

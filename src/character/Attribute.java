@@ -13,9 +13,4 @@ public class Attribute extends Stat {
 	public Attribute(String name, double baseVal){
 		super(name, baseVal);
 	}
-	
-	@Override 
-	public double getTotal(){
-		return (this.getBaseVal() + this.getBonusVal());
-	}
 }

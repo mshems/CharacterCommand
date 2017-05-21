@@ -126,6 +126,77 @@ public class App {
 	}
 
 /**STATS**************************************************************************************************************/
+	static void stats(){
+		String command = tokens.pop();
+		if(!tokens.isEmpty()){
+			stats(command);
+		} else {
+			System.out.println("view | edit | cancel");
+			System.out.print("Action: ");
+			String action = scanner.nextLine().toLowerCase().trim();
+			boolean exit = false;
+			while(!exit) {
+				switch (action){
+					case "v":
+					case "view":
+						Stat stat = getStatByName();
+						if (stat != null){
+							System.out.println(stat.detailString());
+						}
+						exit = true;
+						break;
+					case "e":
+					case "edit":
+						set();
+						exit = true;
+						break;
+					case "cancel":
+						exit = true;
+						break;
+				}
+			}
+		}
+	}
+
+	private static void stats(String command){
+		StringBuilder nameBuilder = new StringBuilder();
+		boolean help = false;
+		boolean view = true;
+		while(!tokens.isEmpty()){
+			switch(tokens.peek()){
+				case "-e":
+				case "--edit":
+					set();
+					view = false;
+					//tokens.pop();
+					//edit = true;
+					break;
+				case "--help":
+					tokens.pop();
+					help = true;
+					break;
+				default:
+					if (tokens.peek().startsWith("-")){
+						System.out.println("ERROR: Invalid flag '"+tokens.pop()+"'");
+					} else {
+						nameBuilder.append(tokens.pop());
+						nameBuilder.append(" ");
+					}
+					break;
+			}
+		}
+		if(help){
+			System.out.println(Help.STATS);
+		} else {
+			String statName = nameBuilder.toString().trim();
+			Stat stat = activeChar.getStat(statName);
+			if (stat != null && view){
+				System.out.println(stat.detailString());
+			}
+		}
+	}
+
+
 	static void set(){
 		String command = tokens.pop();
 		if (!tokens.isEmpty()){
@@ -171,7 +242,6 @@ public class App {
 				default:
 					if (tokens.peek().startsWith("-")){
 						System.out.println("ERROR: Invalid flag '"+tokens.pop()+"'");
-						System.out.println("Enter 'skill --help' for help");
 					} else {
 						nameBuilder.append(tokens.pop());
 						nameBuilder.append(" ");
@@ -184,18 +254,125 @@ public class App {
 		} else {
 			String statName = nameBuilder.toString().trim();
 			Stat stat = activeChar.getStat(statName);
-			if(stat!=null){
-				/*if(bonus!=null){
-					stat.setBonusVal(bonus);
-					System.out.println("Updated "+stat.getName());
-				}*/
-				if(value!=null){
-					stat.setBaseVal(value);
-					activeChar.updateStats();
-					System.out.println("Updated "+stat.getName());
+			if(value!=null){
+				if(stat!=null){
+					/*if(bonus!=null){
+						stat.setBonusVal(bonus);
+						System.out.println("Updated "+stat.getName());
+					}*/
+						stat.setBaseVal(value);
+						activeChar.updateStats();
+						System.out.println("Updated "+stat.getName());
+				} else {
+					System.out.println(Message.MSG_NO_STAT);
 				}
 			} else {
-				System.out.println(Message.MSG_NO_STAT);
+				System.out.println(Message.ERROR_INPUT);
+			}
+		}
+	}
+
+
+	static void abilityPoints(){
+		String command = tokens.pop();
+		if (!tokens.isEmpty()){
+			abilityPoints(command);
+		} else {
+			System.out.println("use | get | set");
+			System.out.print("Action: ");
+			String action = scanner.nextLine().toLowerCase().trim();
+			boolean exit = false;
+			int amount;
+			while(!exit) {
+				switch (action){
+					case "u":
+					case "use":
+						amount = getValidInt("Ability Points to use: ");
+						((CounterStat) activeChar.getStat("ap")).countDown(amount);
+						exit = true;
+						break;
+					case "g":
+					case "get":
+						amount = getValidInt("Ability Points gained: ");
+						((CounterStat) activeChar.getStat("ap")).countUp(amount);
+						exit = true;
+						break;
+					case "s":
+					case "set":
+						amount = getValidInt("Ability Points maximum: ");
+						((CounterStat) activeChar.getStat("ap")).setMaxVal(amount);
+						exit = true;
+						break;
+					case "cancel":
+						exit = true;
+						break;
+				}
+			}
+		}
+	}
+
+	private static void abilityPoints(String command){
+		boolean use = false;
+		boolean get = false;
+		boolean set = false;
+		boolean help = false;
+		Integer count = 1;
+		while(!tokens.isEmpty()){
+			switch (tokens.peek()){
+				case "-u":
+				case "--use":
+					tokens.pop();
+					use = true;
+					get = false;
+					set = false;
+					break;
+				case "-g":
+				case "--get":
+					tokens.pop();
+					get = true;
+					use = false;
+					set = false;
+					break;
+				case "-s":
+				case "--set":
+					tokens.pop();
+					set = true;
+					get = false;
+					use = false;
+					break;
+				case "-c":
+				case "--count":
+					tokens.pop();
+					if (tokens.isEmpty()){
+						System.out.println(Message.ERROR_NO_ARG+": level");
+					} else {
+						count = getIntToken();
+					}
+					break;
+				case "--help":
+					tokens.pop();
+					help = true;
+					break;
+				default:
+					if (tokens.peek().startsWith("-")){
+						System.out.println("ERROR: Invalid flag '"+tokens.pop()+"'");
+					}
+					break;
+			}
+			if(help){
+				System.out.println(Help.AP);
+			} else {
+				if (count != null){
+					if (use){
+						((CounterStat) activeChar.getStat("ap")).countDown(count);
+					} else if (get){
+						((CounterStat) activeChar.getStat("ap")).countUp(count);
+					} else if (set){
+						((CounterStat) activeChar.getStat("ap")).setMaxVal(count);
+					} else {
+						System.out.println(Message.ERROR_SYNTAX);
+					}
+				}
 			}
 		}
 	}
@@ -211,7 +388,7 @@ public class App {
 			boolean exit = false;
 			while(!exit){
 				System.out.println("view | train | forget | expert | view all");
-				System.out.println("Action:");
+				System.out.print("Action: ");
 				action = scanner.nextLine().trim().toLowerCase();
 				switch(action){
 					case "v":
@@ -312,7 +489,6 @@ public class App {
 			default:
 				if (tokens.peek().startsWith("-")){
 					System.out.println("ERROR: Invalid flag '"+tokens.pop()+"'");
-					System.out.println("Enter 'skill --help' for help");
 				} else {
 					nameBuilder.append(tokens.pop());
 					nameBuilder.append(" ");
@@ -918,14 +1094,12 @@ public class App {
 			if(command.equals("hurt")){
 				System.out.println(Help.HURT);
 			}
+		} else if (healAll){
+			healAll(command);
 		} else if(amount!=null){
-			if (healAll){
-				healAll(command);
-			} else {
-				heal(command, amount);
-			}
+			heal(command, amount);
 		} else {
-			System.out.println(Message.ERROR_SYNTAX+newLine+"Enter '"+command+" --help' for help");
+			System.out.println(Message.ERROR_SYNTAX);
 		}
 	}
 

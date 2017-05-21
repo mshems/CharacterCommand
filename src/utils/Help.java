@@ -27,8 +27,9 @@ public class Help{
             newLine+"  --all                                      save all characters" +
             newLine+"  --help";
     public static final String STATS="Usage:" +
-            newLine+"  stats [options]                            show stats" +
+            newLine+"  stats [options]                            edit/view stats" +
             newLine+"Options:" +
+            newLine+"  -e, --edit"+
             newLine+"  --help";
     public static final String NEW="Usage:" +
             newLine+"  new [options]                              create a character" +
@@ -127,7 +128,7 @@ public class Help{
             newLine+"  roll <num_dice>d<num_sides>[modifier] [options]" +
             newLine+"     num_dice:  # of dice to roll" +
             newLine+"     num_sides: # of sides" +
-            newLine+"     modifier:  optional modifier to result of roll (eg: +5, -2, etc...)" +
+            newLine+"     modifier:  optional modifier to result of roll (+5, -2, etc...)" +
             newLine+"Options:" +
             newLine+"  --help";
     public static final String SPELLSLOTS="Usage:" +
@@ -143,7 +144,8 @@ public class Help{
             newLine+"  -m, --max <max_slots>" +
             newLine+"  --help";
     public static final String SET="Usage:" +
-            newLine+"  set [options]" +
+            //newLine+"  set [options]" +
+            newLine+"  edit [options]" +
             newLine+"Options:" +
             newLine+"  -v, --value <new_value>" +
             //newLine+"  -b, --bonus <new_value>" +
@@ -180,6 +182,14 @@ public class Help{
             newLine+"  spell --forget [options, <spell_name>]" +
             newLine+"Options:" +
             newLine+"  --help";
+    public static final String AP="Usage:" +
+            newLine+"  ap [options]                                 " +
+            newLine+"Options:" +
+            newLine+"  -u, --use"+
+            newLine+"  -g, --get"+
+            newLine+"  -s, --set"+
+            newLine+"  -c, --count <value>" +
+            newLine+"  --help";
 
 
 
@@ -192,13 +202,14 @@ public class Help{
             case "list":
                 System.out.println(LIST);
                 break;
+            case "s":
             case "save":
                 System.out.println(SAVE);
                 break;
             case "import":
                 System.out.println(IMPORT);
                 break;
-            case "toTextFile":
+            case "export":
                 System.out.println(EXPORT);
                 break;
             case "n":
@@ -228,12 +239,16 @@ public class Help{
             case "drop":
                 System.out.println(DROP);
                 break;
-            case "set":
+            case "edit":
+            //case "set":
                 System.out.println(SET);
                 break;
             case "skill":
             case "skills":
                 System.out.println(SKILL);
+                break;
+            case "ap":
+                System.out.println(AP);
                 break;
             case "spell":
             case "spells":
@@ -254,7 +269,7 @@ public class Help{
             case "forget":
                 System.out.println(FORGET);
                 break;
-            case "s":
+            case "stat":
             case "stats":
                 System.out.println(STATS);
                 break;
@@ -286,26 +301,28 @@ public class Help{
             newLine+"  load...............load a character to modify" +
             newLine+"  list...............show list of all imported characters" +
             newLine+"  save...............save character to a .data file" +
+            newLine+"  prefs..............edit program preferences" +
             newLine+"  new................create a new character" +
-            newLine+"  view...............show overview" +
-            newLine+"  set................edit stats" +
-            newLine+"  stats..............show stats" +
-            newLine+"  skills.............edit/view skills" +
+            newLine+"  view...............show character overview" +
             newLine+"  inv................show inventory" +
             newLine+"  get................get new items" +
             newLine+"  add/drop...........add/drop items from inventory" +
             newLine+"  equip/dequip.......equip/dequip items in inventory" +
-            newLine+"  heal/hurt..........heal/hurt HP" +
             newLine+"  use................use items in inventory" +
-            newLine+"  spell..............edit/view spells" +
+            //newLine+"  set................edit stats" +
+            newLine+"  stats..............edit/view stats" +
+            newLine+"  edit...............edit stats" +
+            newLine+"  skills.............edit/view skills" +
+            newLine+"  ap.................edit/view ability points" +
+            newLine+"  spells..............edit/view spellbook" +
             newLine+"  spellslots.........edit/view spell slots" +
             newLine+"  charge.............recharge spell slots" +
             newLine+"  cast...............cast a spell" +
             newLine+"  learn..............learn a spell" +
             newLine+"  forget.............forget a spell" +
+            newLine+"  heal/hurt..........heal/hurt HP" +
             newLine+"  levelup............increase character level" +
             newLine+"  roll...............roll dice" +
-            newLine+"  prefs..............edit program preferences" +
             newLine+"  help...............help menu" +
             newLine+"  quit...............quit the program" +
             newLine+"Enter 'help <command_name>' for details";
