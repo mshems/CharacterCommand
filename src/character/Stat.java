@@ -5,7 +5,7 @@ import app.App;
 import java.io.Serializable;
 
 public class Stat implements Serializable {
-	private static final long serialVersionUID = App.version;
+	private static final long serialVersionUID = App.VERSION;
 	private String name;
 	private double baseVal;
 	private double bonusVal;

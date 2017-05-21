@@ -3,7 +3,7 @@ package items;
 import app.App;
 
 public class Consumable extends Item{
-	private static final long serialVersionUID = App.version;
+	private static final long serialVersionUID = App.VERSION;
 	public Consumable(String name) {
 		super(name);
 		this.setConsumable(true);

@@ -38,7 +38,6 @@ class CommandHandler{
                 break;
             case "q":
             case "quit":
-                //if(App.getYN("\033[1;33mAre you sure? Unsaved data will be lost\033[0m ")){
                 if(App.getYN("Are you sure? Unsaved data will be lost ")){
                     App.QUIT_ALL = true;
                     App.scanner.close();
@@ -57,11 +56,10 @@ class CommandHandler{
                         case "v":
                         case "view":
                             System.out.println(activeChar);
-                            //System.out.println(activeChar.getInventory());
                             break;
                         //case "set":
                         case "edit":
-                            App.set();
+                            App.edit();
                             break;
                         case "stat":
                         case "stats":
@@ -146,11 +144,7 @@ class CommandHandler{
                             break;
                     }
                 } else {
-                    //if(activeChar==null){
                         System.out.println(Message.ERROR_NO_LOAD);
-                    //} else {
-                        //System.out.println(Message.ERROR_NO_COMMAND);
-                    //}
                 }
                 break;
         }

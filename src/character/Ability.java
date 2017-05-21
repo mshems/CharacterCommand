@@ -4,7 +4,7 @@ import app.App;
 
 import java.io.Serializable;
 public class Ability extends Attribute implements Serializable{
-	private static final long serialVersionUID = App.version;
+	private static final long serialVersionUID = App.VERSION;
 	private double mod;
 	public static final String[] ABILITY_NAMES = new String[]{"STR", "DEX", "CON", "INT", "WIS", "CHA"};
 	public static final String STR = "str";

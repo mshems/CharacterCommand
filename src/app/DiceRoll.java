@@ -3,16 +3,17 @@ package app;
 import utils.Help;
 import utils.Message;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class DiceRoll{
-	private static final long serialVersionUID = App.version;
+public class DiceRoll implements Serializable{
+	private static final long serialVersionUID = App.VERSION;
 	protected int count;
 	protected int sides;
 	
-	public DiceRoll(int c, int s){
-		this.count = c;
-		this.sides = s;
+	public DiceRoll(int count, int sides){
+		this.count = count;
+		this.sides = sides;
 	}
 	
 	public int roll(){

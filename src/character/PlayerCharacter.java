@@ -1,4 +1,5 @@
 package character;
+import app.App;
 import magic.Spell;
 import magic.SpellBook;
 import magic.SpellSlot;
@@ -10,28 +11,28 @@ import java.util.LinkedHashMap;
 
 @SuppressWarnings("unused")
 public class PlayerCharacter implements Serializable{
-	/**
-	 * version 0.1.0
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = App.VERSION;
+
 	private String name;
 	private String className;
 	private String raceName;
-	private Ability spellAbility;
+	private String description;
+	private String notes;
 
 	private LinkedHashMap<String, Ability> abilities;
 	private LinkedHashMap<String, Stat> attributes;
 	private LinkedHashMap<String, Skill> skills;
 	private LinkedHashMap<String, Stat> allStats;
 	private LinkedHashMap<String, Stat> magicStats;
-
 	private Inventory inventory;
 	private SpellBook spellBook;
 	private SpellSlot[] spellSlots;
+	private Ability spellAbility;
+
 	private boolean unPrepOnCast;
 	private boolean spellcaster;
-	private String description;
-	
+	private boolean armored;
+
 	public PlayerCharacter(String name, String raceName, String className){
 		this.name=name;
 		this.className = className;
@@ -45,6 +46,7 @@ public class PlayerCharacter implements Serializable{
 		initSpellSlots();
 		unPrepOnCast = false;
 		spellcaster = false;
+		armored = false;
 	}
 	
 	private void initAbilities(){
@@ -58,12 +60,14 @@ public class PlayerCharacter implements Serializable{
 		attributes = new LinkedHashMap<>();
 		attributes.put("lvl", new Stat("Level", 1));
 		attributes.put("hp",new CounterStat("Hit Points",10));
-		attributes.put("ac",new Attribute("Armor Class",10+this.abilities.get(Ability.DEX).getMod()));
-		attributes.put("pb",new Stat ("Proficiency Bonus", 2));
-		attributes.put("ini", new Stat("Initiative",this.abilities.get(Ability.DEX).getMod()));
-		attributes.put("spd", new Stat("Speed",30));
 		attributes.put("nac",new Stat("Natural Armor", 10));
+		attributes.put("ac",new Attribute("Armor Class",attributes.get("nac").getBaseVal() + abilities.get(Ability.DEX).getMod()));
+		attributes.put("pb",new Stat ("Proficiency Bonus", 2));
+		attributes.put("ini", new Stat("Initiative", abilities.get(Ability.DEX).getMod()));
+		attributes.put("spd", new Stat("Speed",30));
 		attributes.put("ap", new CounterStat("Ability Points", 0));
+		attributes.put("hitdice", new CounterStat("Hit Dice", 1));
+		attributes.put("pper",new Stat ("Passive Perception",10 + abilities.get(Ability.WIS).getMod() ));
 	}
 
 	private void initAllStats(){
@@ -122,8 +126,10 @@ public class PlayerCharacter implements Serializable{
 	public void initMagicStats(Ability spellAbility){
 		this.spellAbility = spellAbility;
 		magicStats = new LinkedHashMap<>();
-		magicStats.put("ssdc", new Stat("Spell Save DC", 8+attributes.get(Attribute.PB).getTotal()+spellAbility.getMod()));
+		magicStats.put("ssdc", new Stat("Spell Save DC", 8 + attributes.get(Attribute.PB).getTotal()+spellAbility.getMod()));
 		magicStats.put("sam", new Stat("Spell Attack Mod",attributes.get(Attribute.PB).getTotal()+spellAbility.getMod()));
+		allStats.put("ssdc", magicStats.get("ssdc"));
+		allStats.put("sam", magicStats.get("sam"));
 	}
 
 
@@ -142,9 +148,13 @@ public class PlayerCharacter implements Serializable{
 	}
 
 	public void updateStats(){
-		allStats.get("ini").setBaseVal(abilities.get(Ability.DEX).getMod());
-		magicStats.get("ssdc").setBaseVal(8+attributes.get(Attribute.PB).getTotal()+spellAbility.getMod());
-		magicStats.get("sam").setBaseVal(attributes.get(Attribute.PB).getTotal()+spellAbility.getMod());
+		attributes.get("ini").setBaseVal(abilities.get(Ability.DEX).getMod());
+		attributes.get("pper").setBaseVal(10 + abilities.get(Ability.WIS).getMod());
+		attributes.get("hitdice").setBaseVal(attributes.get("lvl").getTotal());
+		if(spellcaster){
+			magicStats.get("ssdc").setBaseVal(8 + attributes.get(Attribute.PB).getTotal() + spellAbility.getMod());
+			magicStats.get("sam").setBaseVal(attributes.get(Attribute.PB).getTotal() + spellAbility.getMod());
+		}
 	}
 	
 	public void heal(int amt){
@@ -258,12 +268,13 @@ public class PlayerCharacter implements Serializable{
         String newLine = System.lineSeparator();
         //String s=String.format("\033[1;33m%s -- Level %.0f %s\033[0m\n", name, level.getTotal(), className);
 		String s=String.format("%s -- Level %.0f %s %s"+newLine, name, attributes.get("lvl").getTotal(), raceName, className);
-		s+=String.format("%s  %s  INI: %+.0f  SPD: %+.0f  PB: %+.0f"+newLine,
+		s+=String.format("%s  %s"+newLine+"INI: %+.0f  SPD: %+.0f  PB: %+.0f  PER: %.0f"+newLine,
 				attributes.get("hp"),
 				attributes.get("ac"),
 				attributes.get("ini").getTotal(),
 				attributes.get("spd").getTotal(),
-				attributes.get("pb").getTotal()
+				attributes.get("pb").getTotal(),
+				attributes.get("pper").getTotal()
 		);
 		if(attributes.get("ap").getTotal()>0){
 			s+=attributes.get("ap")+"  ";
@@ -378,5 +389,13 @@ public class PlayerCharacter implements Serializable{
 
 	public Stat getStat(String statName){
 		return this.allStats.get(statName.toLowerCase());
+	}
+
+	public boolean isArmored(){
+		return armored;
+	}
+
+	public void setArmored(boolean armored){
+		this.armored = armored;
 	}
 }

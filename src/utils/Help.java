@@ -143,8 +143,7 @@ public class Help{
             newLine+"  -l, --level <level_num>" +
             newLine+"  -m, --max <max_slots>" +
             newLine+"  --help";
-    public static final String SET="Usage:" +
-            //newLine+"  set [options]" +
+    public static final String EDIT="Usage:" +
             newLine+"  edit [options]" +
             newLine+"Options:" +
             newLine+"  -v, --value <new_value>" +
@@ -240,8 +239,7 @@ public class Help{
                 System.out.println(DROP);
                 break;
             case "edit":
-            //case "set":
-                System.out.println(SET);
+                System.out.println(EDIT);
                 break;
             case "skill":
             case "skills":
@@ -309,7 +307,6 @@ public class Help{
             newLine+"  add/drop...........add/drop items from inventory" +
             newLine+"  equip/dequip.......equip/dequip items in inventory" +
             newLine+"  use................use items in inventory" +
-            //newLine+"  set................edit stats" +
             newLine+"  stats..............edit/view stats" +
             newLine+"  edit...............edit stats" +
             newLine+"  skills.............edit/view skills" +

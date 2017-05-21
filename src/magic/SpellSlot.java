@@ -4,7 +4,7 @@ import app.App;
 import character.CounterStat;
 
 public class SpellSlot extends CounterStat{
-	private static final long serialVersionUID = App.version;
+	private static final long serialVersionUID = App.VERSION;
 	private int level;
 	
 	public SpellSlot(int level, int maxVal){

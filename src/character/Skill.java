@@ -5,7 +5,7 @@ import app.App;
 import java.io.Serializable;
 
 public class Skill implements Serializable {
-	private static final long serialVersionUID = App.version;
+	private static final long serialVersionUID = App.VERSION;
 	private String skillName;
 	private Ability skillAbility;
 	private double skillMod;

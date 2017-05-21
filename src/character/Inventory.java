@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class Inventory implements Serializable {
-	private static final long serialVersionUID = App.version;
+	private static final long serialVersionUID = App.VERSION;
 	private LinkedHashMap<String, Item> contents;
 	private ArrayList<Item> currency;
 	

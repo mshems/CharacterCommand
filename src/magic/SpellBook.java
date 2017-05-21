@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 
 public class SpellBook implements Serializable {
-	private static final long serialVersionUID = App.version;
+	private static final long serialVersionUID = App.VERSION;
 	private LinkedHashMap<String, Spell> spellIndex;
 	private ArrayList<Spell> spellList;
 	

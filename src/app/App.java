@@ -1,8 +1,8 @@
 package app;
 
 import character.*;
-import magic.*;
 import items.*;
+import magic.*;
 import utils.*;
 
 import java.util.*;
@@ -12,7 +12,7 @@ public class App {
 	/**
 	 * version 0.2.3
 	 */
-	public static final long version = 203L;
+	public static final long VERSION = 203L;
 	private static String newLine = System.lineSeparator();
 	static boolean QUIT_ALL = false;
     static PlayerCharacter activeChar;
@@ -20,10 +20,9 @@ public class App {
 	static Scanner scanner;
 	static String[] input;
     static LinkedList<String> tokens;
-
 	static PropertiesHandler propertiesHandler;
-	private static CommandHandler commandHandler;
     static IOHandler ioHandler;
+	private static CommandHandler commandHandler;
 
 	public static void main(String[] args){
 		String prompt;
@@ -49,7 +48,6 @@ public class App {
                 prompt = "CharacterCommand> ";
             }
             getCommand(prompt);
-			//System.out.println();
 			commandHandler.doCommand(tokens.peek(), activeChar);
 		}
 
@@ -74,7 +72,7 @@ public class App {
     private static void initApp() {
     	propertiesHandler = new PropertiesHandler();
         commandHandler = new CommandHandler();
-		ioHandler= new IOHandler();
+		ioHandler = new IOHandler();
         IOHandler.checkDirs();
         tokens = new LinkedList<>();
         scanner = new Scanner(System.in);
@@ -129,7 +127,7 @@ public class App {
 		activeChar = c;
 	}
 
-/**STATS**************************************************************************************************************/
+/**STATS***************************************************************************************************************/
 	static void stats(){
 		String command = tokens.pop();
 		if(!tokens.isEmpty()){
@@ -151,7 +149,7 @@ public class App {
 						break;
 					case "e":
 					case "edit":
-						set();
+						edit();
 						exit = true;
 						break;
 					case "cancel":
@@ -170,7 +168,7 @@ public class App {
 			switch(tokens.peek()){
 				case "-e":
 				case "--edit":
-					set();
+					edit();
 					view = false;
 					//tokens.pop();
 					//edit = true;
@@ -200,22 +198,23 @@ public class App {
 		}
 	}
 
-
-	static void set(){
+/**EDIT***************************************************************************************************************/
+	static void edit(){
 		String command = tokens.pop();
 		if (!tokens.isEmpty()){
-			set(command);
+			edit(command);
 		} else {
 			Stat stat = getStatByName();
 			if(stat!=null){
 				int val = getValidInt(stat.getName() + " value: ");
 				stat.setBaseVal(val);
 				activeChar.updateStats();
+				System.out.println("Updated "+stat.getName());
 			}
 		}
 	}
 
-	private static void set(String command){
+	private static void edit(String command){
 		StringBuilder nameBuilder = new StringBuilder();
 		//Integer bonus = null;
 		Integer value = null;
@@ -254,7 +253,7 @@ public class App {
 			}
 		}
 		if(help){
-			System.out.println(Help.SET);
+			System.out.println(Help.EDIT);
 		} else {
 			String statName = nameBuilder.toString().trim();
 			Stat stat = activeChar.getStat(statName);
@@ -276,7 +275,7 @@ public class App {
 		}
 	}
 
-
+/**AP******************************************************************************************************************/
 	static void abilityPoints(){
 		String command = tokens.pop();
 		if (!tokens.isEmpty()){
@@ -293,18 +292,21 @@ public class App {
 					case "use":
 						amount = getValidInt("Ability Points to use: ");
 						((CounterStat) activeChar.getStat("ap")).countDown(amount);
+						System.out.println("Used "+amount+" ability points");
 						exit = true;
 						break;
 					case "g":
 					case "get":
 						amount = getValidInt("Ability Points gained: ");
 						((CounterStat) activeChar.getStat("ap")).countUp(amount);
+						System.out.println("Gained "+amount+" ability points");
 						exit = true;
 						break;
 					case "s":
 					case "set":
 						amount = getValidInt("Ability Points maximum: ");
 						((CounterStat) activeChar.getStat("ap")).setMaxVal(amount);
+						System.out.println("Ability Point maximum now "+amount);
 						exit = true;
 						break;
 					case "cancel":
@@ -369,10 +371,13 @@ public class App {
 				if (count != null){
 					if (use){
 						((CounterStat) activeChar.getStat("ap")).countDown(count);
+						System.out.println("Used "+count+" ability points");
 					} else if (get){
 						((CounterStat) activeChar.getStat("ap")).countUp(count);
+						System.out.println("Gained "+count+" ability points");
 					} else if (set){
 						((CounterStat) activeChar.getStat("ap")).setMaxVal(count);
+						System.out.println("Ability Point maximum now "+count);
 					} else {
 						System.out.println(Message.ERROR_SYNTAX);
 					}
@@ -1220,11 +1225,17 @@ public class App {
 			if(item!=null){
 				if(item.isEquippable()){
 					if (command.equalsIgnoreCase("equip")){
-						activeChar.equip(item);
-						System.out.println(item.getName()+" equipped");
+						if(!item.isEquipped()){
+							activeChar.equip(item);
+						} else {
+							System.out.println("ERROR: Item already equipped");
+						}
 					} else {
-						activeChar.dequip(item);
-						System.out.println(item.getName()+" dequipped");
+						if(item.isEquipped()){
+							activeChar.dequip(item);
+						} else {
+							System.out.println("ERROR: Item not equipped");
+						}
 					}
 				} else {
 					System.out.println(Message.ERROR_NOT_EQUIP);
@@ -1255,11 +1266,17 @@ public class App {
 			if (item!=null){
 				if (item.isEquippable()){
 					if (command.equalsIgnoreCase("equip")){
-						activeChar.equip(item);
-						System.out.println(item.getName()+" equipped");
+						if(!item.isEquipped()){
+							activeChar.equip(item);
+						} else {
+							System.out.println("ERROR: Item already equipped");
+						}
 					} else {
-						activeChar.dequip(item);
-						System.out.println(item.getName()+" dequipped");
+						if(item.isEquipped()){
+							activeChar.dequip(item);
+						} else {
+							System.out.println("ERROR: Item not equipped");
+						}
 					}
 				} else {
 					System.out.println(Message.ERROR_NOT_EQUIP);
@@ -1289,6 +1306,7 @@ public class App {
 			Integer ac = null;
             Armor.ArmorType at=null;
 			ArrayList<ItemEffect> fxList = null;
+			DiceRoll dmg = null;
 
 			System.out.println("item | equippable | weapon | armor | consumable | coin");
 			while(true){
@@ -1351,7 +1369,10 @@ public class App {
                 itemCount = getValidInt("Count: ");
 
                 if((itemType.equals("weapon"))||(itemType.equals("armor"))||(itemType.equals("equippable"))){
-                    fxList = new ArrayList<>();
+                    //TODO damage roll;
+					System.out.println("Weapon damage: ");
+					dmg = getDiceRoll();
+                	fxList = new ArrayList<>();
                     Stat fxTgt=null;
                     while(getYN("Add effect? ")){
                         boolean quit_get_tgt=false;
@@ -1422,6 +1443,9 @@ public class App {
 						case "weapon":
 							Weapon weapon = new Weapon(itemName, itemCount);
 							weapon.setEffects(fxList);
+							if(dmg!=null){
+								weapon.setDamage(dmg);
+							}
 							activeChar.addNewItem(weapon);
 							break;
 						case "armor":
@@ -1451,6 +1475,7 @@ public class App {
 		Integer ac=null;
 		Armor.ArmorType at=null;
 		ArrayList<ItemEffect> fxList=null;
+		DiceRoll dmg = null;
 		boolean quit = false;
 		boolean help = false;
 		
@@ -1480,7 +1505,12 @@ public class App {
 					}
 				}
 				break;
-                case "-e":
+				case "-d":
+				case "--damage":
+					tokens.pop();
+					dmg = getDiceRoll(tokens.pop());
+					break;
+				case "-e":
                 case "--enchant":
                 case "--effect":
                     if(fxList==null){
@@ -1569,7 +1599,6 @@ public class App {
 		if (itemType == null){
 			itemType = "item";
 		}
-		/*DEFAULT VALUES****************/
 
 		if (help){
             System.out.println(Help.GET);
@@ -1625,6 +1654,9 @@ public class App {
                     case "weapon":
                         Weapon weapon = new Weapon(itemName, itemCount);
                         weapon.setEffects(fxList);
+                        if(dmg!=null){
+                        	weapon.setDamage(dmg);
+						}
                         activeChar.addNewItem(weapon);
                         break;
                     case "a":
@@ -1718,14 +1750,14 @@ public class App {
 				break;
 			}
 		}
+
 		/*DEFAULT VALUES****************/
 		if (itemCount == null){
 			itemCount = 1;
 		}
-		/*DEFAULT VALUES****************/
+
 		if(!help){
 			String itemName = nameBuilder.toString().trim();
-			//if (itemCount != null || dropAll){
 				switch (itemName.toLowerCase()){
                     case "pp":
                     case "platinum":
@@ -1750,7 +1782,6 @@ public class App {
 				if (item!=null){
 					addDropItem(item, itemCount, dropAll, command);
 				}
-			//}
 		} else {
 		    if(command.equals("add")){
                 System.out.println(Help.ADD);
@@ -1909,6 +1940,30 @@ public class App {
 		}
 	}
 
+	private static DiceRoll getDiceRoll(){
+		while (true){
+			System.out.print("Dice roll: ");
+			String s = scanner.nextLine().trim();
+			if (s.matches("(\\d+d\\d+)")){
+				String[] a = s.split("d");
+				return new DiceRoll(Integer.parseInt(a[0]), Integer.parseInt(a[1]));
+			} else {
+				if(s.equalsIgnoreCase("cancel")){
+					return null;
+				}
+			}
+		}
+	}
+
+	private static DiceRoll getDiceRoll(String s){
+		if (s.matches("(\\d+d\\d+)")){
+			String[] a = s.split("d");
+			return new DiceRoll(Integer.parseInt(a[0]), Integer.parseInt(a[1]));
+		} else {
+			return null;
+		}
+	}
+
 	static int getValidInt(String message){
 		int val;
 		while (true) {
@@ -1968,52 +2023,54 @@ public class App {
     }
 
 /**TEST CHARACTER******************************************************************************************************/
-private static void makeTestCharacter(){
-    PlayerCharacter frodo;
-    frodo = new PlayerCharacter("Frodo Baggins", "Halfling", "Paladin");
-    frodo.addNewItem(new Consumable("Rations", 5));
+	private static void makeTestCharacter(){
+		PlayerCharacter frodo;
+		frodo = new PlayerCharacter("Frodo Baggins", "Halfling", "Paladin");
+		frodo.addNewItem(new Consumable("Rations", 5));
 
-	/*create some enchanted items*/
-    Weapon sting = new Weapon("Sting");
-    sting.addEffect(new ItemEffect(frodo.getStat(Ability.STR), 2));
-    frodo.addNewItem(sting);
-    sting.equip(frodo);
-    Armor mith = new Armor("Mithril Chainmail");
-    mith.addEffect(new ItemEffect(frodo.getStat(Ability.CON),2));
-    mith.setArmorType(Armor.ArmorType.L_ARMOR);
-    mith.setAC(14);
-    frodo.addNewItem(mith);
-    mith.equip(frodo);
-    Equippable ring = new Equippable("Ring of Power");
-    ring.addEffect(new ItemEffect(frodo.getStat(Attribute.HP), -5));
-    frodo.addNewItem(ring);
+		/*create some enchanted items*/
+		Weapon sting = new Weapon("Sting");
+		sting.addEffect(new ItemEffect(frodo.getStat(Ability.STR), 2));
+		sting.setDamage(new DiceRoll(1,8));
+		frodo.addNewItem(sting);
+		sting.equip(frodo);
+		Armor mith = new Armor("Mithril Chainmail");
+		mith.addEffect(new ItemEffect(frodo.getStat(Ability.CON),2));
+		mith.setArmorType(Armor.ArmorType.L_ARMOR);
+		mith.setAC(14);
+		frodo.addNewItem(mith);
+		mith.equip(frodo);
+		Equippable ring = new Equippable("Ring of Power");
+		ring.addEffect(new ItemEffect(frodo.getStat(Attribute.HP), -5));
+		frodo.addNewItem(ring);
 
-	/*learn a spell*/
-    frodo.getSpellBook().learn(new Spell("Invisibility",Spell.CANTRIP));
-	frodo.getSpellBook().learn(new Spell("Blight",3));
+		/*learn a spell*/
+		frodo.getSpellBook().learn(new Spell("Invisibility",Spell.CANTRIP));
+		frodo.getSpellBook().learn(new Spell("Blight",3));
 
-    /*get spellslots*/
-	SpellSlot[] spellSlots = new SpellSlot[]{
-			new SpellSlot(0,0),
-			new SpellSlot(1,4),
-			new SpellSlot(2,3),
-			new SpellSlot(3,2),
-			new SpellSlot(4,0),
-			new SpellSlot(5,0),
-			new SpellSlot(6,0),
-			new SpellSlot(7,0),
-			new SpellSlot(8,0),
-			new SpellSlot(9,0)
-	};
-	frodo.setSpellSlots(spellSlots);
-	frodo.initMagicStats(frodo.getAbilities().get(Ability.WIS));
-	frodo.setSpellcaster(true);
+		/*get spellslots*/
+		SpellSlot[] spellSlots = new SpellSlot[]{
+				new SpellSlot(0,0),
+				new SpellSlot(1,4),
+				new SpellSlot(2,3),
+				new SpellSlot(3,2),
+				new SpellSlot(4,0),
+				new SpellSlot(5,0),
+				new SpellSlot(6,0),
+				new SpellSlot(7,0),
+				new SpellSlot(8,0),
+				new SpellSlot(9,0)
+		};
+		frodo.setSpellSlots(spellSlots);
+		frodo.initMagicStats(frodo.getAbilities().get(Ability.WIS));
+		frodo.setSpellcaster(true);
 
-	/*Add currency*/
-    frodo.addCurrency(Inventory.indexGP, 10);
-    frodo.addCurrency(Inventory.indexSP, 35);
-    frodo.addCurrency(Inventory.indexCP, 4);
+		/*Add currency*/
+		frodo.addCurrency(Inventory.indexGP, 10);
+		frodo.addCurrency(Inventory.indexSP, 35);
+		frodo.addCurrency(Inventory.indexCP, 4);
 
-    characterList.put("frodo baggins", frodo);
-}
+		characterList.put("frodo baggins", frodo);
+		activeChar = characterList.get("frodo baggins");
+	}
 }

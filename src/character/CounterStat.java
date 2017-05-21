@@ -3,7 +3,7 @@ package character;
 import app.App;
 
 public class CounterStat extends Stat {
-	private static final long serialVersionUID = App.version;
+	private static final long serialVersionUID = App.VERSION;
 	private double currVal;
 	
 	public CounterStat(){

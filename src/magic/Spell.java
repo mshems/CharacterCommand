@@ -5,7 +5,7 @@ import app.App;
 import java.io.Serializable;
 
 public class Spell implements Comparable<Spell>, Serializable{
-	private static final long serialVersionUID = App.version;
+	private static final long serialVersionUID = App.VERSION;
 	private String spellName;
 	private int spellLevel;
 	protected boolean spellPrepared;
