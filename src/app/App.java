@@ -24,7 +24,16 @@ public class App {
 	public static void main(String[] args){
 		String prompt;
 	    initApp();
-		makeTestCharacter();
+
+	    if(args.length>0){
+			switch(args[0]){
+				case "--test":
+					makeTestCharacter();
+					break;
+				default:
+					break;
+			}
+		}
 
 		while(!QUIT_ALL){
 		    if (activeChar != null){
@@ -36,6 +45,7 @@ public class App {
                 prompt = "CharacterCommand> ";
             }
             getCommand(prompt);
+			//System.out.println();
 			commandHandler.doCommand(tokens.peek(), activeChar);
 		}
 
@@ -83,7 +93,7 @@ public class App {
             if(isValidName(name)){
                 break;
             }
-        }
+	    }
 		System.out.print("Race: ");
         String raceName = scanner.nextLine();
 		System.out.print("Class: ");
@@ -106,13 +116,90 @@ public class App {
 					c.initMagicStats(spellAbility);
 				}
 			}
+		} else {
+			c.setSpellcaster(false);
 		}
 		c.updateStats();
 		characterList.put(c.getName().toLowerCase(), c);
 		System.out.println("Created "+c.getName());
 		activeChar = c;
 	}
-	
+
+/**STATS**************************************************************************************************************/
+	static void set(){
+		String command = tokens.pop();
+		if (!tokens.isEmpty()){
+			set(command);
+		} else {
+			Stat stat = getStatByName();
+			if(stat!=null){
+				int val = getValidInt(stat.getName() + " value: ");
+				stat.setBaseVal(val);
+				activeChar.updateStats();
+			}
+		}
+	}
+
+	private static void set(String command){
+		StringBuilder nameBuilder = new StringBuilder();
+		//Integer bonus = null;
+		Integer value = null;
+		boolean help = false;
+		while (!tokens.isEmpty()){
+			switch (tokens.peek()){
+				case "-v":
+				case "--value":
+					tokens.pop();
+					if (tokens.isEmpty()){
+						System.out.println(Message.ERROR_NO_ARG+": stat value");
+					} else {
+						value = getIntToken();
+					}
+					break;
+				/*case "-b":
+				case "--bonus":
+					tokens.pop();
+					if (tokens.isEmpty()){
+						System.out.println(Message.ERROR_NO_ARG+": bonus");
+					} else {
+						bonus = getIntToken();
+					}
+					break;*/
+				case "--help":
+					help = true;
+					break;
+				default:
+					if (tokens.peek().startsWith("-")){
+						System.out.println("ERROR: Invalid flag '"+tokens.pop()+"'");
+						System.out.println("Enter 'skill --help' for help");
+					} else {
+						nameBuilder.append(tokens.pop());
+						nameBuilder.append(" ");
+					}
+					break;
+			}
+		}
+		if(help){
+			System.out.println(Help.SET);
+		} else {
+			String statName = nameBuilder.toString().trim();
+			Stat stat = activeChar.getStat(statName);
+			if(stat!=null){
+				/*if(bonus!=null){
+					stat.setBonusVal(bonus);
+					System.out.println("Updated "+stat.getName());
+				}*/
+				if(value!=null){
+					stat.setBaseVal(value);
+					activeChar.updateStats();
+					System.out.println("Updated "+stat.getName());
+				}
+			} else {
+				System.out.println(Message.MSG_NO_STAT);
+			}
+		}
+	}
+
 /**SKILLS**************************************************************************************************************/
     static void skills(){
 		String command = tokens.pop();
@@ -305,7 +392,7 @@ public class App {
 			}
 			if (!help){
 				if (level!=null){
-					activeChar.level(level);
+					activeChar.levelUp(level);
 					System.out.println(String.format("%s is now level %.0f", activeChar.getName(), activeChar.getLevel().getBaseVal()));
 				} else {
 					System.out.println("ERROR: Invalid input");
@@ -332,6 +419,7 @@ public class App {
 					System.out.println(Help.SPELLSLOTS);
 					break;
 				default:
+					System.out.println(Message.ERROR_INPUT);
 					break;
 			}
 		} else {
@@ -1569,7 +1657,7 @@ public class App {
 	private static Skill getSkillByName(){
 		Skill skill;
 		while (true){
-			System.out.println("Skill name:");
+			System.out.print("Skill name: ");
 			String skillName = scanner.nextLine().trim();
 			if(skillName.equalsIgnoreCase("cancel")){
 				return null;
@@ -1579,6 +1667,24 @@ public class App {
 					System.out.println(Message.MSG_NO_SKILL);
 				} else {
 					return skill;
+				}
+			}
+		}
+	}
+
+	private static Stat getStatByName(){
+		Stat stat;
+		while (true){
+			System.out.print("Stat name: ");
+			String skillName = scanner.nextLine().trim();
+			if(skillName.equalsIgnoreCase("cancel")){
+				return null;
+			} else {
+				stat = activeChar.getStat(skillName);
+				if (stat==null){
+					System.out.println(Message.MSG_NO_SKILL);
+				} else {
+					return stat;
 				}
 			}
 		}
@@ -1674,10 +1780,6 @@ public class App {
 		}
 	}
 
-    static String toFileName(String s){
-	    return s.replaceAll(".*[^a-zA-Z0-9)(].*", "_");
-    }
-
     private static boolean isValidName(String name){
         if(name.isEmpty() || name.matches("\\s+") || name.matches(".*[^a-zA-Z0-9)(\\s+].*")){
             System.out.println("Not a valid name");
@@ -1686,7 +1788,7 @@ public class App {
             return true;
         }
     }
-	
+
 /**TEST CHARACTER******************************************************************************************************/
 private static void makeTestCharacter(){
     PlayerCharacter frodo;

@@ -19,34 +19,34 @@ public class PlayerCharacter implements Serializable{
 	private String raceName;
 	private Stat level;
 	private Ability spellAbility;
+
 	private LinkedHashMap<String, Ability> abilities;
 	private LinkedHashMap<String, Stat> attributes;
 	private LinkedHashMap<String, Skill> skills;
 	private LinkedHashMap<String, Stat> allStats;
 	private LinkedHashMap<String, Stat> magicStats;
+
 	private Inventory inventory;
 	private SpellBook spellBook;
 	private SpellSlot[] spellSlots;
 	private boolean unPrepOnCast;
-	private boolean spellcaster=false;
+	private boolean spellcaster;
+	private String description;
 	
 	public PlayerCharacter(String name, String raceName, String className){
 		this.name=name;
 		this.className = className;
 		this.raceName = raceName;
 		level = new Stat("Level", 1);
-		initCharacter();
-	}
-	
-	private void initCharacter(){
 		inventory = new Inventory();
 		spellBook = new SpellBook();
-		unPrepOnCast = false;
 		initAbilities();
 		initAttributes();
 		initAllStats();
 		initSkills();
-		initSpellSlots();	
+		initSpellSlots();
+		unPrepOnCast = false;
+		spellcaster = false;
 	}
 	
 	private void initAbilities(){
@@ -56,19 +56,12 @@ public class PlayerCharacter implements Serializable{
 		}
 	}
 
-	public void initMagicStats(Ability spellAbility){
-		magicStats = new LinkedHashMap<>();
-		this.spellAbility = spellAbility;
-		magicStats.put("ssdc", new Stat("Spell Save DC", 8+attributes.get(Attribute.PB).getTotal()+spellAbility.getMod()));
-		magicStats.put("sam", new Stat("Spell Attack Mod",attributes.get(Attribute.PB).getTotal()+spellAbility.getMod()));
-	}
-	
 	private void initAttributes(){
 		attributes = new LinkedHashMap<>();
-		attributes.put("hp",new CounterStat("HP",10));
-		attributes.put("ac",new Attribute("AC",10+this.abilities.get(Ability.DEX).getMod()));
+		attributes.put("hp",new CounterStat("Hit Points",10));
+		attributes.put("ac",new Attribute("Armor Class",10+this.abilities.get(Ability.DEX).getMod()));
 		attributes.put("pb",new Stat ("Proficiency Bonus", 2));
-		attributes.put("ini", new Stat("INI",this.abilities.get(Ability.DEX).getMod()));
+		attributes.put("ini", new Stat("Initiative",this.abilities.get(Ability.DEX).getMod()));
 		attributes.put("spd", new Stat("Speed",30));
 		attributes.put("nac",new Stat("Natural Armor", 10));
 	}
@@ -125,6 +118,34 @@ public class PlayerCharacter implements Serializable{
 		skills.put("performance",new Skill("Performance",this.abilities.get(Ability.CHA),this));
 		skills.put("persuasion",new Skill("Persuasion",this.abilities.get(Ability.CHA),this));
 	}
+
+	public void initMagicStats(Ability spellAbility){
+		this.spellAbility = spellAbility;
+		magicStats = new LinkedHashMap<>();
+		magicStats.put("ssdc", new Stat("Spell Save DC", 8+attributes.get(Attribute.PB).getTotal()+spellAbility.getMod()));
+		magicStats.put("sam", new Stat("Spell Attack Mod",attributes.get(Attribute.PB).getTotal()+spellAbility.getMod()));
+	}
+
+
+	private void updateProficiency(){
+		double lvl = level.getTotal();
+		double pb = Math.floor(lvl/4)+2;
+		this.attributes.get(Attribute.PB).setBaseVal(pb);
+		updateSkills();
+		updateStats();
+	}
+
+	private void updateSkills(){
+		for(Skill skill:skills.values()){
+			skill.update(this);
+		}
+	}
+
+	public void updateStats(){
+		allStats.get("ini").setBaseVal(abilities.get(Ability.DEX).getMod());
+		magicStats.get("ssdc").setBaseVal(8+attributes.get(Attribute.PB).getTotal()+spellAbility.getMod());
+		magicStats.get("sam").setBaseVal(attributes.get(Attribute.PB).getTotal()+spellAbility.getMod());
+	}
 	
 	public void heal(int amt){
 		CounterStat hp = (CounterStat)this.attributes.get(Attribute.HP);
@@ -147,26 +168,9 @@ public class PlayerCharacter implements Serializable{
 		level.incrementBaseVal();
 		updateProficiency();
 	}
-	public void level(int lvl){
+	public void levelUp(int lvl){
 		level.setBaseVal(lvl);
 		updateProficiency();
-	}
-	
-	private void updateProficiency(){
-		double lvl = level.getTotal();
-		double pb = Math.floor(lvl/4)+2;
-		this.attributes.get(Attribute.PB).setBaseVal(pb);
-		updateSkills();
-	}
-
-	private void updateSkills(){
-		for(Skill skill:skills.values()){
-			skill.update(this);
-		}
-	}
-
-	public void updateStats(){
-		allStats.get("ini").setBaseVal(abilities.get(Ability.DEX).getMod());
 	}
 	
 	public void equip(Item i){
@@ -222,98 +226,6 @@ public class PlayerCharacter implements Serializable{
 		}
 		this.inventory.remove(i);
 	}
-	
-    public String getName(){
-        return name;
-    }
-
-    public void setName(String name){
-        this.name = name;
-    }
-
-    public String getClassName(){
-        return className;
-    }
-
-    public void setClassName(String className){
-        this.className = className;
-    }
-
-    public Stat getLevel(){
-        return level;
-    }
-
-    public void setLevel(Stat level){
-        this.level = level;
-    }
-
-	public boolean isSpellcaster(){
-		return spellcaster;
-	}
-
-	public void setSpellcaster(boolean spellcaster){
-		this.spellcaster = spellcaster;
-	}
-
-	public LinkedHashMap<String, Ability> getAbilities(){
-        return abilities;
-    }
-
-    public LinkedHashMap<String, Stat> getAttributes(){
-        return attributes;
-    }
-
-    public Skill getSkill(String skillName){
-    	return this.skills.get(skillName.toLowerCase());
-	}
-
-    public Item getItem(String itemName){
-        return this.inventory.get(itemName.toLowerCase());
-    }
-
-    public Item getCurrency(int coin){
-        return this.inventory.getCurrency(coin);
-    }
-
-    public Inventory getInventory(){
-        return this.inventory;
-    }
-
-    public ArrayList<Item> getCurrency(){
-        return this.inventory.getCurrency();
-    }
-
-    public Spell getSpell(String spellName){
-        return this.spellBook.get(spellName.toLowerCase());
-    }
-
-    public SpellBook getSpellBook(){
-        return spellBook;
-    }
-
-    public SpellSlot[] getSpellSlots(){
-        return spellSlots;
-    }
-
-    public void setSpellSlots(SpellSlot[] spellSlots){
-    	this.spellSlots = spellSlots;
-	}
-
-	public void setSpellAbility(Ability spellAbility){
-    	this.spellAbility = spellAbility;
-	}
-
-    public boolean isUnPrepOnCast(){
-        return unPrepOnCast;
-    }
-
-    public void setUnPrepOnCast(boolean unPrepOnCast){
-        this.unPrepOnCast = unPrepOnCast;
-    }
-
-    public Stat getStat(String statName){
-        return this.allStats.get(statName.toLowerCase());
-    }
 
     public String spellStatsToString(){
 		String newLine = System.lineSeparator();
@@ -346,7 +258,12 @@ public class PlayerCharacter implements Serializable{
         String newLine = System.lineSeparator();
         //String s=String.format("\033[1;33m%s -- Level %.0f %s\033[0m\n", name, level.getTotal(), className);
 		String s=String.format("%s -- Level %.0f %s %s"+newLine, name, level.getTotal(), raceName, className);
-		s+=String.format("%s  %s  INI: %+.0f  SPD: %+.0f"+newLine, attributes.get("hp"), attributes.get("ac"), attributes.get("ini").getTotal(), attributes.get("spd").getTotal());
+		s+=String.format("%s  %s  INI: %+.0f  SPD: %+.0f PB: %+.0f"+newLine,
+				attributes.get("hp"),
+				attributes.get("ac"),
+				attributes.get("ini").getTotal(),
+				attributes.get("spd").getTotal(),
+				attributes.get("pb").getTotal());
 		if(spellcaster){
 			s+=spellStatsToString()+newLine;
 		}
@@ -370,4 +287,96 @@ public class PlayerCharacter implements Serializable{
 		}
         return s;
     }
+
+	public String getName(){
+		return name;
+	}
+
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public String getClassName(){
+		return className;
+	}
+
+	public void setClassName(String className){
+		this.className = className;
+	}
+
+	public Stat getLevel(){
+		return level;
+	}
+
+	public void setLevel(Stat level){
+		this.level = level;
+	}
+
+	public boolean isSpellcaster(){
+		return spellcaster;
+	}
+
+	public void setSpellcaster(boolean spellcaster){
+		this.spellcaster = spellcaster;
+	}
+
+	public LinkedHashMap<String, Ability> getAbilities(){
+		return abilities;
+	}
+
+	public LinkedHashMap<String, Stat> getAttributes(){
+		return attributes;
+	}
+
+	public Skill getSkill(String skillName){
+		return this.skills.get(skillName.toLowerCase());
+	}
+
+	public Item getItem(String itemName){
+		return this.inventory.get(itemName.toLowerCase());
+	}
+
+	public Item getCurrency(int coin){
+		return this.inventory.getCurrency(coin);
+	}
+
+	public Inventory getInventory(){
+		return this.inventory;
+	}
+
+	public ArrayList<Item> getCurrency(){
+		return this.inventory.getCurrency();
+	}
+
+	public Spell getSpell(String spellName){
+		return this.spellBook.get(spellName.toLowerCase());
+	}
+
+	public SpellBook getSpellBook(){
+		return spellBook;
+	}
+
+	public SpellSlot[] getSpellSlots(){
+		return spellSlots;
+	}
+
+	public void setSpellSlots(SpellSlot[] spellSlots){
+		this.spellSlots = spellSlots;
+	}
+
+	public void setSpellAbility(Ability spellAbility){
+		this.spellAbility = spellAbility;
+	}
+
+	public boolean isUnPrepOnCast(){
+		return unPrepOnCast;
+	}
+
+	public void setUnPrepOnCast(boolean unPrepOnCast){
+		this.unPrepOnCast = unPrepOnCast;
+	}
+
+	public Stat getStat(String statName){
+		return this.allStats.get(statName.toLowerCase());
+	}
 }

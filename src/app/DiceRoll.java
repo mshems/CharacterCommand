@@ -37,7 +37,6 @@ public class DiceRoll{
 				return 0;
 			} else {
 				String token = App.tokens.pop();
-				//TODO: command-line argument version?
 				if(token.matches("(\\d+d\\d+)|(\\d+d\\d+[\\+|\\-]\\d+)")){
 					String[] a = App.input[1].split("(d)|(?=[+|-])");
 					num = Integer.parseInt(a[0]);

@@ -20,4 +20,5 @@ public class Message{
 	public static final String MSG_NO_ITEM = "No item by that name";
     public static final String MSG_NO_SPELL = "No spell by that name";
     public static final String MSG_NO_SKILL = "No skill by that name";
+	public static final String MSG_NO_STAT = "No stat by that name";
 }

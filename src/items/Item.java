@@ -7,16 +7,17 @@ import java.io.Serializable;
 public class Item implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Integer value;
 	private String name;
-	private String description="";
 	private int count;
+	private String description="";
+	private Integer value;
+
 	private boolean equipped = false;
 	private boolean equippable;
 	private boolean consumable;
 
 	public static final String[] types = new String[] {
-		"item","consumable","equippable","weapon","armor","c","i","e","w","a"
+			"item","consumable","equippable","weapon","armor","c","i","e","w","a"
 	};
 	
 	public Item(String name){

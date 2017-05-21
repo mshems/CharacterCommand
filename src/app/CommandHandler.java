@@ -27,6 +27,7 @@ public class CommandHandler{
             case "prefs":
                 App.propertiesHandler.prefs();
                 break;
+            case "h":
             case "help":
                 App.tokens.pop();
                 if(!App.tokens.isEmpty()){
@@ -57,7 +58,11 @@ public class CommandHandler{
                             System.out.println(activeChar);
                             System.out.println(activeChar.getInventory());
                             break;
+                        case "set":
+                            App.set();
+                            break;
                         case "s":
+                        case "stat":
                         case "stats":
                             System.out.println(activeChar);
                             break;
@@ -68,6 +73,8 @@ public class CommandHandler{
                         case "use":
                             App.use();
                             break;
+                        case "ss":
+                        case "spellslot":
                         case "spellslots":
                             if(App.checkCaster(App.activeChar)){
                                 App.spellSlots();
@@ -102,6 +109,7 @@ public class CommandHandler{
                                 App.cast();
                             }
                             break;
+                        case "lvl":
                         case "levelup":
                             App.levelUp();
                             break;

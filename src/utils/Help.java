@@ -134,15 +134,19 @@ public class Help{
             newLine+"  spellslots [options]" +
             newLine+"Options:" +
             newLine+"  --charge" +
-            newLine+"  --set [options]" +
-            newLine+"    -l, --level <level_num>" +
-            newLine+"    -m, --max <max_slots>" +
+            newLine+"  --set" +
             newLine+"  --help";
     public static final String SETSLOTS="Usage:" +
             newLine+"  spellslots --set [options]" +
             newLine+"Options:" +
             newLine+"  -l, --level <level_num>" +
             newLine+"  -m, --max <max_slots>" +
+            newLine+"  --help";
+    public static final String SET="Usage:" +
+            newLine+"  set [options]" +
+            newLine+"Options:" +
+            newLine+"  -v, --value <new_value>" +
+            //newLine+"  -b, --bonus <new_value>" +
             newLine+"  --help";
     public static final String CHARGE="Usage:"+
             newLine+"  cast [options]" +
@@ -200,7 +204,7 @@ public class Help{
             case "n":
             case "new":
                 System.out.println(NEW);
-            break;
+                break;
             case "v":
             case "view":
                 System.out.println(VIEW);
@@ -223,6 +227,9 @@ public class Help{
                 break;
             case "drop":
                 System.out.println(DROP);
+                break;
+            case "set":
+                System.out.println(SET);
                 break;
             case "skill":
             case "skills":
@@ -281,6 +288,7 @@ public class Help{
             newLine+"  save...............save character to a .data file" +
             newLine+"  new................create a new character" +
             newLine+"  view...............show overview" +
+            newLine+"  set................edit stats" +
             newLine+"  stats..............show stats" +
             newLine+"  skills.............edit/view skills" +
             newLine+"  inv................show inventory" +
