@@ -216,7 +216,7 @@ public class App {
 
 	private static void edit(String command){
 		StringBuilder nameBuilder = new StringBuilder();
-		//Integer bonus = null;
+		Integer bonus = null;
 		Integer value = null;
 		boolean help = false;
 		while (!tokens.isEmpty()){
@@ -230,7 +230,7 @@ public class App {
 						value = getIntToken();
 					}
 					break;
-				/*case "-b":
+				case "-b":
 				case "--bonus":
 					tokens.pop();
 					if (tokens.isEmpty()){
@@ -238,7 +238,7 @@ public class App {
 					} else {
 						bonus = getIntToken();
 					}
-					break;*/
+					break;
 				case "--help":
 					help = true;
 					break;
@@ -259,10 +259,10 @@ public class App {
 			Stat stat = activeChar.getStat(statName);
 			if(value!=null){
 				if(stat!=null){
-					/*if(bonus!=null){
+					if(bonus!=null){
 						stat.setBonusVal(bonus);
 						System.out.println("Updated "+stat.getName());
-					}*/
+					}
 						stat.setBaseVal(value);
 						activeChar.updateStats();
 						System.out.println("Updated "+stat.getName());
@@ -322,6 +322,7 @@ public class App {
 		boolean get = false;
 		boolean set = false;
 		boolean help = false;
+		boolean all = false;
 		Integer count = 1;
 		while(!tokens.isEmpty()){
 			switch (tokens.peek()){
@@ -355,6 +356,10 @@ public class App {
 						count = getIntToken();
 					}
 					break;
+				case "--all":
+					tokens.pop();
+					all = true;
+					break;
 				case "--help":
 					tokens.pop();
 					help = true;
@@ -365,22 +370,31 @@ public class App {
 					}
 					break;
 			}
-			if(help){
-				System.out.println(Help.AP);
-			} else {
-				if (count != null){
-					if (use){
-						((CounterStat) activeChar.getStat("ap")).countDown(count);
-						System.out.println("Used "+count+" ability points");
-					} else if (get){
-						((CounterStat) activeChar.getStat("ap")).countUp(count);
-						System.out.println("Gained "+count+" ability points");
-					} else if (set){
-						((CounterStat) activeChar.getStat("ap")).setMaxVal(count);
-						System.out.println("Ability Point maximum now "+count);
+		}
+		if(help){
+			System.out.println(Help.AP);
+		} else {
+			if (count != null){
+				CounterStat ap  = ((CounterStat) activeChar.getStat("ap"));
+				if (use){
+					if(all){
+						ap.setCurrVal(0);
 					} else {
-						System.out.println(Message.ERROR_SYNTAX);
+						ap.countDown(count);
+						System.out.println("Used " + count + " ability points");
 					}
+				} else if (get){
+					if(all){
+						ap.setCurrVal(ap.getMaxVal());
+					} else {
+						ap.countUp(count);
+						System.out.println("Gained " + count + " ability points");
+					}
+				} else if (set){
+					ap.setMaxVal(count);
+					System.out.println("Ability Point maximum now "+count);
+				} else {
+					System.out.println(Message.ERROR_SYNTAX);
 				}
 			}
 		}
@@ -1369,7 +1383,6 @@ public class App {
                 itemCount = getValidInt("Count: ");
 
                 if((itemType.equals("weapon"))||(itemType.equals("armor"))||(itemType.equals("equippable"))){
-                    //TODO damage roll;
 					System.out.println("Weapon damage: ");
 					dmg = getDiceRoll();
                 	fxList = new ArrayList<>();

@@ -146,8 +146,8 @@ public class Help{
     public static final String EDIT="Usage:" +
             newLine+"  edit [options]" +
             newLine+"Options:" +
-            newLine+"  -v, --value <new_value>" +
-            //newLine+"  -b, --bonus <new_value>" +
+            newLine+"  -v, --value <value>" +
+            newLine+"  -b, --bonus <value>" +
             newLine+"  --help";
     public static final String CHARGE="Usage:"+
             newLine+"  cast [options]" +
