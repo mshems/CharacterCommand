@@ -268,7 +268,7 @@ public class PlayerCharacter implements Serializable{
         String newLine = System.lineSeparator();
         //String s=String.format("\033[1;33m%s -- Level %.0f %s\033[0m\n", name, level.getTotal(), className);
 		String s=String.format("%s -- Level %.0f %s %s"+newLine, name, attributes.get("lvl").getTotal(), raceName, className);
-		s+=String.format("%s  %s"+newLine+"INI: %+.0f  SPD: %+.0f  PB: %+.0f  PER: %.0f"+newLine,
+		s+=String.format("%s  %s"+newLine+"INI: %+.0f  SPD: %.0f  PB: %+.0f  PER: %.0f"+newLine,
 				attributes.get("hp"),
 				attributes.get("ac"),
 				attributes.get("ini").getTotal(),

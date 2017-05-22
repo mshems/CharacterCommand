@@ -13,6 +13,7 @@ public class App {
 	 * version 0.2.3
 	 */
 	public static final long VERSION = 203L;
+	private static final String version = "CharacterCommand v0.2.3";
 	private static String newLine = System.lineSeparator();
 	static boolean QUIT_ALL = false;
     static PlayerCharacter activeChar;
@@ -70,7 +71,8 @@ public class App {
 
 /**INITIALIZATION******************************************************************************************************/
     private static void initApp() {
-    	propertiesHandler = new PropertiesHandler();
+		System.out.println("---"+version+"---");
+		propertiesHandler = new PropertiesHandler();
         commandHandler = new CommandHandler();
 		ioHandler = new IOHandler();
         IOHandler.checkDirs();
@@ -379,6 +381,7 @@ public class App {
 				if (use){
 					if(all){
 						ap.setCurrVal(0);
+						System.out.println("Used all ability points");
 					} else {
 						ap.countDown(count);
 						System.out.println("Used " + count + " ability points");
@@ -386,6 +389,7 @@ public class App {
 				} else if (get){
 					if(all){
 						ap.setCurrVal(ap.getMaxVal());
+						System.out.println("Gained all ability points");
 					} else {
 						ap.countUp(count);
 						System.out.println("Gained " + count + " ability points");
@@ -1440,19 +1444,23 @@ public class App {
 				}
                 if(!quit_get){
 					switch (itemType){
+						case "i":
 						case "item":
 							Item item = new Item(itemName, itemCount);
 							activeChar.addNewItem(item);
 							break;
+						case "c":
 						case "consumable":
 							Consumable consumable = new Consumable(itemName, itemCount);
 							activeChar.addNewItem(consumable);
 							break;
+						case "e":
 						case "equippable":
 							Equippable equippable = new Equippable(itemName, itemCount);
 							equippable.setEffects(fxList);
 							activeChar.addNewItem(equippable);
 							break;
+						case "w":
 						case "weapon":
 							Weapon weapon = new Weapon(itemName, itemCount);
 							weapon.setEffects(fxList);
@@ -1461,6 +1469,7 @@ public class App {
 							}
 							activeChar.addNewItem(weapon);
 							break;
+						case "a":
 						case "armor":
 							Armor armor = new Armor(itemName, itemCount);
 							armor.setEffects(fxList);
