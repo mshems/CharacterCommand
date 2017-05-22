@@ -25,8 +25,8 @@ public class App {
     static IOHandler ioHandler;
 	private static CommandHandler commandHandler;
 
+
 	public static void main(String[] args){
-		String prompt;
 	    initApp();
 
 	    if(args.length>0){
@@ -38,6 +38,8 @@ public class App {
 					break;
 			}
 		}
+
+        String prompt;
 
 		while(!QUIT_ALL){
 		    if (activeChar != null){
@@ -707,6 +709,7 @@ public class App {
 		}
 	}
 
+/**CHARGE**************************************************************************************************************/
 	private static void charge(String command){
 		boolean all=false;
 		boolean help=false;
@@ -799,7 +802,6 @@ public class App {
 	}
 
 
-
 /**SPELLS**************************************************************************************************************/
 	static void spells(){
 		tokens.pop();
@@ -833,7 +835,6 @@ public class App {
 	}
 
 /**LEARN***************************************************************************************************************/
-
     static void learn(){
 		String command = tokens.pop();
 		if(!tokens.isEmpty()){

@@ -47,9 +47,8 @@ public class PropertiesHandler{
                     }
                 }
             }
-        } else {
-            readProperties();
         }
+        readProperties();
     }
 
     private void readProperties(){
