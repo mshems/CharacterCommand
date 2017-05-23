@@ -92,15 +92,17 @@ public class IOHandler{
     }
 
     /**IMPORT**************************************************************************************************************/
-    void export(){
+    boolean export(){
         App.tokens.pop();
         PlayerCharacter pc=null;
         String characterName=null;
         if(!App.tokens.isEmpty()){
             if(App.tokens.contains("--help")){
                 System.out.println(Help.EXPORT);
+                return true;
             } else if (App.tokens.contains("--all")){
                 exportAll();
+                return true;
             } else {
                 StringBuilder nameBuilder = new StringBuilder();
                 while (!App.tokens.isEmpty()) {
@@ -127,6 +129,7 @@ public class IOHandler{
         } else {
             System.out.println(Message.ERROR_NO_CHAR);
         }
+        return true;
     }
 
     private void exportAll() {
