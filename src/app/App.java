@@ -23,8 +23,8 @@ public class App {
     static LinkedList<String> tokens;
 	static PropertiesHandler propertiesHandler;
     static IOHandler ioHandler;
-	private static CommandHandler commandHandler;
-
+    static CommandHandler commandHandler;
+    private static CTerm terminal;
 
 	public static void main(String[] args){
 	    initApp();
@@ -44,14 +44,18 @@ public class App {
 		while(!QUIT_ALL){
 		    if (activeChar != null){
 				prompt = "CharacterCommand @ "+activeChar.getName()+"> ";
+
 				if(propertiesHandler.isViewAlways()){
 					System.out.println(activeChar);
 				}
 			} else {
                 prompt = "CharacterCommand> ";
             }
-            getCommand(prompt);
-			commandHandler.doCommand(tokens.peek(), activeChar);
+            terminal.setPrompt(prompt);
+
+            //getCommand(prompt);
+			//commandHandler.doCommand(tokens.peek(), activeChar);
+
 		}
 
 		if(activeChar==null){
@@ -62,7 +66,7 @@ public class App {
 		propertiesHandler.writeProperties();
 	}
 
-/**GET COMMAND*********************************************************************************************************/
+/**GETTING COMMAND*****************************************************************************************************/
 	private static void getCommand(String prompt){
         System.out.print(prompt);
         input = scanner.nextLine()
@@ -73,7 +77,7 @@ public class App {
 
 /**INITIALIZATION******************************************************************************************************/
     private static void initApp() {
-		System.out.println("---"+version+"---");
+		//System.out.println("---"+version+"---");
 		propertiesHandler = new PropertiesHandler();
         commandHandler = new CommandHandler();
 		ioHandler = new IOHandler();
@@ -88,11 +92,24 @@ public class App {
         		activeChar = characterList.get(key);
 			}
 		}
+		terminal = new CTerm();
+        String prompt;
+        if (activeChar != null){
+            prompt = "CharacterCommand @ "+activeChar.getName()+"> ";
+
+            if(propertiesHandler.isViewAlways()){
+                System.out.println(activeChar);
+            }
+        } else {
+            prompt = "CharacterCommand> ";
+        }
+        terminal.setPrompt(prompt);
+        terminal.start();
 	}
 
 /**CREATE CHARACTER****************************************************************************************************/
 	static void createCharacter(){
-        String name;
+        /*String name;
 	    while(true) {
             System.out.print("Character name: ");
             name = scanner.nextLine().trim();
@@ -128,12 +145,13 @@ public class App {
 		c.updateStats();
 		characterList.put(c.getName().toLowerCase(), c);
 		System.out.println("Created "+c.getName());
-		activeChar = c;
+		activeChar = c;*/
+        terminal.println("new");
 	}
 
 /**STATS***************************************************************************************************************/
 	static void stats(){
-		String command = tokens.pop();
+		/*String command = tokens.pop();
 		if(!tokens.isEmpty()){
 			stats(command);
 		} else {
@@ -161,11 +179,12 @@ public class App {
 						break;
 				}
 			}
-		}
+		}*/
+		terminal.print("stats");
 	}
 
 	private static void stats(String command){
-		StringBuilder nameBuilder = new StringBuilder();
+		/*StringBuilder nameBuilder = new StringBuilder();
 		boolean help = false;
 		boolean view = true;
 		while(!tokens.isEmpty()){
@@ -199,12 +218,13 @@ public class App {
 			if (stat != null && view){
 				System.out.println(stat.detailString());
 			}
-		}
+		}*/
+		terminal.print("stats-options");
 	}
 
 /**EDIT***************************************************************************************************************/
 	static void edit(){
-		String command = tokens.pop();
+		/*String command = tokens.pop();
 		if (!tokens.isEmpty()){
 			edit(command);
 		} else {
@@ -215,11 +235,12 @@ public class App {
 				activeChar.updateStats();
 				System.out.println("Updated "+stat.getName());
 			}
-		}
+		}*/
+		terminal.print("edit");
 	}
 
 	private static void edit(String command){
-		StringBuilder nameBuilder = new StringBuilder();
+		/*StringBuilder nameBuilder = new StringBuilder();
 		Integer bonus = null;
 		Integer value = null;
 		boolean help = false;
@@ -276,12 +297,13 @@ public class App {
 			} else {
 				System.out.println(Message.ERROR_INPUT);
 			}
-		}
+		}*/
+		terminal.print("edit-options");
 	}
 
 /**AP******************************************************************************************************************/
 	static void abilityPoints(){
-		String command = tokens.pop();
+		/*String command = tokens.pop();
 		if (!tokens.isEmpty()){
 			abilityPoints(command);
 		} else {
@@ -318,11 +340,12 @@ public class App {
 						break;
 				}
 			}
-		}
+		}*/
+		terminal.print("abilitypoints");
 	}
 
 	private static void abilityPoints(String command){
-		boolean use = false;
+		/*boolean use = false;
 		boolean get = false;
 		boolean set = false;
 		boolean help = false;
@@ -403,12 +426,13 @@ public class App {
 					System.out.println(Message.ERROR_SYNTAX);
 				}
 			}
-		}
+		}*/
+		terminal.print("abilitypoints-options");
 	}
 
 /**SKILLS**************************************************************************************************************/
     static void skills(){
-		String command = tokens.pop();
+		/*String command = tokens.pop();
 		String action;
 		if (!tokens.isEmpty()){
 			skills(command);
@@ -471,7 +495,8 @@ public class App {
 						break;
 					}
 			}
-		}
+		}*/
+		terminal.print("skills");
 	}
 
 	private static void skills(String command){
