@@ -17,13 +17,14 @@ public class PlayerCharacter implements Serializable{
 	private String className;
 	private String raceName;
 	private String description;
-	private String notes;
+	//private String notes;
 
 	private LinkedHashMap<String, Ability> abilities;
 	private LinkedHashMap<String, Stat> attributes;
 	private LinkedHashMap<String, Skill> skills;
 	private LinkedHashMap<String, Stat> allStats;
 	private LinkedHashMap<String, Stat> magicStats;
+
 	private Inventory inventory;
 	private SpellBook spellBook;
 	private SpellSlot[] spellSlots;
@@ -238,8 +239,8 @@ public class PlayerCharacter implements Serializable{
 	}
 
     public String spellStatsToString(){
-		String newLine = System.lineSeparator();
-		 return String.format("Spell Save DC: %.0f  Spell Atk Mod: %.0f", magicStats.get("ssdc").getTotal(), magicStats.get("sam").getTotal());
+		//String newLine = System.lineSeparator();
+		return String.format("Spell Save DC: %.0f  Spell Atk Mod: %.0f", magicStats.get("ssdc").getTotal(), magicStats.get("sam").getTotal());
 
 	}
 

@@ -51,7 +51,21 @@ public class Inventory implements Serializable {
 		return this.contents.containsValue(i);
 	}
 	
-
+	public static boolean isCurrency(String itemName){
+		switch(itemName){
+			case "pp":
+			case "platinum":
+			case "gp":
+			case "gold":
+			case "sp":
+			case "silver":
+			case "cp":
+			case "copper":
+				return true;
+			default:
+				return false;
+		}
+	}
 
 	public String toString(){
 		//String s="\033[1;33mInventory: \033[0m";

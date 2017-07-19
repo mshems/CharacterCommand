@@ -58,8 +58,9 @@ public class Equippable extends Item {
 	public ArrayList<ItemEffect> getEffects() {
 		return effects;
 	}
-	public void setEffects(ArrayList<ItemEffect> effects) {
+	public Equippable setEffects(ArrayList<ItemEffect> effects) {
 		this.effects = effects;
+		return this;
 	}
 	public void addEffect(ItemEffect effect) {
 		if(this.effects==null){

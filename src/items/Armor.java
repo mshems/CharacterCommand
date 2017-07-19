@@ -21,11 +21,13 @@ public class Armor extends Equippable{
 		super(name, count);
 	}
 
-	public void setArmorType(ArmorType type){
+	public Armor setArmorType(ArmorType type){
 	    this.armorType = type;
+	    return this;
     }
-    public void setAC(int ac){
+    public Armor setAC(int ac){
 	    this.AC = ac;
+        return this;
     }
 
 	@Override
@@ -161,5 +163,27 @@ public class Armor extends Equippable{
             }
         }
         return s;
+    }
+
+    public static ArmorType parseType(String s){
+        switch(s){
+            case"l":
+            case "light":
+                return ArmorType.L_ARMOR;
+            case"m":
+            case "medium":
+                 return ArmorType.M_ARMOR;
+            case "h":
+            case "heavy":
+                return ArmorType.H_ARMOR;
+            case "s":
+            case "shield":
+                return ArmorType.SHIELD;
+            case "o":
+            case "other":
+                return ArmorType.OTHER;
+            default:
+                return null;
+        }
     }
 }

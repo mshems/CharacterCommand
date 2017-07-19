@@ -4,17 +4,16 @@ import character.*;
 import items.*;
 import magic.*;
 import utils.*;
-
 import java.util.*;
 
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 public class App {
 	/**
-	 * version 0.2.3
+	 * version 0.2.4
 	 */
 	public static final long VERSION = 203L;
-	private static final String version = "CharacterCommand v0.2.3";
-	private static String newLine = System.lineSeparator();
+	private static final String version = "CharacterCommand v0.2.4";
+	//private static String newLine = System.lineSeparator();
 	static boolean QUIT_ALL = false;
     static PlayerCharacter activeChar;
 	static LinkedHashMap<String, PlayerCharacter> characterList;
@@ -24,7 +23,6 @@ public class App {
 	static PropertiesHandler propertiesHandler;
     static IOHandler ioHandler;
     static CommandHandler commandHandler;
-    private static CTerm terminal;
 
 	public static void main(String[] args){
 	    initApp();
@@ -51,10 +49,9 @@ public class App {
 			} else {
                 prompt = "CharacterCommand> ";
             }
-            terminal.setPrompt(prompt);
 
-            //getCommand(prompt);
-			//commandHandler.doCommand(tokens.peek(), activeChar);
+            getCommand(prompt);
+			commandHandler.doCommand(tokens.peek(), activeChar);
 
 		}
 
@@ -77,7 +74,7 @@ public class App {
 
 /**INITIALIZATION******************************************************************************************************/
     private static void initApp() {
-		//System.out.println("---"+version+"---");
+		System.out.println("---"+version+"---");
 		propertiesHandler = new PropertiesHandler();
         commandHandler = new CommandHandler();
 		ioHandler = new IOHandler();
@@ -92,24 +89,11 @@ public class App {
         		activeChar = characterList.get(key);
 			}
 		}
-		terminal = new CTerm();
-        String prompt;
-        if (activeChar != null){
-            prompt = "CharacterCommand @ "+activeChar.getName()+"> ";
-
-            if(propertiesHandler.isViewAlways()){
-                System.out.println(activeChar);
-            }
-        } else {
-            prompt = "CharacterCommand> ";
-        }
-        terminal.setPrompt(prompt);
-        terminal.start();
 	}
 
 /**CREATE CHARACTER****************************************************************************************************/
 	static void createCharacter(){
-        /*String name;
+        String name;
 	    while(true) {
             System.out.print("Character name: ");
             name = scanner.nextLine().trim();
@@ -145,21 +129,20 @@ public class App {
 		c.updateStats();
 		characterList.put(c.getName().toLowerCase(), c);
 		System.out.println("Created "+c.getName());
-		activeChar = c;*/
-        terminal.println("new");
+		activeChar = c;
 	}
 
 /**STATS***************************************************************************************************************/
 	static void stats(){
-		/*String command = tokens.pop();
+		tokens.pop();
 		if(!tokens.isEmpty()){
-			stats(command);
+			statsParser();
 		} else {
 			System.out.println("view | edit | cancel");
-			System.out.print("Action: ");
-			String action = scanner.nextLine().toLowerCase().trim();
 			boolean exit = false;
 			while(!exit) {
+                System.out.print("Action: ");
+                String action = scanner.nextLine().toLowerCase().trim();
 				switch (action){
 					case "v":
 					case "view":
@@ -179,12 +162,11 @@ public class App {
 						break;
 				}
 			}
-		}*/
-		terminal.print("stats");
+		}
 	}
 
-	private static void stats(String command){
-		/*StringBuilder nameBuilder = new StringBuilder();
+	private static void statsParser(){
+		StringBuilder nameBuilder = new StringBuilder();
 		boolean help = false;
 		boolean view = true;
 		while(!tokens.isEmpty()){
@@ -194,7 +176,6 @@ public class App {
 					edit();
 					view = false;
 					//tokens.pop();
-					//edit = true;
 					break;
 				case "--help":
 					tokens.pop();
@@ -218,15 +199,14 @@ public class App {
 			if (stat != null && view){
 				System.out.println(stat.detailString());
 			}
-		}*/
-		terminal.print("stats-options");
+		}
 	}
 
 /**EDIT***************************************************************************************************************/
 	static void edit(){
-		/*String command = tokens.pop();
+		tokens.pop();
 		if (!tokens.isEmpty()){
-			edit(command);
+			editParser();
 		} else {
 			Stat stat = getStatByName();
 			if(stat!=null){
@@ -235,12 +215,11 @@ public class App {
 				activeChar.updateStats();
 				System.out.println("Updated "+stat.getName());
 			}
-		}*/
-		terminal.print("edit");
+		}
 	}
 
-	private static void edit(String command){
-		/*StringBuilder nameBuilder = new StringBuilder();
+	private static void editParser(){
+		StringBuilder nameBuilder = new StringBuilder();
 		Integer bonus = null;
 		Integer value = null;
 		boolean help = false;
@@ -297,15 +276,14 @@ public class App {
 			} else {
 				System.out.println(Message.ERROR_INPUT);
 			}
-		}*/
-		terminal.print("edit-options");
+		}
 	}
 
 /**AP******************************************************************************************************************/
 	static void abilityPoints(){
-		/*String command = tokens.pop();
+		tokens.pop();
 		if (!tokens.isEmpty()){
-			abilityPoints(command);
+			abilityPointsParser();
 		} else {
 			System.out.println("use | get | set");
 			System.out.print("Action: ");
@@ -340,12 +318,11 @@ public class App {
 						break;
 				}
 			}
-		}*/
-		terminal.print("abilitypoints");
+		}
 	}
 
-	private static void abilityPoints(String command){
-		/*boolean use = false;
+	private static void abilityPointsParser(){
+		boolean use = false;
 		boolean get = false;
 		boolean set = false;
 		boolean help = false;
@@ -426,16 +403,15 @@ public class App {
 					System.out.println(Message.ERROR_SYNTAX);
 				}
 			}
-		}*/
-		terminal.print("abilitypoints-options");
+		}
 	}
 
 /**SKILLS**************************************************************************************************************/
     static void skills(){
-		/*String command = tokens.pop();
+		tokens.pop();
 		String action;
 		if (!tokens.isEmpty()){
-			skills(command);
+			skillsParser();
 		} else {
 			Skill skill;
 			boolean exit = false;
@@ -495,11 +471,10 @@ public class App {
 						break;
 					}
 			}
-		}*/
-		terminal.print("skills");
+		}
 	}
 
-	private static void skills(String command){
+	private static void skillsParser(){
 		StringBuilder nameBuilder = new StringBuilder();
     	Skill skill;
 		boolean expert = false;
@@ -658,9 +633,9 @@ public class App {
 	}
 
 	private static void setSlots(){
-		String command = tokens.pop();
-		if(!tokens.isEmpty()){
-			setSlots(command);
+        tokens.pop();
+        if(!tokens.isEmpty()){
+			setSlotsParser();
 		} else {
 			int level = getValidInt("Enter spell slot level: ");
 			int max = getValidInt("Enter new spell slot maximum: ");
@@ -669,7 +644,7 @@ public class App {
 		}
 	}
 
-	private static void setSlots(String command){
+	private static void setSlotsParser(){
 		Integer level = null;
 		Integer max = null;
 		boolean help = false;
@@ -724,9 +699,9 @@ public class App {
 
 
 	static void charge(){
-		String command = tokens.pop();
+		tokens.pop();
 		if(!tokens.isEmpty()){
-			charge(command);
+			chargeParser();
 		} else {
 			int level = getValidInt("Enter spell slot level: ");
 			int count = getValidInt("Enter number of slots to recharge: ");
@@ -735,7 +710,7 @@ public class App {
 	}
 
 /**CHARGE**************************************************************************************************************/
-	private static void charge(String command){
+	private static void chargeParser(){
 		boolean all=false;
 		boolean help=false;
 		Integer level=null;
@@ -861,9 +836,9 @@ public class App {
 
 /**LEARN***************************************************************************************************************/
     static void learn(){
-		String command = tokens.pop();
-		if(!tokens.isEmpty()){
-			learn(command);
+        tokens.pop();
+        if(!tokens.isEmpty()){
+			learnParser();
 		} else {
 			String spellName;
 			int spellLevel;
@@ -874,7 +849,7 @@ public class App {
 		}
     }
 
-	private static void learn(String command){
+	private static void learnParser(){
 		StringBuilder nameBuilder = new StringBuilder();
 		Integer spellLevel = null;
 		boolean learnmagic=false;
@@ -961,9 +936,9 @@ public class App {
 
 /**FORGET**************************************************************************************************************/
 	static void forget(){
-		String command = tokens.pop();
-		if(!tokens.isEmpty()){
-			forget(command);
+        tokens.pop();
+        if(!tokens.isEmpty()){
+			forgetParser();
 		} else {
 			Spell spell = getSpellByName();
 			if(spell!=null){
@@ -972,7 +947,7 @@ public class App {
 		}
 	}
 
-	private static void forget(String command){
+	private static void forgetParser(){
 		StringBuilder nameBuilder = new StringBuilder();
 		boolean help=false;
 		while(!tokens.isEmpty()){
@@ -1014,9 +989,9 @@ public class App {
 
 /**CAST****************************************************************************************************************/
 	static void cast(){
-		String command = tokens.pop();
-		if (!tokens.isEmpty()){
-			cast(command);
+        tokens.pop();
+        if (!tokens.isEmpty()){
+			castParser();
 		} else {
 			Integer castLevel = -1;
 			Spell spell = getSpellByName();
@@ -1029,7 +1004,7 @@ public class App {
 		}
 	}
 
-	private static void cast(String command){
+	private static void castParser(){
 		Spell spell;
 		StringBuilder nameBuilder = new StringBuilder();
 		Integer castLevel = -1;
@@ -1187,9 +1162,9 @@ public class App {
 
 /**USE*****************************************************************************************************************/
 	static void use(){
-		String command = tokens.pop();
-		if(!tokens.isEmpty()){
-			use(command);
+        tokens.pop();
+        if(!tokens.isEmpty()){
+			useParser();
 		} else {
 			Item item = getItemByName();
 			if(item != null){
@@ -1207,7 +1182,7 @@ public class App {
 		}
 	}
 
-	private static void use(String command){
+	private static void useParser(){
 		Item item;
 		StringBuilder nameBuilder = new StringBuilder();
 		Integer amount = 1; //default
@@ -1338,395 +1313,266 @@ public class App {
 	}
 	
 /**GET*****************************************************************************************************************/
-	static void get(){
-		String command = tokens.pop();
-		boolean quit_get = false;
+
+    static void get(){
+		tokens.pop();
 		if (!tokens.isEmpty()){
-			get(command);
+			getParser();
 		} else {
-			String itemName;
-			String itemType = null;
-			Integer itemCount;
-			Integer ac = null;
-            Armor.ArmorType at=null;
-			ArrayList<ItemEffect> fxList = null;
-			DiceRoll dmg = null;
+		    ItemBuilder itemBuilder = new ItemBuilder();
 
 			System.out.println("item | equippable | weapon | armor | consumable | coin");
 			while(true){
 				System.out.print("Item type: ");
-				String s = scanner.nextLine().toLowerCase().trim();
-				if(s.equals("cancel")){
-					quit_get = true;
-					break;
-				} else if(s.equals("coin")){
-					itemType = s;
-					break;
-				} else if(checkStringInSet(s, Item.types)){
-					itemType = s;
-					break;
-				} else {
-					System.out.println(Message.ERROR_ITEM_TYPE);
-				}
+				String type= scanner.nextLine().toLowerCase().trim();
+				if(type.equals("cancel")){
+                    return;
+                }
+                itemBuilder.itemType = Item.parseItemType(type);
+                if(itemBuilder.itemType != null){
+                    break;
+                }
+                System.out.println(Message.ERROR_ITEM_TYPE);
 			}
 
-			if (!quit_get){
-                if(itemType.equalsIgnoreCase("armor")){
+            switch(itemBuilder.itemType){
+                case ARMOR:
+                    inputItemInfo(itemBuilder);
                     System.out.println("light | medium | heavy | shield | other");
-                    while(at==null) {
-						System.out.print("Armor type: ");
-						String s = scanner.nextLine().trim();
-                        switch (s){
-                            case "l":
-                            case "light":
-                                at = Armor.ArmorType.L_ARMOR;
-                                break;
-                            case "m":
-                            case "medium":
-                                at = Armor.ArmorType.M_ARMOR;
-                                break;
-                            case "h":
-                            case "heavy":
-                                at = Armor.ArmorType.H_ARMOR;
-                                break;
-                            case "s":
-                            case "shield":
-                                at = Armor.ArmorType.SHIELD;
-                                break;
-                            case "o":
-                            case "other":
-                                at = Armor.ArmorType.OTHER;
-                                break;
-                            default:
-                                System.out.println("ERROR: Not a valid armor type");
-                                break;
+                    while (itemBuilder.armorType == null) {
+                        System.out.print("Armor type: ");
+                        itemBuilder.armorType = Armor.parseType(scanner.nextLine().trim());
+                        if (itemBuilder.armorType == null){
+                            System.out.println("ERROR: Not a valid armor type");
                         }
+                        itemBuilder.armorClass = getValidInt("AC: ");
                     }
-                    ac = getValidInt("AC: ");
-                }
-				if(itemType.equalsIgnoreCase("coin")){
-					System.out.println("Coin type:");
-				} else {
-					System.out.print("Item name: ");
-				}
-                itemName = scanner.nextLine().trim();
-                itemCount = getValidInt("Count: ");
+                    inputEffects(itemBuilder);
+                    break;
+                case COIN:
+                    System.out.println("Coin type:");
+                    itemBuilder.itemName = scanner.nextLine().trim();
+                    itemBuilder.itemCount = getValidInt("Count: ");
+                    getCoins(itemBuilder);
+                    return;
+                case CONSUMABLE:
+                case ITEM:
+                    inputItemInfo(itemBuilder);
+                    break;
+                case WEAPON:
+                    inputItemInfo(itemBuilder);
+                    System.out.println("Weapon damage: ");
+                    itemBuilder.damage = getDiceRoll();
+                    inputEffects(itemBuilder);
+                    break;
+                case EQUIPPABLE:
+                    inputItemInfo(itemBuilder);
+                    inputEffects(itemBuilder);
+                    break;
+                default:
+                    break;
+            }
+            getItem(itemBuilder);
+        }
+    }
 
-                if((itemType.equals("weapon"))||(itemType.equals("armor"))||(itemType.equals("equippable"))){
-					System.out.println("Weapon damage: ");
-					dmg = getDiceRoll();
-                	fxList = new ArrayList<>();
-                    Stat fxTgt=null;
-                    while(getYN("Add effect? ")){
-                        boolean quit_get_tgt=false;
-                    	while(true){
-                            System.out.println("Effect target: ");
-                            String s = scanner.nextLine();
-                            if(s.equalsIgnoreCase("cancel")){
-                                quit_get_tgt=true;
-                                break;
-                            } else {
-                                fxTgt = activeChar.getStat(s);
-                            }
-                            if(fxTgt!=null){
-                                break;
-                            } else {
-                                System.out.println("ERROR: Effect target not found");
-                            }
-                        }
-                        if(!quit_get_tgt){
-                            int fxBon = getValidInt("Effect bonus: ");
-                            ItemEffect fx = new ItemEffect(fxTgt, fxBon);
-                            fxList.add(fx);
-                        } else {
-                            break;
-                        }
+    private static void inputItemInfo(ItemBuilder itemBuilder){
+        System.out.print("Item name: ");
+        itemBuilder.itemName = scanner.nextLine().trim();
+        itemBuilder.itemCount = getValidInt("Count: ");
+    }
+
+    private static void inputEffects(ItemBuilder itemBuilder){
+        while(getYN("Add effect? ")){
+            System.out.print("Effect target: ");
+            String statName = scanner.nextLine();
+            if (!statName.equalsIgnoreCase("cancel")){
+                Stat target = activeChar.getStat(statName);
+                if (target == null){
+                    System.out.println("ERROR: Effect target not found");
+                } else {
+                    itemBuilder.addEffect(target, getValidInt("Stat bonus: "));
+                }
+            }
+        }
+    }
+
+	private static void getParser(){
+	    StringBuilder nameBuilder = new StringBuilder();
+	    ItemBuilder itemBuilder = new ItemBuilder();
+
+	    while(!tokens.isEmpty()){
+	        switch(tokens.peek()){
+                case "-c":
+                case "--count":
+                    tokens.pop();
+                    if (tokens.isEmpty()){
+                        System.out.println(Message.ERROR_NO_ARG + ": count");
+                        return;
                     }
-                }
-                itemName = itemName.trim();
-                switch(itemName.toLowerCase()){
-					case "pp":
-					case "platinum":
-						addDropCoin(Inventory.indexPL, itemCount, false, "add");
-						quit_get = true;
-						break;
-					case "gp":
-					case "gold":
-						addDropCoin(Inventory.indexGP, itemCount, false, "add");
-						quit_get = true;
-						break;
-					case "sp":
-					case "silver":
-						addDropCoin(Inventory.indexSP, itemCount, false, "add");
-						quit_get = true;
-						break;
-					case "cp":
-					case "copper":
-						addDropCoin(Inventory.indexCP, itemCount, false, "add");
-						quit_get = true;
-						break;
-					default:
-						break;
-				}
-                if(!quit_get){
-					switch (itemType){
-						case "i":
-						case "item":
-							Item item = new Item(itemName, itemCount);
-							activeChar.addNewItem(item);
-							break;
-						case "c":
-						case "consumable":
-							Consumable consumable = new Consumable(itemName, itemCount);
-							activeChar.addNewItem(consumable);
-							break;
-						case "e":
-						case "equippable":
-							Equippable equippable = new Equippable(itemName, itemCount);
-							equippable.setEffects(fxList);
-							activeChar.addNewItem(equippable);
-							break;
-						case "w":
-						case "weapon":
-							Weapon weapon = new Weapon(itemName, itemCount);
-							weapon.setEffects(fxList);
-							if(dmg!=null){
-								weapon.setDamage(dmg);
-							}
-							activeChar.addNewItem(weapon);
-							break;
-						case "a":
-						case "armor":
-							Armor armor = new Armor(itemName, itemCount);
-							armor.setEffects(fxList);
-							if (at != null){
-								armor.setArmorType(at);
-								if (at != Armor.ArmorType.SHIELD){
-									armor.setAC(ac);
-								}
-								activeChar.addNewItem(armor);
-							} else {
-								System.out.println("ERROR: Armor type not specified. Use 'equippable' for generic equipment");
-							}
-							break;
-					}
-					System.out.println(String.format("Got %dx %s", itemCount, itemName));
-				}
-			}
-		}
-	}
-
-	private static void get(String command){
-		StringBuilder nameBuilder = new StringBuilder();
-		String itemType = null;
-		Integer itemCount = null;
-		Integer ac=null;
-		Armor.ArmorType at=null;
-		ArrayList<ItemEffect> fxList=null;
-		DiceRoll dmg = null;
-		boolean quit = false;
-		boolean help = false;
-		
-		while(!tokens.isEmpty()){
-			switch (tokens.peek()){
-			case "-c":
-			case "--count":
-				tokens.pop();
-				if (tokens.isEmpty()){
-					System.out.println(Message.ERROR_NO_ARG+": count");
-					itemCount = null;
-					quit = true;
-				} else {
-					itemCount = getIntToken();
-				}
-				break;
-			case "-t":
-			case "--type":
-				tokens.pop();
-				if (tokens.isEmpty()){
-					System.out.println(Message.ERROR_NO_ARG+": type");
-				} else {
-					itemType = tokens.pop();
-					if (!checkStringInSet(itemType, Item.types)){
-						System.out.println(Message.ERROR_ITEM_TYPE);
-						quit=true;
-					}
-				}
-				break;
-				case "-d":
-				case "--damage":
-					tokens.pop();
-					dmg = getDiceRoll(tokens.pop());
-					break;
-				case "-e":
+                    itemBuilder.itemCount = getIntToken();
+                    break;
+                case "--armor":
+                    tokens.pop();
+                    itemBuilder.itemType = Item.ItemType.ARMOR;
+                    break;
+                case "--consumable":
+                    tokens.pop();
+                    itemBuilder.itemType = Item.ItemType.CONSUMABLE;
+                    break;
+                case "--equippable":
+                    tokens.pop();
+                    itemBuilder.itemType = Item.ItemType.EQUIPPABLE;
+                    break;
+                case "--item":
+                    tokens.pop();
+                    itemBuilder.itemType = Item.ItemType.ITEM;
+                    break;
+                case "--weapon":
+                    tokens.pop();
+                    itemBuilder.itemType = Item.ItemType.WEAPON;
+                    break;
+                case "-t":
+                case "--type":
+                    tokens.pop();
+                    if (tokens.isEmpty()){
+                        System.out.println(Message.ERROR_NO_ARG+": type");
+                        return;
+                    }
+                    itemBuilder.itemType = Item.parseItemType(tokens.pop());
+                    if(itemBuilder.itemType == null){
+                        System.out.println(Message.ERROR_ITEM_TYPE);
+                        return;
+                    }
+                    break;
+                case "-d":
+                case "--damage":
+                    tokens.pop();
+                    if (tokens.isEmpty()){
+                        System.out.println(Message.ERROR_NO_ARG+": damage");
+                        return;
+                    }
+                    itemBuilder.damage = getDiceRoll(tokens.pop());
+                    break;
+                case "-e":
                 case "--enchant":
                 case "--effect":
-                    if(fxList==null){
-                        fxList = new ArrayList<>();
-                    }
                     tokens.pop();
-                    Stat fxTgt=null;
+                    Stat target;
                     if(!tokens.isEmpty()){
-                        fxTgt = activeChar.getStat(tokens.pop());
+                        target = activeChar.getStat(tokens.pop());
+                    } else {
+                        System.out.println(Message.ERROR_NO_ARG+": effect target");
+                        return;
                     }
-                    if(fxTgt!=null){
-                        Integer fxBon = getIntToken();
-                        if(fxBon!=null){
-							fxList.add(new ItemEffect(fxTgt, fxBon));
-						} else {
-                        	quit = true;
-						}
+                    if(target!=null){
+                        Integer bonus = getIntToken();
+                        if(bonus!=null){
+                            itemBuilder.addEffect(target,bonus);
+                        } else {
+                            System.out.println(Message.ERROR_NO_ARG + ": effect bonus");
+                            return;
+                        }
                     } else {
                         System.out.println("ERROR: Effect target not found");
+                        return;
                     }
                     break;
                 case "-ac":
                 case "--armorclass":
                     tokens.pop();
-                    ac = getIntToken();
+                    itemBuilder.armorClass = getIntToken();
                     break;
                 case "-at":
                 case "--armortype":
                     tokens.pop();
-                    String type="";
-                    if (!tokens.isEmpty()){
-                        type = tokens.peek().toLowerCase();
+                    if (tokens.isEmpty()){
+                        System.out.println("ERROR: No armor type specified");
+                        return;
                     }
-                    switch(type){
-                        case"l":
-                        case "light":
-                            at = Armor.ArmorType.L_ARMOR;
-                            tokens.pop();
-                            break;
-                        case"m":
-                        case "medium":
-                            at = Armor.ArmorType.M_ARMOR;
-                            tokens.pop();
-                            break;
-                        case "h":
-                        case "heavy":
-                            at = Armor.ArmorType.H_ARMOR;
-                            tokens.pop();
-                            break;
-                        case "s":
-                        case "shield":
-                            at = Armor.ArmorType.SHIELD;
-                            tokens.pop();
-                            break;
-                        case "o":
-                        case "other":
-                            at = Armor.ArmorType.OTHER;
-                            tokens.pop();
-                            break;
-                        default:
-                            System.out.println("ERROR: Not a valid armor type");
-                            quit = true;
-                            break;
+                    itemBuilder.armorType = Armor.parseType(tokens.peek().toLowerCase());
+                    if(itemBuilder.armorType == null){
+                        System.out.println("ERROR: Not a valid armor type");
+                        return;
                     }
                     break;
-			case "--help":
-				tokens.pop();
-				help = true;
-				quit = true;
-			break;
-			default:
-				if (tokens.peek().startsWith("-")){
-					System.out.println("ERROR: Invalid flag '"+tokens.pop()+"'");
-				} else {
-					nameBuilder.append(tokens.pop());
-					nameBuilder.append(" ");
-				}
-				break;
-			}
-		}
-
-		/*DEFAULT VALUES****************/
-		if (itemCount == null){
-			itemCount = 1;
-		}
-		if (itemType == null){
-			itemType = "item";
-		}
-
-		if (help){
-            System.out.println(Help.GET);
-        } else {
-        	String itemName = nameBuilder.toString().trim();
-            if (itemName.isEmpty()){
-                quit = true;
-                System.out.println(Message.ERROR_NO_ARG + ": item_name");
-            }
-			switch(itemName.toLowerCase()){
-				case "pp":
-				case "platinum":
-					addDropCoin(Inventory.indexPL, itemCount, false, "add");
-					quit=true;
-					break;
-				case "gp":
-				case "gold":
-					addDropCoin(Inventory.indexGP, itemCount, false, "add");
-					quit=true;
-					break;
-				case "sp":
-				case "silver":
-					addDropCoin(Inventory.indexSP, itemCount, false, "add");
-					quit=true;
-					break;
-				case "cp":
-				case "copper":
-					addDropCoin(Inventory.indexCP, itemCount, false, "add");
-					quit=true;
-					break;
-				default:
-					break;
-			}
-            if (!quit){
-            	switch (itemType){
-                    case "i":
-                    case "item":
-                        Item item = new Item(itemName, itemCount);
-                        activeChar.addNewItem(item);
-                        break;
-                    case "c":
-                    case "consumable":
-                        Consumable consumable = new Consumable(itemName, itemCount);
-                        activeChar.addNewItem(consumable);
-                        break;
-                    case "e":
-                    case "equippable":
-                        Equippable equippable = new Equippable(itemName, itemCount);
-                        equippable.setEffects(fxList);
-                        activeChar.addNewItem(equippable);
-                        break;
-                    case "w":
-                    case "weapon":
-                        Weapon weapon = new Weapon(itemName, itemCount);
-                        weapon.setEffects(fxList);
-                        if(dmg!=null){
-                        	weapon.setDamage(dmg);
-						}
-                        activeChar.addNewItem(weapon);
-                        break;
-                    case "a":
-                    case "armor":
-                        Armor armor = new Armor(itemName, itemCount);
-                        armor.setEffects(fxList);
-                        if (at != null){
-                            armor.setArmorType(at);
-                            if (ac != null && at != Armor.ArmorType.SHIELD){
-                                armor.setAC(ac);
-                            }
-                            activeChar.addNewItem(armor);
-                        } else {
-                            System.out.println("ERROR: Armor type not specified. Use 'equippable' for generic equipment");
-                        }
-                        break;
-                }
-                System.out.println(String.format("Got %dx %s", itemCount, itemName));
+                case "--help":
+                    tokens.pop();
+                    System.out.println(Help.GET);
+                    return;
+                default:
+                    if (tokens.peek().startsWith("-")){
+                        System.out.println("ERROR: Invalid flag '"+tokens.pop()+"'");
+                    } else {
+                        nameBuilder.append(tokens.pop());
+                        nameBuilder.append(" ");
+                    }
+                    break;
             }
         }
-	}
-	
+        itemBuilder.itemName = nameBuilder.toString().trim();
+        if (itemBuilder.itemName.isEmpty()){
+            System.out.println(Message.ERROR_NO_ARG + ": item_name");
+            return;
+        }
+        if (Inventory.isCurrency(itemBuilder.itemName)){
+            getCoins(itemBuilder);
+            return;
+        }
+        getItem(itemBuilder);
+    }
+
+    private static void getItem(ItemBuilder itemBuilder){
+        switch (itemBuilder.itemType){
+            case ITEM:
+                Item item = itemBuilder.toItem();
+                activeChar.addNewItem(item);
+                break;
+            case CONSUMABLE:
+                Consumable consumable = itemBuilder.toConsumable();
+                activeChar.addNewItem(consumable);
+                break;
+            case EQUIPPABLE:
+                Equippable equippable = itemBuilder.toEquippable();
+                activeChar.addNewItem(equippable);
+                break;
+            case WEAPON:
+                Weapon weapon = itemBuilder.toWeapon();
+                activeChar.addNewItem(weapon);
+                break;
+            case ARMOR:
+                Armor armor = itemBuilder.toArmor();
+                activeChar.addNewItem(armor);
+                break;
+            default:
+                return;
+        }
+        System.out.println(String.format("Got %dx %s", itemBuilder.itemCount, itemBuilder.itemName));
+    }
+
+    private static void getCoins(ItemBuilder itemBuilder){
+        switch(itemBuilder.itemName.toLowerCase()){
+            case "pp":
+            case "platinum":
+                addDropCoin(Inventory.indexPL, itemBuilder.itemCount, false, "add");
+                break;
+            case "gp":
+            case "gold":
+                addDropCoin(Inventory.indexGP, itemBuilder.itemCount, false, "add");
+                break;
+            case "sp":
+            case "silver":
+                addDropCoin(Inventory.indexSP, itemBuilder.itemCount, false, "add");
+                break;
+            case "cp":
+            case "copper":
+                addDropCoin(Inventory.indexCP, itemBuilder.itemCount, false, "add");
+                break;
+            default:
+                break;
+        }
+    }
+
 /**ADD/DROP************************************************************************************************************/
 	static void addDrop(){
 		Item item;
@@ -1900,15 +1746,6 @@ public class App {
 			System.out.println(Message.ERROR_NOT_INT);
 		}
 		return n; 
-	}
-
-	private static boolean checkStringInSet(String in, String[] a){
-	    for (String s: a){
-			if (s.equalsIgnoreCase(in)){
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private static Skill getSkillByName(){

@@ -20,8 +20,9 @@ public class Weapon extends Equippable{
 		this.damage = dmg;
 	}
 
-	public void setDamage(DiceRoll roll){
+	public Weapon setDamage(DiceRoll roll){
 		this.damage = roll;
+		return this;
 	}
 	
 	@Override

@@ -17,6 +17,8 @@ public class Item implements Serializable {
 	private boolean equippable;
 	private boolean consumable;
 
+	public enum ItemType {ARMOR, CONSUMABLE, EQUIPPABLE, ITEM, WEAPON, COIN};
+
 	public static final String[] types = new String[] {
 			"item","consumable","equippable","weapon","armor","c","i","e","w","a"
 	};
@@ -35,15 +37,17 @@ public class Item implements Serializable {
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public Item setName(String name) {
 		this.name = name;
+		return this;
 	}
 
 	public int getCount() {
 		return count;
 	}
-	public void setCount(int count) {
+	public Item setCount(int count) {
 		this.count = count;
+		return this;
 	}
 
 	public void addCount(int count){
@@ -53,15 +57,17 @@ public class Item implements Serializable {
 	public Integer getValue(){
 		return value;
 	}
-	public void setValue(Integer value){
+	public Item setValue(Integer value){
 		this.value = value;
+		return this;
 	}
 
 	public String getDescription(){
 		return description;
 	}
-	public void setDescription(String description){
+	public Item setDescription(String description){
 		this.description = description;
+		return this;
 	}
 
 	public void equip(PlayerCharacter c){};
@@ -71,8 +77,9 @@ public class Item implements Serializable {
 	public boolean isEquippable() {
 		return equippable;
 	}
-	public void setEquippable(boolean equippable) {
+	public Item setEquippable(boolean equippable) {
 		this.equippable = equippable;
+		return this;
 	}
 	public boolean isEquipped(){
 		return equipped;
@@ -80,12 +87,38 @@ public class Item implements Serializable {
 	public boolean isConsumable(){
 		return consumable;
 	}
-	public void setConsumable(boolean consumable){
+	public Item setConsumable(boolean consumable){
 		this.consumable = consumable;
+        return this;
 	}
 
 	public String toString(){
 		String s = String.format("%dx %s", this.getCount(), this.getName());
 		return s;
 	}
+
+	public static ItemType parseItemType(String s){
+	    switch(s){
+            case"a":
+            case "armor":
+                return ItemType.ARMOR;
+            case "c":
+            case "consumable":
+                return ItemType.CONSUMABLE;
+            case "e":
+            case "equippable":
+                return ItemType.EQUIPPABLE;
+            case "i":
+            case "item":
+                return ItemType.ITEM;
+            case "w":
+            case "weapon":
+                return ItemType.WEAPON;
+            case "currency":
+            case "coin":
+                return ItemType.COIN;
+            default:
+                return null;
+        }
+    }
 }
