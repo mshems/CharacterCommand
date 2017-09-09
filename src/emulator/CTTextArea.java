@@ -1,4 +1,4 @@
-package app;
+package emulator;
 
 import javax.swing.*;
 import java.awt.*;

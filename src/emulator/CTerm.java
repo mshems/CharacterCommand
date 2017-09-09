@@ -1,4 +1,6 @@
-package app;
+package emulator;
+
+import app.App;
 
 public class CTerm{
     public CTWindow window;
@@ -6,9 +8,9 @@ public class CTerm{
         this.window = new CTWindow("CharacterCommand", this);
     }
 
-    void processCommand(String command){
-        App.commandHandler.doCommand(command, App.activeChar);
-    }
+//    void processCommand(String command){
+//        App.commandHandler.doCommand(command, App.activeChar);
+//    }
 
     void setPrompt(String prompt){
         this.window.textArea.setPrompt(prompt);
