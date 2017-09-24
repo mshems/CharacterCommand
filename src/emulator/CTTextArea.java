@@ -68,7 +68,7 @@ public class CTTextArea extends JTextArea{
     void advance(){
         String command = getCommand();
         updateHistory(command);
-        this.parent.processCommand(command);
+        //this.parent.processCommand(command);
         if(singleLine){
             clear();
         } else {

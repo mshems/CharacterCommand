@@ -146,19 +146,19 @@ public class Armor extends Equippable{
         if((AC!=null && armorType != null) || armorType == ArmorType.SHIELD){
             switch (armorType){
                 case L_ARMOR:
-                    s += " (Light)";
+                    s += " [Light]";
                     break;
                 case M_ARMOR:
-                    s += " (Medium)";
+                    s += " [Medium]";
                     break;
                 case H_ARMOR:
-                    s += " (Heavy)";
+                    s += " [Heavy]";
                     break;
                 case SHIELD:
-                    s += " (Shield)";
+                    s += " [Shield]";
                     break;
                 case OTHER:
-                    s += " (Other)";
+                    s += " [Other]";
                     break;
             }
         }

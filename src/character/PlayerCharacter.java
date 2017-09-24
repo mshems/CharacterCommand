@@ -246,30 +246,33 @@ public class PlayerCharacter implements Serializable{
 
     public String spellSlotsToString(){
 		String newLine = System.lineSeparator();
-		String s="Spell Slots: ";
+		String s="---- SPELL SLOTS -------------- ";
 		for(SpellSlot spellSlot:spellSlots){
 			if(spellSlot.getMaxVal()>0 && spellSlot.getLevel()>0){
 				s += newLine + spellSlot;
 			}
 		}
-    	return s;
+    	return s+newLine+"--------------------------------";
 	}
 
     public String skillsToString(){
         String newLine = System.lineSeparator();
-        String s = "Skills: ";
+        String s = "---- SKILLS --------------------";
         for(Skill skill:skills.values()){
-            s += newLine+"- "+skill;
+            s += newLine+" - "+skill;
         }
-        return s;
+        return s+newLine+"--------------------------------";
     }
 
     @Override
 	public String toString(){
         String newLine = System.lineSeparator();
         //String s=String.format("\033[1;33m%s -- Level %.0f %s\033[0m\n", name, level.getTotal(), className);
-		String s=String.format("%s -- Level %.0f %s %s"+newLine, name, attributes.get("lvl").getTotal(), raceName, className);
-		s+=String.format("%s  %s"+newLine+"INI: %+.0f  SPD: %.0f  PB: %+.0f  PER: %.0f"+newLine,
+		//String s=String.format("%s -- Level %.0f %s %s"+newLine, name, attributes.get("lvl").getTotal(), raceName, className);
+
+        String s = "---- CHARACTER -----------------"+newLine;
+		s+=String.format(" %s -- Level %.0f %s %s"+newLine, name, attributes.get("lvl").getTotal(), raceName, className);
+		s+=String.format(" | %s  %s"+newLine+" | INI: %+.0f  SPD: %.0f  PB: %+.0f  PER: %.0f"+newLine,
 				attributes.get("hp"),
 				attributes.get("ac"),
 				attributes.get("ini").getTotal(),
@@ -277,21 +280,22 @@ public class PlayerCharacter implements Serializable{
 				attributes.get("pb").getTotal(),
 				attributes.get("pper").getTotal()
 		);
-		if(attributes.get("ap").getTotal()>0){
-			s+=attributes.get("ap")+"  ";
-		}
-		if(spellcaster){
-			s+=spellStatsToString()+newLine;
-		}
 		int i=0;
+		s+=" | ";
 		for(String key:abilities.keySet()){
             s+=(abilities.get(key))+"  ";
             if (i == 2){
-                s+=newLine;
+                s+=newLine+" | ";
             }
             i++;
         }
-		return s;
+        if(attributes.get("ap").getTotal()>0){
+            s+=newLine+" | "+attributes.get("ap")+"  ";
+        }
+        if(spellcaster){
+            s+=spellStatsToString();
+        }
+		return s+newLine+"--------------------------------";
 	}
 
 	public String toTextFile(){

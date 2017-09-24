@@ -70,29 +70,29 @@ public class Inventory implements Serializable {
 	public String toString(){
 		//String s="\033[1;33mInventory: \033[0m";
 		String newLine = System.lineSeparator();
-		String s="";
+		String s="---- INVENTORY -----------------"+newLine;
 		for(Item i:currency){
 			if (i.getCount()!=0){
 				//s+=String.format("%s: %d  ", i.getName(), i.getCount());
-				s+=String.format("%d%s  ", i.getCount(), i.getName());
+				s+=String.format(" %d%s ", i.getCount(), i.getName());
 			}
 		}
 		if(!s.isEmpty()){
-			s=newLine+s;
+			//s=newLine+s;
 		}
-		s = "Inventory: "+s;
+		//s = "Inventory: "+s;
 		if (contents.isEmpty()){
-			s+=newLine+"-Empty-";
+			s+=" Empty";
 		} else {
 			for (Item item : contents.values()){
                 if (item.isEquipped()){
-                    s += newLine+"e "+item;
+                    s += newLine+" e "+item;
                 } else {
-                    s += newLine+"- "+item;
+                    s += newLine+" - "+item;
                 }
 			}
 		}
-		return s;
+		return s+newLine+"--------------------------------";
 	}
 	
 }

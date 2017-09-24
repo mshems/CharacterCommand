@@ -29,7 +29,7 @@ public class Weapon extends Equippable{
 	public String toString(){
 		String s =super.toString();
 		if (damage!=null){
-			s+=" ("+damage+")";
+			s+=" ["+damage+"]";
 		}
 		return s;
 	}

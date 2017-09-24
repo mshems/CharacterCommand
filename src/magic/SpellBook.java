@@ -49,10 +49,10 @@ public class SpellBook implements Serializable {
 	
 	public String toString(){
 		String newLine = System.lineSeparator();
-		String s="Spellbook:";
+		String s="---- SPELLBOOK -----------------";
 		for(Spell spell:spellList){
-			s+=newLine+spell;
+			s+=newLine+" "+spell;
 		}
-		return s;
+		return s+newLine+"--------------------------------";
 	}
 }
