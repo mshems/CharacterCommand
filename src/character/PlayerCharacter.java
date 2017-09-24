@@ -336,6 +336,10 @@ public class PlayerCharacter implements Serializable{
 		return abilities;
 	}
 
+	public Ability getAbility(String abilityName){
+		return abilities.get(abilityName.toUpperCase());
+	}
+
 	public LinkedHashMap<String, Stat> getAttributes(){
 		return attributes;
 	}
