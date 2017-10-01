@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class IOHandler{
+public class ReadWriteHandler {
     public static void checkDirs(){
         if (!Files.exists(CharacterCommand.propertiesHandler.getDataDir())){
             try {

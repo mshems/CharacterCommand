@@ -3,6 +3,8 @@ package terminal;
 import character.*;
 import app.CharacterCommand;
 import app.DiceRoll;
+import items.Item;
+import items.ItemIO;
 import utils.Help;
 import utils.Message;
 
@@ -30,13 +32,13 @@ public class CommandHandler {
                 PlayerCreator.createCharacter();
                 break;
             case "import":
-                CharacterCommand.ioHandler.importCharacter();
+                CharacterCommand.readWriteHandler.importCharacter();
                 break;
             case "list":
                 CharacterCommand.dispCharacterList();
                 break;
             case "load":
-                CharacterCommand.ioHandler.loadChar();
+                CharacterCommand.readWriteHandler.loadChar();
                 break;
             case "roll":
                 DiceRoll.doRoll();
@@ -65,10 +67,10 @@ public class CommandHandler {
                     switch (command){
                         case "s":
                         case "save":
-                            CharacterCommand.ioHandler.saveChar();
+                            CharacterCommand.readWriteHandler.saveChar();
                             break;
                         case "export":
-                            CharacterCommand.ioHandler.export();
+                            CharacterCommand.readWriteHandler.export();
                             break;
                         case "v":
                         case "view":
@@ -76,18 +78,18 @@ public class CommandHandler {
                             break;
                         //case "set":
                         case "edit":
-                            CharacterCommand.edit();
+                            StatEditor.edit(CharacterCommand.getActiveChar());
                             break;
                         case "stat":
                         case "stats":
-                            CharacterCommand.stats();
+                            StatIO.stats(CharacterCommand.getActiveChar());
                             break;
                         case "equip":
                         case "dequip":
-                            CharacterCommand.equip();
+                            ItemIO.equip(CharacterCommand.getActiveChar());
                             break;
                         case "use":
-                            CharacterCommand.use();
+                            ItemIO.use(CharacterCommand.getActiveChar());
                             break;
                         case "ap":
                             CharacterCommand.abilityPoints();
@@ -134,25 +136,25 @@ public class CommandHandler {
                             break;
                         case "skill":
                         case "skills":
-                            CharacterCommand.skills();
+                            SkillIO.skills(CharacterCommand.getActiveChar());
                             break;
                         case "i":
                         case "inv":
                             terminal.printOut(activeChar.getInventory().toString());
                             break;
                         case "get":
-                            CharacterCommand.get();
+                            InventoryIO.get(CharacterCommand.getActiveChar());
                             break;
                         case "add":
                         case "drop":
-                            CharacterCommand.addDrop();
+                            InventoryIO.addDrop(CharacterCommand.getActiveChar());
                             break;
                         case "heal":
                         case "hurt":
                             PlayerHealer.heal(CharacterCommand.getActiveChar());
                             break;
                         case "sq":
-                            CharacterCommand.ioHandler.saveChar();
+                            CharacterCommand.readWriteHandler.saveChar();
                             CharacterCommand.closeApp();
                             System.exit(0);
                             break;
