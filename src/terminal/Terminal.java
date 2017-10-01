@@ -3,29 +3,34 @@ package terminal;
 import app.CharacterCommand;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Terminal implements TerminalEventListener, TerminalInterface{
-    private Dimension windowSize = new Dimension(800, 600);
+    private Dimension windowSize = new Dimension(850, 650);
     private TerminalInputComponent inputComponent;
     private JFrame frame;
     private CommandHandler commandHandler;
     private LinkedBlockingQueue<String> commandQueue;
+    private int maxLines = 256;
 
-    public Terminal(String title){
+    public Terminal(String title, String default_prompt){
         commandHandler = new CommandHandler(this);
         commandQueue = new LinkedBlockingQueue<>();
-        initFrame(title);
+        initFrame(title, default_prompt);
     }
 
-    private void initFrame(String title){
+    private void initFrame(String title, String default_prompt){
         frame = new JFrame(title);
+        frame.setLayout(new BorderLayout());
         frame.setSize(windowSize);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        inputComponent = new TerminalInputComponent();
-        frame.add(inputComponent);
+        inputComponent = new TerminalInputComponent(default_prompt);
+        JScrollPane scrollPane = new JScrollPane(inputComponent);
+        frame.add(scrollPane, BorderLayout.CENTER);
+        //frame.add(inputComponent);
         inputComponent.setTerminalEventListener(this);
     }
 
@@ -38,11 +43,27 @@ public class Terminal implements TerminalEventListener, TerminalInterface{
                  wait();
                  if (!commandQueue.isEmpty()) {
                      commandHandler.processCommand(commandQueue.take());
+
+                     if(inputComponent.getLineCount()>maxLines){
+                         int linesToRemove = inputComponent.getLineCount()-maxLines;
+                         try {
+                             inputComponent.replaceRange("",
+                                     inputComponent.getLineStartOffset(0),
+                                     inputComponent.getLineEndOffset(linesToRemove));
+                         } catch (BadLocationException e){
+                            //e.printStackTrace();
+                         }
+                     }
                  }
              } catch (InterruptedException e) {
-                //e.printStackTrace();
+                 //e.printStackTrace();
+                 break;
              }
          }
+    }
+
+    public void clear(){
+        inputComponent.clearAndReprompt();
     }
 
     @Override
@@ -136,7 +157,8 @@ public class Terminal implements TerminalEventListener, TerminalInterface{
 
     @Override
     public boolean queryYN(String query){
-        switch(getQueryResponse(query).toLowerCase()){
+        String s = getQueryResponse(query).toLowerCase();
+        switch(s){
             case "y":
             case "yes":
                 return true;

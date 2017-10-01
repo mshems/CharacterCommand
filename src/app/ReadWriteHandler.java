@@ -1,6 +1,7 @@
 package app;
 
 import character.PlayerCharacter;
+import character.PlayerCreator;
 import utils.Help;
 import utils.Message;
 
@@ -208,7 +209,7 @@ public class ReadWriteHandler {
             System.out.print("Enter name of character to load, or enter 'new' to create a new character: ");
             String characterName = CharacterCommand.scanner.nextLine().toLowerCase();
             if (characterName.equalsIgnoreCase("new")) {
-                PlayerCharacter.createCharacter();
+                PlayerCreator.createCharacter();
             } else if (!characterName.equalsIgnoreCase("quit")) {
                 if (CharacterCommand.characterList.get(characterName) != null) {
                     CharacterCommand.activeChar = CharacterCommand.characterList.get(characterName);

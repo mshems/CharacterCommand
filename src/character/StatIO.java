@@ -58,7 +58,7 @@ public class StatIO {
                     break;
                 default:
                     if (CharacterCommand.tokens.peek().startsWith("-")) {
-                        System.out.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
+                        CharacterCommand.terminal.printOut("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
                     } else {
                         nameBuilder.append(CharacterCommand.tokens.pop());
                         nameBuilder.append(" ");
@@ -72,7 +72,7 @@ public class StatIO {
             String statName = nameBuilder.toString().trim();
             Stat stat = CharacterCommand.activeChar.getStat(statName);
             if (stat != null && view) {
-                System.out.println(stat.detailString());
+                CharacterCommand.terminal.printOut(stat.detailString());
             }
         }
     }

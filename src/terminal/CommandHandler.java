@@ -26,7 +26,12 @@ public class CommandHandler {
     }
 
     void doCommand(String command, PlayerCharacter activeChar){
+        boolean clearing = false;
         switch(command){
+            case "clear":
+                terminal.clear();
+                clearing = true;
+                break;
             case "n":
             case "new":
                 PlayerCreator.createCharacter();
@@ -57,10 +62,7 @@ public class CommandHandler {
                 break;
             case "q":
             case "quit":
-                if(terminal.queryYN("Are you sure? Unsaved data will be lost [Y/N] : ")){
-                    CharacterCommand.closeApp();
-                    System.exit(0);
-                }
+                CharacterCommand.quit();
                 break;
             default:
                 if(activeChar!=null){
@@ -92,7 +94,7 @@ public class CommandHandler {
                             ItemIO.use(CharacterCommand.getActiveChar());
                             break;
                         case "ap":
-                            CharacterCommand.abilityPoints();
+                            AbilityPointsIO.abilityPoints(CharacterCommand.getActiveChar());
                             break;
                         case "ss":
                         case "spellslot":
@@ -168,6 +170,8 @@ public class CommandHandler {
                 break;
         }
         CharacterCommand.tokens.clear();
-        terminal.advance();
+        if(!clearing) {
+            terminal.advance();
+        }
     }
 }

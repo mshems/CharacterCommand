@@ -53,7 +53,7 @@ public class InventoryIO {
                 case "-count":
                     CharacterCommand.tokens.pop();
                     if (CharacterCommand.tokens.isEmpty()) {
-                        System.out.println(Message.ERROR_NO_ARG + ": count");
+                        CharacterCommand.terminal.printOut(Message.ERROR_NO_ARG + ": count");
                     } else {
                         itemCount = CharacterCommand.getIntToken();
                     }
@@ -68,7 +68,7 @@ public class InventoryIO {
                     break;
                 default:
                     if (CharacterCommand.tokens.peek().startsWith("-")) {
-                        System.out.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
+                        CharacterCommand.terminal.printOut("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
                     } else {
                         nameBuilder.append(CharacterCommand.tokens.pop());
                         nameBuilder.append(" ");
@@ -110,10 +110,10 @@ public class InventoryIO {
             }
         } else {
             if (command.equals("add")) {
-                System.out.println(Help.ADD);
+                CharacterCommand.terminal.printOut(Help.ADD);
             }
             if (command.equals("drop")) {
-                System.out.println(Help.DROP);
+                CharacterCommand.terminal.printOut(Help.DROP);
             }
         }
     }
@@ -136,15 +136,15 @@ public class InventoryIO {
         }
         if (command.equals("drop") && !dropAll) {
             itemCount = -itemCount;
-            System.out.println(String.format("Dropped %dx %s", -itemCount, itemName));
+            CharacterCommand.terminal.printOut(String.format("Dropped %dx %s", -itemCount, itemName));
         }
         if (dropAll) {
             pc.getCurrency(coinType).setCount(0);
-            System.out.println(String.format("Dropped all %s", itemName));
+            CharacterCommand.terminal.printOut(String.format("Dropped all %s", itemName));
         } else {
             pc.addCurrency(coinType, itemCount);
             if (command.equals("add")) {
-                System.out.println(String.format("Added %dx %s", itemCount, itemName));
+                CharacterCommand.terminal.printOut(String.format("Added %dx %s", itemCount, itemName));
             }
         }
     }
@@ -152,15 +152,15 @@ public class InventoryIO {
     private static void addDropItem(PlayerCharacter pc, Item item, Integer itemCount, boolean dropAll, String command) {
         if (command.equals("drop") && !dropAll) {
             itemCount = -itemCount;
-            System.out.println(String.format("Dropped %dx \"%s\"", -itemCount, item.getName()));
+            CharacterCommand.terminal.printOut(String.format("Dropped %dx \"%s\"", -itemCount, item.getName()));
         }
         if (dropAll) {
             pc.removeItem(item);
-            System.out.println(String.format("Dropped all \"%s\"", item.getName()));
+            CharacterCommand.terminal.printOut(String.format("Dropped all \"%s\"", item.getName()));
         } else {
             pc.addDropItem(item, itemCount);
             if (command.equals("add")) {
-                System.out.println(String.format("Added %dx \"%s\"", itemCount, item.getName()));
+                CharacterCommand.terminal.printOut(String.format("Added %dx \"%s\"", itemCount, item.getName()));
             }
         }
     }
@@ -326,7 +326,7 @@ public class InventoryIO {
             default:
                 return;
         }
-        System.out.println(String.format("Got %dx %s", itemBuilder.itemCount, itemBuilder.itemName));
+        CharacterCommand.terminal.printOut(String.format("Got %dx %s", itemBuilder.itemCount, itemBuilder.itemName));
     }
 
     public static void getCoins(PlayerCharacter pc, ItemBuilder itemBuilder) {

@@ -15,8 +15,6 @@ public class CharacterCommand {
      */
     public static final long VERSION = 203L;
     private static final String splash = "CharacterCommand v0.2.4";
-    //private static String newLine = System.lineSeparator();
-    public static boolean QUIT_ALL = false;
     public static PlayerCharacter activeChar;
     public static LinkedHashMap<String, PlayerCharacter> characterList;
     public static Scanner scanner;
@@ -24,7 +22,6 @@ public class CharacterCommand {
     public static LinkedList<String> tokens;
     public static PropertiesHandler propertiesHandler;
     public static ReadWriteHandler readWriteHandler;
-    //public static CommandHandler commandHandler;
     public static Terminal terminal;
 
     public static PlayerCharacter getActiveChar(){
@@ -46,13 +43,10 @@ public class CharacterCommand {
 
         makeTestCharacter();
 
-        terminal = new Terminal(splash);
+        terminal = new Terminal(splash, "CharacterCommand@~ > ");
         terminal.start();
     }
 
-    /**
-     * INITIALIZATION
-     ******************************************************************************************************/
     private static void initApp() {
         //System.out.println("---" + splash + "---");
         propertiesHandler = new PropertiesHandler();
@@ -71,6 +65,14 @@ public class CharacterCommand {
         }
     }
 
+    public static void quit(){
+        boolean quit = terminal.queryYN("Are you sure? Unsaved data will be lost [Y/N] : ");
+        if(quit){
+            CharacterCommand.closeApp();
+            System.exit(0);
+        }
+    }
+
     public static void closeApp(){
         if (activeChar == null) {
             propertiesHandler.setLast("");
@@ -78,293 +80,6 @@ public class CharacterCommand {
             propertiesHandler.setLast(activeChar.getName().toLowerCase());
         }
         propertiesHandler.writeProperties();
-    }
-
-    /**
-     * AP
-     ******************************************************************************************************************/
-    public static void abilityPoints() {
-        tokens.pop();
-        if (!tokens.isEmpty()) {
-            abilityPointsParser();
-        } else {
-            System.out.println("use | get | set");
-            System.out.print("Action: ");
-            String action = scanner.nextLine().toLowerCase().trim();
-            boolean exit = false;
-            int amount;
-            while (!exit) {
-                switch (action) {
-                    case "u":
-                    case "use":
-                        amount = getValidInt("Ability Points to use: ");
-                        ((CounterStat) activeChar.getStat("ap")).countDown(amount);
-                        System.out.println("Used " + amount + " ability points");
-                        exit = true;
-                        break;
-                    case "g":
-                    case "get":
-                        amount = getValidInt("Ability Points gained: ");
-                        ((CounterStat) activeChar.getStat("ap")).countUp(amount);
-                        System.out.println("Gained " + amount + " ability points");
-                        exit = true;
-                        break;
-                    case "s":
-                    case "set":
-                        amount = getValidInt("Ability Points maximum: ");
-                        ((CounterStat) activeChar.getStat("ap")).setMaxVal(amount);
-                        System.out.println("Ability Point maximum now " + amount);
-                        exit = true;
-                        break;
-                    case "cancel":
-                        exit = true;
-                        break;
-                }
-            }
-        }
-    }
-
-    private static void abilityPointsParser() {
-        boolean use = false;
-        boolean get = false;
-        boolean set = false;
-        boolean help = false;
-        boolean all = false;
-        Integer count = 1;
-        while (!tokens.isEmpty()) {
-            switch (tokens.peek()) {
-                case "-u":
-                case "--use":
-                    tokens.pop();
-                    use = true;
-                    get = false;
-                    set = false;
-                    break;
-                case "-g":
-                case "--get":
-                    tokens.pop();
-                    get = true;
-                    use = false;
-                    set = false;
-                    break;
-                case "-s":
-                case "--set":
-                    tokens.pop();
-                    set = true;
-                    get = false;
-                    use = false;
-                    break;
-                case "-c":
-                case "--count":
-                    tokens.pop();
-                    if (tokens.isEmpty()) {
-                        System.out.println(Message.ERROR_NO_ARG + ": level");
-                    } else {
-                        count = getIntToken();
-                    }
-                    break;
-                case "--all":
-                    tokens.pop();
-                    all = true;
-                    break;
-                case "--help":
-                    tokens.pop();
-                    help = true;
-                    break;
-                default:
-                    if (tokens.peek().startsWith("-")) {
-                        System.out.println("ERROR: Invalid flag '" + tokens.pop() + "'");
-                    }
-                    break;
-            }
-        }
-        if (help) {
-            System.out.println(Help.AP);
-        } else {
-            if (count != null) {
-                CounterStat ap = ((CounterStat) activeChar.getStat("ap"));
-                if (use) {
-                    if (all) {
-                        ap.setCurrVal(0);
-                        System.out.println("Used all ability points");
-                    } else {
-                        ap.countDown(count);
-                        System.out.println("Used " + count + " ability points");
-                    }
-                } else if (get) {
-                    if (all) {
-                        ap.setCurrVal(ap.getMaxVal());
-                        System.out.println("Gained all ability points");
-                    } else {
-                        ap.countUp(count);
-                        System.out.println("Gained " + count + " ability points");
-                    }
-                } else if (set) {
-                    ap.setMaxVal(count);
-                    System.out.println("Ability Point maximum now " + count);
-                } else {
-                    System.out.println(Message.ERROR_SYNTAX);
-                }
-            }
-        }
-    }
-
-    /**
-     * SKILLS
-     **************************************************************************************************************/
-    public static void skills() {
-        tokens.pop();
-        String action;
-        if (!tokens.isEmpty()) {
-            skillsParser();
-        } else {
-            Skill skill;
-            boolean exit = false;
-            while (!exit) {
-                System.out.println("view | train | forget | expert | view all");
-                System.out.print("Action: ");
-                action = scanner.nextLine().trim().toLowerCase();
-                switch (action) {
-                    case "v":
-                    case "view":
-                        skill = getSkillByName();
-                        if (skill != null) {
-                            System.out.println(skill);
-                        }
-                        exit = true;
-                        break;
-                    case "t":
-                    case "train":
-                        skill = getSkillByName();
-                        if (skill != null) {
-                            skill.train(activeChar);
-                            System.out.println("Gained proficiency in " + skill.getName());
-                        }
-                        exit = true;
-                        break;
-                    case "f":
-                    case "forget":
-                        skill = getSkillByName();
-                        if (skill != null) {
-                            skill.untrain(activeChar);
-                            System.out.println("Lost proficiency in " + skill.getName());
-                        }
-                        exit = true;
-                        break;
-                    case "e":
-                    case "expert":
-                        skill = getSkillByName();
-                        if (skill != null) {
-                            skill.expert(activeChar);
-                            System.out.println("Gained expertise in " + skill.getName());
-                        }
-                        exit = true;
-                        break;
-                    case "va":
-                    case "viewall":
-                    case "view all":
-                        System.out.println(activeChar.skillsToString());
-                        exit = true;
-                        break;
-                    case "cancel":
-                        exit = true;
-                        break;
-                    default:
-                        System.out.println(Message.ERROR_SYNTAX);
-                        System.out.println("Enter 'cancel' to exit");
-                        exit = false;
-                        break;
-                }
-            }
-        }
-    }
-
-    private static void skillsParser() {
-        StringBuilder nameBuilder = new StringBuilder();
-        Skill skill;
-        boolean expert = false;
-        boolean forget = false;
-        boolean train = false;
-        boolean view = false;
-        boolean viewAll = false;
-        boolean help = false;
-
-        while (!tokens.isEmpty()) {
-            switch (tokens.peek()) {
-                case "-e":
-                case "--expert":
-                    expert = true;
-                    tokens.pop();
-                    break;
-                case "-t":
-                case "--train":
-                    train = true;
-                    tokens.pop();
-                    break;
-                case "-f":
-                case "--forget":
-                    forget = true;
-                    tokens.pop();
-                    break;
-                case "-v":
-                case "--view":
-                    view = true;
-                    tokens.pop();
-                    break;
-                case "-va":
-                case "--viewall":
-                    tokens.pop();
-                    viewAll = true;
-                    break;
-                case "--help":
-                    tokens.pop();
-                    help = true;
-                    break;
-                default:
-                    if (tokens.peek().startsWith("-")) {
-                        System.out.println("ERROR: Invalid flag '" + tokens.pop() + "'");
-                    } else {
-                        nameBuilder.append(tokens.pop());
-                        nameBuilder.append(" ");
-                    }
-                    break;
-            }
-        }
-        if (help) {
-            System.out.println(Help.SKILL);
-        } else {
-            String skillName = nameBuilder.toString().trim();
-            skill = activeChar.getSkill(skillName);
-            if (viewAll) {
-                System.out.println(activeChar.skillsToString());
-            }
-            if (skill != null) {
-                if (!forget) {
-                    if (expert) {
-                        skill.expert(activeChar);
-                        System.out.println("Gained expertise in " + skill.getName());
-                    } else if (train) {
-                        skill.train(activeChar);
-                        System.out.println("Gained proficiency in " + skill.getName());
-                    }
-                } else {
-                    skill.untrain(activeChar);
-                    System.out.println("Lost proficiency in " + skill.getName());
-                }
-                if (view) {
-                    System.out.println(skill);
-                }
-            } else {
-                if (skillName.equals("") && !viewAll) {
-                    System.out.println("ERROR: Missing argument: skill name");
-                } else {
-                    if (!viewAll) {
-                        System.out.println("ERROR: No skill by that name");
-                        //System.out.println(Message.ERROR_SYNTAX);
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -835,7 +550,7 @@ public class CharacterCommand {
             }
         }
     }
-    
+
     /**
      * I/O & UTILITIES
      *****************************************************************************************************/
@@ -844,13 +559,11 @@ public class CharacterCommand {
         try {
             if (tokens.isEmpty()) {
                 terminal.printOut(Message.ERROR_NO_VALUE);
-                //System.out.println(Message.ERROR_NO_VALUE);
             } else {
                 n = Integer.parseInt(tokens.pop());
             }
         } catch (NumberFormatException e) {
             terminal.printOut(Message.ERROR_NOT_INT);
-            //System.out.println(Message.ERROR_NOT_INT);
         }
         return n;
     }
@@ -858,14 +571,13 @@ public class CharacterCommand {
     public static Skill getSkillByName() {
         Skill skill;
         while (true) {
-            System.out.print("Skill name: ");
-            String skillName = scanner.nextLine().trim();
+            String skillName = terminal.queryString("Stat name: ", false);
             if (skillName.equalsIgnoreCase("cancel")) {
                 return null;
             } else {
                 skill = activeChar.getSkill(skillName);
                 if (skill == null) {
-                    System.out.println(Message.MSG_NO_SKILL);
+                    terminal.printOut(Message.MSG_NO_SKILL);
                 } else {
                     return skill;
                 }
@@ -876,14 +588,13 @@ public class CharacterCommand {
     public static Stat getStatByName() {
         Stat stat;
         while (true) {
-            System.out.print("Stat name: ");
-            String skillName = scanner.nextLine().trim();
-            if (skillName.equalsIgnoreCase("cancel")) {
+            String statName = terminal.queryString("Stat name: ", false);
+            if (statName.equalsIgnoreCase("cancel")) {
                 return null;
             } else {
-                stat = activeChar.getStat(skillName);
+                stat = activeChar.getStat(statName);
                 if (stat == null) {
-                    System.out.println(Message.MSG_NO_SKILL);
+                    terminal.printOut(Message.MSG_NO_SKILL);
                 } else {
                     return stat;
                 }
@@ -894,14 +605,13 @@ public class CharacterCommand {
     public static Spell getSpellByName() {
         Spell spell;
         while (true) {
-            System.out.print("Spell name: ");
-            String spellName = scanner.nextLine().trim();
+            String spellName = terminal.queryString("Spell name: ", false);
             if (spellName.equalsIgnoreCase("cancel")) {
                 return null;
             } else {
                 spell = activeChar.getSpell(spellName);
                 if (spell == null) {
-                    System.out.println(Message.MSG_NO_SPELL);
+                    terminal.printOut(Message.MSG_NO_SPELL);
                 } else {
                     return spell;
                 }
@@ -912,8 +622,7 @@ public class CharacterCommand {
     public static Item getItemByName() {
         Item item;
         while (true) {
-            System.out.print("Item name: ");
-            String itemName = scanner.nextLine().trim();
+            String itemName = terminal.queryString("Item name: ", false);
             if (itemName.equalsIgnoreCase("cancel")) {
                 return null;
             } else {
@@ -924,7 +633,7 @@ public class CharacterCommand {
                 }
                 item = activeChar.getItem(itemName);
                 if (item == null) {
-                    System.out.println(Message.MSG_NO_ITEM);
+                    terminal.printOut(Message.MSG_NO_ITEM);
                 } else {
                     return item;
                 }
@@ -934,8 +643,7 @@ public class CharacterCommand {
 
     public static DiceRoll getDiceRoll() {
         while (true) {
-            System.out.print("Dice roll: ");
-            String s = scanner.nextLine().trim();
+            String s = terminal.queryString("Dice roll: ", false);
             if (s.matches("(\\d+d\\d+)")) {
                 String[] a = s.split("d");
                 return new DiceRoll(Integer.parseInt(a[0]), Integer.parseInt(a[1]));
@@ -974,25 +682,14 @@ public class CharacterCommand {
 
     public static void dispCharacterList() {
         if (!characterList.isEmpty()) {
-            System.out.println("Characters:");
-            for (PlayerCharacter c : characterList.values()) {
-                System.out.println("- " + c.getName());
-            }
+            terminal.printBlock(()-> {
+                terminal.println("Characters:");
+                for (PlayerCharacter c : characterList.values()) {
+                    terminal.println("- " + c.getName());
+                }
+            });
         } else {
-            System.out.println("No characters available");
-        }
-    }
-
-    public static boolean getYN(String message) {
-        while (true) {
-            System.out.print(message + "[Y/N]: ");
-            String yn = scanner.nextLine();
-            if (yn.equalsIgnoreCase("y") || yn.equalsIgnoreCase("yes")) {
-                return true;
-            }
-            if (yn.equalsIgnoreCase("n") || yn.equalsIgnoreCase("no")) {
-                return false;
-            }
+            terminal.printOut("No characters available");
         }
     }
 
@@ -1000,14 +697,14 @@ public class CharacterCommand {
         if (pc.isSpellcaster()) {
             return true;
         } else {
-            System.out.println(Message.MSG_NOT_CAST);
+            terminal.printOut(Message.MSG_NOT_CAST);
             return false;
         }
     }
 
     public static boolean isValidName(String name) {
         if (name.isEmpty() || name.matches("\\s+") || name.matches(".*[^a-zA-Z0-9)(\\s+].*")) {
-            System.out.println("Not a valid name");
+            terminal.printOut("Not a valid name");
             return false;
         } else {
             return true;

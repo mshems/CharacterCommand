@@ -5,6 +5,8 @@
 
 package terminal;
 
+import app.CharacterCommand;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,17 +22,18 @@ public class TerminalInputComponent extends JTextArea{
 
     private String prompt;
     private static final String USER_NAME = System.getProperty("user.name");
-    private static final String DEFAULT_PROMPT = USER_NAME+"@terminal > ";
+    private static String DEFAULT_PROMPT;
     private LinkedList<String> history;
     private int historyPointer = 0;
 
 
-    public TerminalInputComponent(){
+    public TerminalInputComponent(String default_prompt){
+        this.DEFAULT_PROMPT = default_prompt;
         this.setMargin(new Insets(5,5,5,5));
-        this.setBackground(Color.BLACK);
-        this.setForeground(Color.WHITE);
-        this.setCaretColor(Color.WHITE);
-        this.setFont(new Font("MONOSPACED", Font.PLAIN, 18));
+        this.setBackground(new Color(33,33,33));
+        this.setForeground(new Color(245, 245, 245));
+        this.setCaretColor(new Color(245,245,245));
+        this.setFont(new Font("consolas", Font.PLAIN, 18));
         this.setPrompt(DEFAULT_PROMPT);
         this.setMultiline(true);
         this.remapEnterKey();
@@ -39,8 +42,7 @@ public class TerminalInputComponent extends JTextArea{
         this.addKeyListener(new TerminalKeylistener(this));
         this.setQuerying(false);
         this.setAllowBackSpace(false);
-        //this.eventDispatcher = new terminal.TerminalEventDispatcher(this);
-    }
+        }
 
     void start(){
         this.setEditable(true);
@@ -55,12 +57,10 @@ public class TerminalInputComponent extends JTextArea{
 
     void print(String s){
         this.append(s);
-        //this.advanceCaret();
     }
 
     void println(String s){
         this.append(s+System.lineSeparator());
-        //this.advanceCaret();
     }
 
     void newLine(){
@@ -81,7 +81,7 @@ public class TerminalInputComponent extends JTextArea{
     }
 
     void advanceCaret(){
-        this.lastPromptPos = getText().lastIndexOf(getPrompt())+getPrompt().length();
+        this.lastPromptPos = getText().lastIndexOf(prompt)+prompt.length();
         this.setCaretPosition(lastPromptPos);
     }
 
@@ -90,16 +90,26 @@ public class TerminalInputComponent extends JTextArea{
     }
 
     private void prompt(){
-        this.setText(getPrompt());
+           this.setText(prompt);
     }
 
     private void appendPrompt(){
-        this.append("\n" + getPrompt());
+        if(multiline) {
+                this.append("\n" + prompt);
+        } else {
+                this.append(prompt);
+        }
         this.advanceCaret();
     }
 
     void clear(){
         this.setText("");
+    }
+
+    void clearAndReprompt(){
+        this.setText("");
+        this.append(prompt);
+        this.advanceCaret();
     }
 
     void updateHistory(String command){
@@ -173,10 +183,6 @@ public class TerminalInputComponent extends JTextArea{
             }
         });
         this.getInputMap().put((KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0)), "downArrowAction");
-    }
-
-    public String getPrompt() {
-        return prompt;
     }
 
     public void setPrompt(String prompt){

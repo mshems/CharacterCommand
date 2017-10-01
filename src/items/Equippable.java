@@ -32,7 +32,6 @@ public class Equippable extends Item {
                 }
             }
         }
-		System.out.println(this.getName()+" equipped");
 	}
 
 	@Override
@@ -45,7 +44,6 @@ public class Equippable extends Item {
                 }
             }
         }
-		System.out.println(this.getName()+" dequipped");
 	}
 	@Override
 	public boolean isEquipped() {

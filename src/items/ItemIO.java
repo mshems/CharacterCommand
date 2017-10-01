@@ -131,12 +131,14 @@ public class ItemIO {
                     if (command.equalsIgnoreCase("equip")) {
                         if (!item.isEquipped()) {
                             pc.equip(item);
+                            CharacterCommand.terminal.printOut(item.getName()+" equipped");
                         } else {
-                            System.out.println("ERROR: Item already equipped");
+                            CharacterCommand.terminal.printOut("ERROR: Item already equipped");
                         }
                     } else {
                         if (item.isEquipped()) {
                             pc.dequip(item);
+                            CharacterCommand.terminal.printOut(item.getName()+" dequipped");
                         } else {
                             CharacterCommand.terminal.printOut("ERROR: Item not equipped");
                         }
