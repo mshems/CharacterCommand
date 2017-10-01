@@ -1,13 +1,13 @@
 package items;
 
-import app.App;
+import app.CharacterCommand;
 import character.PlayerCharacter;
 
 import java.io.Serializable;
 
 public class Item implements Serializable {
 
-	private static final long serialVersionUID = App.VERSION;
+	private static final long serialVersionUID = CharacterCommand.VERSION;
 	private String name;
 	private int count;
 	private String description="";

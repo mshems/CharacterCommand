@@ -1,16 +1,33 @@
-package app;
+package terminal;
 
-import character.PlayerCharacter;
+import character.*;
+import app.CharacterCommand;
+import app.DiceRoll;
 import utils.Help;
 import utils.Message;
 
-class CommandHandler{
+import java.util.Collections;
 
-    /*void doCommand(String command, PlayerCharacter activeChar){
+public class CommandHandler {
+    private Terminal terminal;
+
+    public CommandHandler(Terminal term){
+        this.terminal = term;
+    }
+
+    public void processCommand(String command){
+        String[] input = command
+                .trim()
+                .split("\\s+");
+        Collections.addAll(CharacterCommand.tokens, input);
+        this.doCommand(CharacterCommand.tokens.peek(), CharacterCommand.activeChar);
+    }
+
+    void doCommand(String command, PlayerCharacter activeChar){
         switch(command){
             case "n":
             case "new":
-                PlayerCharacter.createCharacter();
+                PlayerCreator.createCharacter();
                 break;
             case "import":
                 CharacterCommand.ioHandler.importCharacter();
@@ -31,16 +48,16 @@ class CommandHandler{
             case "help":
                 CharacterCommand.tokens.pop();
                 if(!CharacterCommand.tokens.isEmpty()){
-                    Help.helpMenu(CharacterCommand.tokens.pop());
+                    Help.helpMenu(terminal, CharacterCommand.tokens.pop());
                 } else {
-                    System.out.println(Help.COMMANDS_LIST);
+                    terminal.printOut(Help.COMMANDS_LIST);
                 }
                 break;
             case "q":
             case "quit":
-                if(CharacterCommand.getYN("Are you sure? Unsaved data will be lost ")){
-                    CharacterCommand.QUIT_ALL = true;
-                    CharacterCommand.scanner.close();
+                if(terminal.queryYN("Are you sure? Unsaved data will be lost [Y/N] : ")){
+                    CharacterCommand.closeApp();
+                    System.exit(0);
                 }
                 break;
             default:
@@ -55,7 +72,7 @@ class CommandHandler{
                             break;
                         case "v":
                         case "view":
-                            System.out.println(activeChar);
+                            terminal.printOut(activeChar.toString());
                             break;
                         //case "set":
                         case "edit":
@@ -78,42 +95,42 @@ class CommandHandler{
                         case "ss":
                         case "spellslot":
                         case "spellslots":
-                            if(CharacterCommand.checkCaster(CharacterCommand.activeChar)){
+                            if(CharacterCommand.checkCaster(CharacterCommand.getActiveChar())){
                                 CharacterCommand.spellSlots();
                             }
                             break;
                         case "charge":
-                            if(CharacterCommand.checkCaster(CharacterCommand.activeChar)){
+                            if(CharacterCommand.checkCaster(CharacterCommand.getActiveChar())){
                                 CharacterCommand.charge();
                             }
                             break;
                         case "spell":
                         case "spells":
-                            if(CharacterCommand.checkCaster(CharacterCommand.activeChar)){
+                            if(CharacterCommand.checkCaster(CharacterCommand.getActiveChar())){
                                 CharacterCommand.spells();
                             }
                             break;
                         case "learn":
-                                CharacterCommand.learn();
+                            CharacterCommand.learn();
                             break;
                         case "forget":
-                            if(CharacterCommand.checkCaster(CharacterCommand.activeChar)){
+                            if(CharacterCommand.checkCaster(CharacterCommand.getActiveChar())){
                                 CharacterCommand.forget();
                             }
                             break;
                         case "spellbook":
-                            if(CharacterCommand.checkCaster(CharacterCommand.activeChar)){
-                                System.out.println(activeChar.getSpellBook());
+                            if(CharacterCommand.checkCaster(CharacterCommand.getActiveChar())){
+                                terminal.printOut(activeChar.getSpellBook().toString());
                             }
                             break;
                         case "cast":
-                            if(CharacterCommand.checkCaster(CharacterCommand.activeChar)){
+                            if(CharacterCommand.checkCaster(CharacterCommand.getActiveChar())){
                                 CharacterCommand.cast();
                             }
                             break;
                         case "lvl":
                         case "levelup":
-                            CharacterCommand.levelUp();
+                            PlayerLeveler.levelUp(CharacterCommand.getActiveChar());
                             break;
                         case "skill":
                         case "skills":
@@ -121,7 +138,7 @@ class CommandHandler{
                             break;
                         case "i":
                         case "inv":
-                            System.out.println(activeChar.getInventory());
+                            terminal.printOut(activeChar.getInventory().toString());
                             break;
                         case "get":
                             CharacterCommand.get();
@@ -132,22 +149,23 @@ class CommandHandler{
                             break;
                         case "heal":
                         case "hurt":
-                            CharacterCommand.heal();
+                            PlayerHealer.heal(CharacterCommand.getActiveChar());
                             break;
                         case "sq":
                             CharacterCommand.ioHandler.saveChar();
-                            CharacterCommand.QUIT_ALL = true;
-                            CharacterCommand.scanner.close();
+                            CharacterCommand.closeApp();
+                            System.exit(0);
                             break;
                         default:
-                            System.out.println(Message.ERROR_NO_COMMAND);
+                            Message.errorMessage(terminal, Message.ERROR_NO_COMMAND);
                             break;
                     }
                 } else {
-                        System.out.println(Message.ERROR_NO_LOAD);
+                    Message.errorMessage(terminal, Message.ERROR_NO_LOAD);
                 }
                 break;
         }
         CharacterCommand.tokens.clear();
-    }*/
+        terminal.advance();
+    }
 }

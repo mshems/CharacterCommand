@@ -1,5 +1,5 @@
 package character;
-import app.App;
+import app.CharacterCommand;
 import items.Item;
 
 import java.io.Serializable;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class Inventory implements Serializable {
-	private static final long serialVersionUID = App.VERSION;
+	private static final long serialVersionUID = CharacterCommand.VERSION;
 	private LinkedHashMap<String, Item> contents;
 	private ArrayList<Item> currency;
 	

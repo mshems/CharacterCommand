@@ -1,12 +1,12 @@
 package items;
 
-import app.App;
+import app.CharacterCommand;
 import character.Stat;
 
 import java.io.Serializable;
 
 public class ItemEffect implements Serializable{
-	private static final long serialVersionUID = App.VERSION;
+	private static final long serialVersionUID = CharacterCommand.VERSION;
 	private Stat target;
 	private int bonus;
 	

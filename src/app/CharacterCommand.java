@@ -3,27 +3,33 @@ package app;
 import character.*;
 import items.*;
 import magic.*;
+import terminal.Terminal;
 import utils.*;
 
 import java.util.*;
 
 //@SuppressWarnings("unused")
-public class App {
+public class CharacterCommand {
     /**
      * version 0.2.4
      */
     public static final long VERSION = 203L;
     private static final String splash = "CharacterCommand v0.2.4";
     //private static String newLine = System.lineSeparator();
-    static boolean QUIT_ALL = false;
-    static PlayerCharacter activeChar;
-    static LinkedHashMap<String, PlayerCharacter> characterList;
-    static Scanner scanner;
-    static String[] input;
-    static LinkedList<String> tokens;
-    static PropertiesHandler propertiesHandler;
-    static IOHandler ioHandler;
-    static CommandHandler commandHandler;
+    public static boolean QUIT_ALL = false;
+    public static PlayerCharacter activeChar;
+    public static LinkedHashMap<String, PlayerCharacter> characterList;
+    public static Scanner scanner;
+    public static String[] input;
+    public static LinkedList<String> tokens;
+    public static PropertiesHandler propertiesHandler;
+    public static IOHandler ioHandler;
+    //public static CommandHandler commandHandler;
+    public static Terminal terminal;
+
+    public static PlayerCharacter getActiveChar(){
+        return activeChar;
+    }
 
     public static void main(String[] args) {
         initApp();
@@ -38,50 +44,19 @@ public class App {
             }
         }
 
-        String prompt;
+        makeTestCharacter();
 
-        while (!QUIT_ALL) {
-            if (activeChar != null) {
-                prompt = "CharacterCommand @ " + activeChar.getName() + "> ";
-
-                if (propertiesHandler.isViewAlways()) {
-                    System.out.println(activeChar);
-                }
-            } else {
-                prompt = "CharacterCommand> ";
-            }
-
-            getCommand(prompt);
-            commandHandler.doCommand(tokens.peek(), activeChar);
-
-        }
-
-        if (activeChar == null) {
-            propertiesHandler.setLast("");
-        } else {
-            propertiesHandler.setLast(activeChar.getName().toLowerCase());
-        }
-        propertiesHandler.writeProperties();
-    }
-
-    /**
-     * GETTING COMMAND
-     *****************************************************************************************************/
-    private static void getCommand(String prompt) {
-        System.out.print(prompt);
-        input = scanner.nextLine()
-                .trim()
-                .split("\\s+");
-        Collections.addAll(tokens, input);
+        terminal = new Terminal(splash);
+        terminal.start();
     }
 
     /**
      * INITIALIZATION
      ******************************************************************************************************/
     private static void initApp() {
-        System.out.println("---" + splash + "---");
+        //System.out.println("---" + splash + "---");
         propertiesHandler = new PropertiesHandler();
-        commandHandler = new CommandHandler();
+        //commandHandler = new CommandHandler();
         ioHandler = new IOHandler();
         IOHandler.checkDirs();
         tokens = new LinkedList<>();
@@ -96,32 +71,37 @@ public class App {
         }
     }
 
+    public static void closeApp(){
+        if (activeChar == null) {
+            propertiesHandler.setLast("");
+        } else {
+            propertiesHandler.setLast(activeChar.getName().toLowerCase());
+        }
+        propertiesHandler.writeProperties();
+    }
+
     /**
      * CREATE CHARACTER
      ****************************************************************************************************/
-    static void createCharacter() {
+    /*public static void createCharacter() {
         String name;
         while (true) {
-            System.out.print("Character name: ");
-            name = scanner.nextLine().trim();
+            name = terminal.queryString("Character name: ", false);
             if (isValidName(name)) {
                 break;
             }
         }
-        System.out.print("Race: ");
-        String raceName = scanner.nextLine();
-        System.out.print("Class: ");
-        String className = scanner.nextLine();
+        String raceName = terminal.queryString("Race: ", false);
+        String className = terminal.queryString("Class: ", false);
         PlayerCharacter c = new PlayerCharacter(name, raceName, className);
         for (String key : c.getAbilities().keySet()) {
             Ability a = c.getAbilities().get(key);
-            a.setBaseVal(getValidInt("Enter " + a.getName() + " score: "));
+            a.setBaseVal(terminal.queryInteger("Enter "+a.getName() + " score: ", false));
         }
-        if (getYN("Spellcaster? ")) {
+        if (terminal.queryYN("Spellcaster? [Y/N] : ")) {
             Ability spellAbility = null;
             while (spellAbility == null) {
-                System.out.print("Spellcasting ability: ");
-                String abilityName = scanner.nextLine();
+                String abilityName = terminal.queryString("Spellcasting ability: ", false);
                 spellAbility = c.getAbilities().get(abilityName);
                 if (spellAbility == null) {
                     System.out.println("ERROR: Ability not found");
@@ -135,14 +115,14 @@ public class App {
         }
         c.updateStats();
         characterList.put(c.getName().toLowerCase(), c);
-        System.out.println("Created " + c.getName());
+        terminal.printBlock(()->terminal.print("Created "+c.getName()));
         activeChar = c;
-    }
+    }*/
 
     /**
      * STATS
      ***************************************************************************************************************/
-    static void stats() {
+    public static void stats() {
         tokens.pop();
         if (!tokens.isEmpty()) {
             statsParser();
@@ -214,7 +194,7 @@ public class App {
     /**
      * EDIT
      ***************************************************************************************************************/
-    static void edit() {
+    public static void edit() {
         tokens.pop();
         if (!tokens.isEmpty()) {
             editParser();
@@ -293,7 +273,7 @@ public class App {
     /**
      * AP
      ******************************************************************************************************************/
-    static void abilityPoints() {
+    public static void abilityPoints() {
         tokens.pop();
         if (!tokens.isEmpty()) {
             abilityPointsParser();
@@ -422,7 +402,7 @@ public class App {
     /**
      * SKILLS
      **************************************************************************************************************/
-    static void skills() {
+    public static void skills() {
         tokens.pop();
         String action;
         if (!tokens.isEmpty()) {
@@ -578,58 +558,9 @@ public class App {
     }
 
     /**
-     * LEVELUP
-     *************************************************************************************************************/
-    static void levelUp() {
-        tokens.pop();
-        boolean help = false;
-        if (tokens.isEmpty()) {
-            activeChar.levelUp();
-            System.out.println(String.format("%s is now level %.0f", activeChar.getName(), activeChar.getLevel().getBaseVal()));
-        } else {
-            Integer level = null;
-
-            while (!tokens.isEmpty()) {
-                switch (tokens.peek()) {
-                    case "-l":
-                    case "--level":
-                        tokens.pop();
-                        if (tokens.isEmpty()) {
-                            System.out.println(Message.ERROR_NO_ARG + ": level");
-                        } else {
-                            level = getIntToken();
-                        }
-                        break;
-                    case "--help":
-                        tokens.pop();
-                        help = true;
-                        break;
-                    default:
-                        if (tokens.peek().startsWith("-")) {
-                            System.out.println("ERROR: Invalid flag '" + tokens.pop() + "'");
-                        } else {
-                            tokens.pop();
-                        }
-                        break;
-                }
-            }
-            if (!help) {
-                if (level != null) {
-                    activeChar.levelUp(level);
-                    System.out.println(String.format("%s is now level %.0f", activeChar.getName(), activeChar.getLevel().getBaseVal()));
-                } else {
-                    System.out.println("ERROR: Invalid input");
-                }
-            } else {
-                System.out.println(Help.LEVELUP);
-            }
-        }
-    }
-
-    /**
      * SPELL SLOTS
      *********************************************************************************************************/
-    static void spellSlots() {
+    public static void spellSlots() {
         tokens.pop();
         if (!tokens.isEmpty()) {
             switch (tokens.peek()) {
@@ -718,7 +649,7 @@ public class App {
     }
 
 
-    static void charge() {
+    public static void charge() {
         tokens.pop();
         if (!tokens.isEmpty()) {
             chargeParser();
@@ -825,7 +756,7 @@ public class App {
     /**
      * SPELLS
      **************************************************************************************************************/
-    static void spells() {
+    public static void spells() {
         tokens.pop();
         if (!tokens.isEmpty()) {
             switch (tokens.peek()) {
@@ -859,7 +790,7 @@ public class App {
     /**
      * LEARN
      ***************************************************************************************************************/
-    static void learn() {
+    public static void learn() {
         tokens.pop();
         if (!tokens.isEmpty()) {
             learnParser();
@@ -961,7 +892,7 @@ public class App {
     /**
      * FORGET
      **************************************************************************************************************/
-    static void forget() {
+    public static void forget() {
         tokens.pop();
         if (!tokens.isEmpty()) {
             forgetParser();
@@ -1016,7 +947,7 @@ public class App {
     /**
      * CAST
      ****************************************************************************************************************/
-    static void cast() {
+    public static void cast() {
         tokens.pop();
         if (!tokens.isEmpty()) {
             castParser();
@@ -1096,105 +1027,9 @@ public class App {
     }
 
     /**
-     * HEAL/HURT
-     ***********************************************************************************************************/
-    static void heal() {
-        String command = tokens.pop();
-        if (!tokens.isEmpty()) {
-            heal(command);
-        } else {
-            Integer amount;
-            if (command.equals("heal")) {
-                amount = getValidInt("HP gained: ");
-            } else {
-                amount = getValidInt("HP lost: ");
-            }
-            heal(command, amount);
-        }
-    }
-
-    private static void heal(String command) {
-        Integer amount = null;
-        boolean healAll = false;
-        boolean help = false;
-        while (!tokens.isEmpty()) {
-            switch (tokens.peek()) {
-                case "-hp":
-                case "--health":
-                    tokens.pop();
-                    if (tokens.isEmpty()) {
-                        System.out.println(Message.ERROR_NO_ARG + ": amount");
-                    } else {
-                        amount = getIntToken();
-                    }
-                    break;
-                case "--all":
-                    tokens.pop();
-                    healAll = true;
-                    break;
-                case "--help":
-                    tokens.pop();
-                    help = true;
-                    break;
-                default:
-                    if (tokens.peek().startsWith("-")) {
-                        System.out.println("ERROR: Invalid flag '" + tokens.pop() + "'");
-                    } else {
-                        tokens.pop();
-                    }
-                    break;
-            }
-        }
-        if (help) {
-            if (command.equals("heal")) {
-                System.out.println(Help.HEAL);
-            }
-            if (command.equals("hurt")) {
-                System.out.println(Help.HURT);
-            }
-        } else if (healAll) {
-            healAll(command);
-        } else if (amount != null) {
-            heal(command, amount);
-        } else {
-            System.out.println(Message.ERROR_SYNTAX);
-        }
-    }
-
-    private static void heal(String command, int amount) {
-        switch (command) {
-            case "heal":
-                activeChar.heal(amount);
-                System.out.println(String.format("Gained %d HP", amount));
-                break;
-            case "hurt":
-                activeChar.hurt(amount);
-                System.out.println(String.format("Lost %d HP", amount));
-                break;
-            default:
-                break;
-        }
-    }
-
-    private static void healAll(String command) {
-        switch (command) {
-            case "heal":
-                activeChar.fullHeal();
-                System.out.println("HP fully restored");
-                break;
-            case "hurt":
-                activeChar.fullHurt();
-                System.out.println("No HP remaining");
-                break;
-            default:
-                break;
-        }
-    }
-
-    /**
      * USE
      *****************************************************************************************************************/
-    static void use() {
+    public static void use() {
         tokens.pop();
         if (!tokens.isEmpty()) {
             useParser();
@@ -1270,7 +1105,7 @@ public class App {
     /**
      * EQUIP/DEQUIP
      ********************************************************************************************************/
-    static void equip() {
+    public static void equip() {
         String command = tokens.pop();
         if (!tokens.isEmpty()) {
             equip(command);
@@ -1351,7 +1186,7 @@ public class App {
      * GET
      *****************************************************************************************************************/
 
-    static void get() {
+    public static void get() {
         tokens.pop();
         if (!tokens.isEmpty()) {
             getParser();
@@ -1613,7 +1448,7 @@ public class App {
     /**
      * ADD/DROP
      ************************************************************************************************************/
-    static void addDrop() {
+    public static void addDrop() {
         Item item;
         String addDrop = tokens.pop();
         if (!tokens.isEmpty()) {
@@ -1775,16 +1610,18 @@ public class App {
     /**
      * I/O & UTILITIES
      *****************************************************************************************************/
-    private static Integer getIntToken() {
+    public static Integer getIntToken() {
         Integer n = null;
         try {
             if (tokens.isEmpty()) {
-                System.out.println(Message.ERROR_NO_VALUE);
+                terminal.printOut(Message.ERROR_NO_VALUE);
+                //System.out.println(Message.ERROR_NO_VALUE);
             } else {
                 n = Integer.parseInt(tokens.pop());
             }
         } catch (NumberFormatException e) {
-            System.out.println(Message.ERROR_NOT_INT);
+            terminal.printOut(Message.ERROR_NOT_INT);
+            //System.out.println(Message.ERROR_NOT_INT);
         }
         return n;
     }
@@ -1890,7 +1727,7 @@ public class App {
         }
     }
 
-    static int getValidInt(String message) {
+    public static int getValidInt(String message) {
         int val;
         while (true) {
             System.out.print(message);
@@ -1906,7 +1743,7 @@ public class App {
         return val;
     }
 
-    static void dispCharacterList() {
+    public static void dispCharacterList() {
         if (!characterList.isEmpty()) {
             System.out.println("Characters:");
             for (PlayerCharacter c : characterList.values()) {
@@ -1917,7 +1754,7 @@ public class App {
         }
     }
 
-    static boolean getYN(String message) {
+    public static boolean getYN(String message) {
         while (true) {
             System.out.print(message + "[Y/N]: ");
             String yn = scanner.nextLine();
@@ -1930,7 +1767,7 @@ public class App {
         }
     }
 
-    static boolean checkCaster(PlayerCharacter pc) {
+    public static boolean checkCaster(PlayerCharacter pc) {
         if (pc.isSpellcaster()) {
             return true;
         } else {
@@ -1939,7 +1776,7 @@ public class App {
         }
     }
 
-    private static boolean isValidName(String name) {
+    public static boolean isValidName(String name) {
         if (name.isEmpty() || name.matches("\\s+") || name.matches(".*[^a-zA-Z0-9)(\\s+].*")) {
             System.out.println("Not a valid name");
             return false;

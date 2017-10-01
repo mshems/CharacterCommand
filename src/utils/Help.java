@@ -1,5 +1,7 @@
 package utils;
 
+import terminal.Terminal;
+
 public class Help{
     private static final String newLine = System.lineSeparator();
 
@@ -193,100 +195,100 @@ public class Help{
 
 
 
-    public static void helpMenu(String command){
+    public static void helpMenu(Terminal terminal, String command){
         switch(command){
             case "load":
-                System.out.println(LOAD);
+                terminal.printOut(LOAD);
                 break;
             case "list":
-                System.out.println(LIST);
+                terminal.printOut(LIST);
                 break;
             case "s":
             case "save":
-                System.out.println(SAVE);
+                terminal.printOut(SAVE);
                 break;
             case "import":
-                System.out.println(IMPORT);
+                terminal.printOut(IMPORT);
                 break;
             case "export":
-                System.out.println(EXPORT);
+                terminal.printOut(EXPORT);
                 break;
             case "n":
             case "new":
-                System.out.println(NEW);
+                terminal.printOut(NEW);
                 break;
             case "v":
             case "view":
-                System.out.println(VIEW);
+                terminal.printOut(VIEW);
                 break;
             case "i":
             case "inv":
-                System.out.println(INV);
+                terminal.printOut(INV);
                 break;
             case "roll":
-                System.out.println(ROLL);
+                terminal.printOut(ROLL);
                 break;
             case "prefs":
-                System.out.println(PREFS);
+                terminal.printOut(PREFS);
                 break;
             case "get":
-                System.out.println(GET);
+                terminal.printOut(GET);
                 break;
             case "add":
-                System.out.println(ADD);
+                terminal.printOut(ADD);
                 break;
             case "drop":
-                System.out.println(DROP);
+                terminal.printOut(DROP);
                 break;
             case "edit":
-                System.out.println(EDIT);
+                terminal.printOut(EDIT);
                 break;
             case "skill":
             case "skills":
-                System.out.println(SKILL);
+                terminal.printOut(SKILL);
                 break;
             case "ap":
-                System.out.println(AP);
+                terminal.printOut(AP);
                 break;
             case "spell":
             case "spells":
-                System.out.println(SPELLS);
+                terminal.printOut(SPELLS);
                 break;
             case "spellslots":
-                System.out.println(SPELLSLOTS);
+                terminal.printOut(SPELLSLOTS);
                 break;
             case "charge":
-                System.out.println(CHARGE);
+                terminal.printOut(CHARGE);
                 break;
             case "cast":
-                System.out.println(CAST);
+                terminal.printOut(CAST);
                 break;
             case "learn":
-                System.out.println(LEARN);
+                terminal.printOut(LEARN);
                 break;
             case "forget":
-                System.out.println(FORGET);
+                terminal.printOut(FORGET);
                 break;
             case "stat":
             case "stats":
-                System.out.println(STATS);
+                terminal.printOut(STATS);
                 break;
             case "heal":
-                System.out.println(HEAL);
+                terminal.printOut(HEAL);
                 break;
             case "hurt":
-                System.out.println(HURT);
+                terminal.printOut(HURT);
                 break;
             case "equip":
-                System.out.println(EQUIP);
+                terminal.printOut(EQUIP);
                 break;
             case "dequip":
-                System.out.println(DEQUIP);
+                terminal.printOut(DEQUIP);
                 break;
             case "use":
-                System.out.println(USE);
+                terminal.printOut(USE);
             case "levelup":
-                System.out.println(LEVELUP);
+                terminal.printOut(LEVELUP);
                 break;
             default:
                 break;

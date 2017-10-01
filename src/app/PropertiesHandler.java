@@ -101,9 +101,9 @@ public class PropertiesHandler{
         }
     }
 
-    void prefs(){
-        String command = App.tokens.pop();
-        if(!App.tokens.isEmpty()){
+    public void prefs(){
+        String command = CharacterCommand.tokens.pop();
+        if(!CharacterCommand.tokens.isEmpty()){
             prefs(command);
         } else {
             //TODO: prefs
@@ -112,13 +112,13 @@ public class PropertiesHandler{
     }
 
     private void prefs(String command){
-        while(!App.tokens.isEmpty()) {
-            switch (App.tokens.peek()) {
+        while(!CharacterCommand.tokens.isEmpty()) {
+            switch (CharacterCommand.tokens.peek()) {
                 case "-e":
                 case "--export":
-                    App.tokens.pop();
-                    if(!App.tokens.isEmpty()){
-                        File exportFile = Paths.get(App.tokens.pop()).toFile();
+                    CharacterCommand.tokens.pop();
+                    if(!CharacterCommand.tokens.isEmpty()){
+                        File exportFile = Paths.get(CharacterCommand.tokens.pop()).toFile();
                         if (exportFile.isDirectory()){
                             this.exportDir = exportFile.toPath();
                         }
@@ -127,9 +127,9 @@ public class PropertiesHandler{
                     break;
                 case "-d":
                 case "--data":
-                    App.tokens.pop();
-                    if(!App.tokens.isEmpty()){
-                        File dataFile = Paths.get(App.tokens.pop()).toFile();
+                    CharacterCommand.tokens.pop();
+                    if(!CharacterCommand.tokens.isEmpty()){
+                        File dataFile = Paths.get(CharacterCommand.tokens.pop()).toFile();
                         if (dataFile.isDirectory()){
                             this.dataDir = dataFile.toPath();
                         }
@@ -139,9 +139,9 @@ public class PropertiesHandler{
                 case "-v":
                 case "-va":
                 case "--viewAlways":
-                    App.tokens.pop();
-                    if(!App.tokens.isEmpty()){
-                        String token = App.tokens.pop();
+                    CharacterCommand.tokens.pop();
+                    if(!CharacterCommand.tokens.isEmpty()){
+                        String token = CharacterCommand.tokens.pop();
                         if (token.equalsIgnoreCase("true") || token.equalsIgnoreCase("false")){
                             this.viewAlways = Boolean.parseBoolean(token);
                             System.out.println("Set 'viewAlways' to " + token);
@@ -152,9 +152,9 @@ public class PropertiesHandler{
                     break;
                 case "-r":
                 case "--resume":
-                    App.tokens.pop();
-                    if(!App.tokens.isEmpty()){
-                        String token = App.tokens.pop();
+                    CharacterCommand.tokens.pop();
+                    if(!CharacterCommand.tokens.isEmpty()){
+                        String token = CharacterCommand.tokens.pop();
                         if (token.equalsIgnoreCase("true") || token.equalsIgnoreCase("false")){
                             this.resume = Boolean.parseBoolean(token);
                             System.out.println("Set 'resume' to " + token);
@@ -164,14 +164,14 @@ public class PropertiesHandler{
                     }
                     break;
                 case "--help":
-                    App.tokens.pop();
+                    CharacterCommand.tokens.pop();
                     System.out.println(Help.PREFS);
                     break;
                 default:
-                    if (App.tokens.peek().startsWith("-")) {
-                        System.out.println("ERROR: Invalid flag '" + App.tokens.pop() + "'");
+                    if (CharacterCommand.tokens.peek().startsWith("-")) {
+                        System.out.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
                     } else {
-                        App.tokens.pop();
+                        CharacterCommand.tokens.pop();
                     }
                     break;
             }

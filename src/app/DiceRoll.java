@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Random;
 
 public class DiceRoll implements Serializable{
-	private static final long serialVersionUID = App.VERSION;
+	private static final long serialVersionUID = CharacterCommand.VERSION;
 	protected int count;
 	protected int sides;
 	
@@ -25,21 +25,21 @@ public class DiceRoll implements Serializable{
 		return result;
 	}
 
-	static Integer doRoll(){
-		App.tokens.pop();
+	public static Integer doRoll(){
+		CharacterCommand.tokens.pop();
 		int sides;
 		int num;
 		int total=0;
 		int mod=0;
 		String result="";
-		if(!App.tokens.isEmpty()){
-			if (App.tokens.contains("--help")){
+		if(!CharacterCommand.tokens.isEmpty()){
+			if (CharacterCommand.tokens.contains("--help")){
 				System.out.println(Help.ROLL);
 				return 0;
 			} else {
-				String token = App.tokens.pop();
+				String token = CharacterCommand.tokens.pop();
 				if(token.matches("(\\d+d\\d+)|(\\d+d\\d+[\\+|\\-]\\d+)")){
-					String[] a = App.input[1].split("(d)|(?=[+|-])");
+					String[] a = CharacterCommand.input[1].split("(d)|(?=[+|-])");
 					num = Integer.parseInt(a[0]);
 					sides = Integer.parseInt(a[1]);
 					if (a.length == 3){
@@ -51,9 +51,9 @@ public class DiceRoll implements Serializable{
 				}
 			}
 		} else {
-			num = App.getValidInt("Enter number of dice: ");
-			sides = App.getValidInt("Enter number of sides: ");
-			mod = App.getValidInt("Enter any bonuses: ");
+			num = CharacterCommand.getValidInt("Enter number of dice: ");
+			sides = CharacterCommand.getValidInt("Enter number of sides: ");
+			mod = CharacterCommand.getValidInt("Enter any bonuses: ");
 		}
 
 		Random random = new Random();

@@ -1,5 +1,5 @@
 package character;
-import app.App;
+import app.CharacterCommand;
 import magic.Spell;
 import magic.SpellBook;
 import magic.SpellSlot;
@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 
 @SuppressWarnings("unused")
 public class PlayerCharacter implements Serializable{
-	private static final long serialVersionUID = App.VERSION;
+	private static final long serialVersionUID = CharacterCommand.VERSION;
 
 	private String name;
 	private String className;
@@ -49,7 +49,7 @@ public class PlayerCharacter implements Serializable{
 		spellcaster = false;
 		armored = false;
 	}
-	
+
 	private void initAbilities(){
 		abilities = new LinkedHashMap<>();
 		for(String s:Ability.ABILITY_NAMES){
