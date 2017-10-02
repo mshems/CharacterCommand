@@ -51,7 +51,7 @@ public class CharacterCommand {
 
         //makeTestCharacter();
 
-        terminal = new Terminal(splash, "CharacterCommand ~ ");
+        terminal = new Terminal(splash);
         terminal.start();
     }
 
@@ -95,12 +95,12 @@ public class CharacterCommand {
         Integer n = null;
         try {
             if (tokens.isEmpty()) {
-                terminal.printOut(Message.ERROR_NO_VALUE);
+                terminal.println(Message.ERROR_NO_VALUE);
             } else {
                 n = Integer.parseInt(tokens.pop());
             }
         } catch (NumberFormatException e) {
-            terminal.printOut(Message.ERROR_NOT_INT);
+            terminal.println(Message.ERROR_NOT_INT);
         }
         return n;
     }
@@ -130,14 +130,12 @@ public class CharacterCommand {
 
     public static void dispCharacterList() {
         if (!characterList.isEmpty()) {
-            terminal.printBlock(()-> {
-                terminal.println("Characters:");
-                for (PlayerCharacter c : characterList.values()) {
-                    terminal.println("- " + c.getName());
-                }
-            });
+            terminal.println("Characters:");
+            for (PlayerCharacter c : characterList.values()) {
+                terminal.println("- " + c.getName());
+            }
         } else {
-            terminal.printOut("No characters available");
+            terminal.println("No characters available");
         }
     }
 
@@ -145,14 +143,14 @@ public class CharacterCommand {
         if (pc.isSpellcaster()) {
             return true;
         } else {
-            terminal.printOut(Message.MSG_NOT_CAST);
+            terminal.println(Message.MSG_NOT_CAST);
             return false;
         }
     }
 
     public static boolean isValidName(String name) {
         if (name.isEmpty() || name.matches("\\s+") || name.matches(".*[^a-zA-Z0-9)(\\s+].*")) {
-            terminal.printOut("Not a valid name");
+            terminal.println("Not a valid name");
             return false;
         } else {
             return true;

@@ -8,7 +8,7 @@ import utils.Message;
 
 public class ItemBuilderIO {
     public static void buildItem(PlayerCharacter pc, ItemBuilder itemBuilder){
-        CharacterCommand.terminal.printOut("item | equippable | weapon | armor | consumable | coin");
+        CharacterCommand.terminal.println("item | equippable | weapon | armor | consumable | coin");
         while (true) {
             String type = CharacterCommand.terminal.queryString("Item type: ", false);
             if (type.equals("cancel")) {
@@ -18,19 +18,19 @@ public class ItemBuilderIO {
             if (itemBuilder.itemType != null) {
                 break;
             }
-            CharacterCommand.terminal.printOut(Message.ERROR_ITEM_TYPE);
+            CharacterCommand.terminal.println(Message.ERROR_ITEM_TYPE);
         }
 
         switch (itemBuilder.itemType) {
             case ARMOR:
                 inputItemInfo(itemBuilder);
-                CharacterCommand.terminal.printOut("light | medium | heavy | shield | other");
+                CharacterCommand.terminal.println("light | medium | heavy | shield | other");
                 while (itemBuilder.armorType == null) {
                     itemBuilder.armorType = Armor.parseType(
                             CharacterCommand.terminal.queryString("Armor type: ", false)
                     );
                     if (itemBuilder.armorType == null) {
-                        CharacterCommand.terminal.printOut("ERROR: Not a valid armor type");
+                        CharacterCommand.terminal.println("ERROR: Not a valid armor type");
                     }
                     itemBuilder.armorClass = CharacterCommand.terminal.queryInteger("AC: ", false);
                 }
@@ -72,7 +72,7 @@ public class ItemBuilderIO {
             if (!statName.equalsIgnoreCase("cancel")) {
                 Stat target = pc.getStat(statName);
                 if (target == null) {
-                    CharacterCommand.terminal.printOut("ERROR: Effect target not found");
+                    CharacterCommand.terminal.println("ERROR: Effect target not found");
                 } else {
                     itemBuilder.addEffect(target, CharacterCommand.terminal.queryInteger("Stat Bonus: ", false));
                 }

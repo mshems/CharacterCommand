@@ -10,7 +10,7 @@ public class AbilityPointsIO {
         if (!CharacterCommand.tokens.isEmpty()) {
             abilityPointsParser(pc);
         } else {
-            CharacterCommand.terminal.printOut("use | get | set");
+            CharacterCommand.terminal.println("use | get | set");
             String action = CharacterCommand.terminal.queryString("Action: ",false).toLowerCase();
             boolean exit = false;
             int amount;
@@ -20,21 +20,21 @@ public class AbilityPointsIO {
                     case "use":
                         amount = CharacterCommand.terminal.queryInteger("Ability Points to use: ", false);
                         ((CounterStat) pc.getStat("ap")).countDown(amount);
-                        CharacterCommand.terminal.printOut("Used " + amount + " ability points");
+                        CharacterCommand.terminal.println("Used " + amount + " ability points");
                         exit = true;
                         break;
                     case "g":
                     case "get":
                         amount = CharacterCommand.terminal.queryInteger("Ability Points gained: ", false);
                         ((CounterStat) pc.getStat("ap")).countUp(amount);
-                        CharacterCommand.terminal.printOut("Gained " + amount + " ability points");
+                        CharacterCommand.terminal.println("Gained " + amount + " ability points");
                         exit = true;
                         break;
                     case "s":
                     case "set":
                         amount = CharacterCommand.terminal.queryInteger("Ability Points maximum: ", false);
                         ((CounterStat) pc.getStat("ap")).setMaxVal(amount);
-                        CharacterCommand.terminal.printOut("Ability Point maximum now " + amount);
+                        CharacterCommand.terminal.println("Ability Point maximum now " + amount);
                         exit = true;
                         break;
                     case "cancel":
@@ -79,7 +79,7 @@ public class AbilityPointsIO {
                 case "--count":
                     CharacterCommand.tokens.pop();
                     if (CharacterCommand.tokens.isEmpty()) {
-                        CharacterCommand.terminal.printOut(Message.ERROR_NO_ARG + ": count");
+                        CharacterCommand.terminal.println(Message.ERROR_NO_ARG + ": count");
                     } else {
                         count = CharacterCommand.getIntToken();
                     }
@@ -94,37 +94,37 @@ public class AbilityPointsIO {
                     break;
                 default:
                     if (CharacterCommand.tokens.peek().startsWith("-")) {
-                        CharacterCommand.terminal.printOut("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
+                        CharacterCommand.terminal.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
                     }
                     break;
             }
         }
         if (help) {
-            CharacterCommand.terminal.printOut(Help.AP);
+            CharacterCommand.terminal.println(Help.AP);
         } else {
             if (count != null) {
                 CounterStat ap = ((CounterStat) pc.getStat("ap"));
                 if (use) {
                     if (all) {
                         ap.setCurrVal(0);
-                        CharacterCommand.terminal.printOut("Used all ability points");
+                        CharacterCommand.terminal.println("Used all ability points");
                     } else {
                         ap.countDown(count);
-                        CharacterCommand.terminal.printOut("Used " + count + " ability points");
+                        CharacterCommand.terminal.println("Used " + count + " ability points");
                     }
                 } else if (get) {
                     if (all) {
                         ap.setCurrVal(ap.getMaxVal());
-                        CharacterCommand.terminal.printOut("Gained all ability points");
+                        CharacterCommand.terminal.println("Gained all ability points");
                     } else {
                         ap.countUp(count);
-                        CharacterCommand.terminal.printOut("Gained " + count + " ability points");
+                        CharacterCommand.terminal.println("Gained " + count + " ability points");
                     }
                 } else if (set) {
                     ap.setMaxVal(count);
-                    CharacterCommand.terminal.printOut("Ability Point maximum now " + count);
+                    CharacterCommand.terminal.println("Ability Point maximum now " + count);
                 } else {
-                    CharacterCommand.terminal.printOut(Message.ERROR_SYNTAX);
+                    CharacterCommand.terminal.println(Message.ERROR_SYNTAX);
                 }
             }
         }

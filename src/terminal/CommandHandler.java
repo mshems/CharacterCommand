@@ -29,11 +29,9 @@ public class CommandHandler {
     }
 
     private void doCommand(String command, PlayerCharacter activeChar){
-        boolean clearing = false;
         switch(command){
             case "clear":
                 terminal.clear();
-                clearing = true;
                 break;
             case "n":
             case "new":
@@ -57,7 +55,7 @@ public class CommandHandler {
                 if(!CharacterCommand.tokens.isEmpty()){
                     Help.helpMenu(terminal, CharacterCommand.tokens.pop());
                 } else {
-                    terminal.printOut(Help.COMMANDS_LIST);
+                    terminal.println(Help.COMMANDS_LIST);
                 }
                 break;
             case "q":
@@ -76,7 +74,7 @@ public class CommandHandler {
                             break;
                         case "v":
                         case "view":
-                            terminal.printOut(activeChar.toString());
+                            terminal.println(activeChar.toString());
                             break;
                         //case "set":
                         case "edit":
@@ -124,7 +122,7 @@ public class CommandHandler {
                             break;
                         case "spellbook":
                             if(CharacterCommand.checkCaster(CharacterCommand.getActiveChar())){
-                                terminal.printOut(activeChar.getSpellBook().toString());
+                                terminal.println(activeChar.getSpellBook().toString());
                             }
                             break;
                         case "cast":
@@ -142,7 +140,7 @@ public class CommandHandler {
                             break;
                         case "i":
                         case "inv":
-                            terminal.printOut(activeChar.getInventory().toString());
+                            terminal.println(activeChar.getInventory().toString());
                             break;
                         case "get":
                             InventoryIO.get(CharacterCommand.getActiveChar());
@@ -175,9 +173,6 @@ public class CommandHandler {
             terminal.setPrompt(charprompt);
         } else {
             terminal.setPrompt("CharacterCommand ~ ");
-        }
-        if(!clearing) {
-            terminal.advance();
         }
     }
 }

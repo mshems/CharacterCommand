@@ -5,139 +5,80 @@ import app.CharacterCommand;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
-import java.util.LinkedList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Terminal implements TerminalEventListener, TerminalInterface{
-    private Dimension windowSize = new Dimension(850, 650);
+    private Dimension windowSize = new Dimension(800, 600);
     private TerminalInputComponent inputComponent;
     private JFrame frame;
     private CommandHandler commandHandler;
     private LinkedBlockingQueue<String> commandQueue;
     private int maxLines = 256;
 
-    public Terminal(String title, String default_prompt){
+    private Color backgroundColor;
+    private Color foregroundColor;
+    private Color caretColor;
+    private Font textFont;
+
+    public Terminal(String title){
         commandHandler = new CommandHandler(this);
         commandQueue = new LinkedBlockingQueue<>();
-        initFrame(title, default_prompt);
+        initFrame(title);
     }
 
-    private void initFrame(String title, String default_prompt){
+    public void initFrame(String title){
         frame = new JFrame(title);
-        frame.setLayout(new BorderLayout());
         frame.setSize(windowSize);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        inputComponent = new TerminalInputComponent(default_prompt);
-        JScrollPane scrollPane = new JScrollPane(inputComponent);
-        frame.add(scrollPane, BorderLayout.CENTER);
-        //frame.add(inputComponent);
+        inputComponent = new TerminalInputComponent(true);
         inputComponent.setTerminalEventListener(this);
+        JScrollPane scrollPane = new JScrollPane(inputComponent);
+        frame.add(scrollPane);
     }
 
     @Override
     public synchronized void start(){
         frame.setVisible(true);
         if(CharacterCommand.hasActiveChar()){
-            String charprompt = CharacterCommand.getActiveChar().getName()+"@CharacterCommand ~ ";
-            inputComponent.setPrompt(charprompt);
+            String charprompt = CharacterCommand.getActiveChar().getName()+" @ CharacterCommand ~ ";
+            this.setPrompt(charprompt);
         } else {
-            inputComponent.setPrompt("CharacterCommand ~ ");
+            this.setPrompt("CharacterCommand ~ ");
         }
         inputComponent.start();
         while(true) {
-             try {
-                 wait();
-                 if (!commandQueue.isEmpty()) {
-                     commandHandler.processCommand(commandQueue.take());
-                     //remove lines above max line count
-                     if(inputComponent.getLineCount()>maxLines){
-                         int linesToRemove = inputComponent.getLineCount()-maxLines;
-                         try {
-                             inputComponent.replaceRange("",
-                                     inputComponent.getLineStartOffset(0),
-                                     inputComponent.getLineEndOffset(linesToRemove));
-                         } catch (BadLocationException e){
+            try {
+                wait();
+                if (!commandQueue.isEmpty()) {
+                    commandHandler.processCommand(commandQueue.take());
+                    //remove lines above max line count
+                    if(inputComponent.getLineCount()>maxLines){
+                        int linesToRemove = inputComponent.getLineCount()-maxLines;
+                        try {
+                            inputComponent.replaceRange("",
+                                    inputComponent.getLineStartOffset(0),
+                                    inputComponent.getLineEndOffset(linesToRemove));
+                        } catch (BadLocationException e){
                             e.printStackTrace();
-                         }
-                     }
-                 }
-             } catch (InterruptedException e) {
-                 e.printStackTrace();
-                 break;
-             }
-         }
+                        }
+                    }
+                }
+                advance();
+            } catch (InterruptedException e) {
+                //e.printStackTrace();
+            }
+        }
     }
 
     public void setPrompt(String prompt){
-        inputComponent.setPrompt(prompt);
-    }
-
-    public void clear(){
-        inputComponent.clearAndReprompt();
+        inputComponent.setCurrPrompt(prompt);
     }
 
     @Override
-    public void advance(){
-        inputComponent.advance();
-    }
-
-    @Override
-    public void printBlock(TerminalPrinter terminalPrinter){
-        inputComponent.newLine();
-        terminalPrinter.printBlock();
-    }
-    public String makeQueryInline(){
-        inputComponent.newLine();
-        return "";
-    }
-    @Override
-    public void printf(String format, Object... args){
-        inputComponent.print(String.format(format, args));
-    }
-
-    public void printOut(String message){
-        printBlock(()->
-                this.print(message)
-        );
-    }
-
-    @Override
-    public void print(String s){
-        inputComponent.print(s);
-    }
-    @Override
-    public void print(Integer n){
-        inputComponent.print(n.toString());
-    }
-    @Override
-    public void print(Double d){
-        inputComponent.print(d.toString());
-    }
-    @Override
-    public void print(Boolean b){
-        inputComponent.print(b.toString());
-    }
-    @Override
-    public void println(String s){
-        inputComponent.println(s);
-    }
-    @Override
-    public void println(Integer n){
-        inputComponent.println(n.toString());
-    }
-    @Override
-    public void println(Double d){
-        inputComponent.println(d.toString());
-    }
-    @Override
-    public void println(Boolean b){
-        inputComponent.println(b.toString());
-    }
-
-    private synchronized String getQueryResponse(String query){
+    public synchronized String query(String queryPrompt){
         String s="";
-        inputComponent.setPrompt(query);
-        inputComponent.advance();
+        inputComponent.setCurrPrompt(queryPrompt);
+        advance();
         inputComponent.setQuerying(true);
         synchronized (this) {
             try{
@@ -145,57 +86,70 @@ public class Terminal implements TerminalEventListener, TerminalInterface{
                 s = inputComponent.getCommand();
                 inputComponent.resetPrompt();
             }catch (InterruptedException ex){
-                ex.printStackTrace();
+                //ex.printStackTrace();
             }
         }
         return s.trim();
     }
 
     @Override
-    public String queryString(String query, boolean allowEmptyString){
+    public String queryString(String queryPrompt, boolean allowEmptyString){
         while(true) {
-            String s = getQueryResponse(query);
+            String s = query(queryPrompt);
             if (s.isEmpty() && allowEmptyString) {
                 return s;
             } else if (!s.isEmpty()){
                 return s;
             }
-            this.printBlock(() -> this.print("Please enter a string"));
+            println("Empty input not allowed");
         }
     }
 
     @Override
-    public boolean queryYN(String query){
-        String s = getQueryResponse(query).toLowerCase();
-        switch(s){
+    public boolean queryYN(String queryPrompt){
+        switch(query(queryPrompt).toLowerCase()){
             case "y":
             case "yes":
                 return true;
             default:
                 return false;
         }
-
     }
 
     @Override
-    public Integer queryInteger(String query, boolean allowNull){
+    public Integer queryInteger(String queryPrompt, boolean allowNull){
         while(true) {
             try {
-                return Integer.parseInt(getQueryResponse(query));
+                return Integer.parseInt(query(queryPrompt));
             } catch (NumberFormatException e) {
                 if(allowNull){
                     break;
                 }
-                this.printBlock(() -> this.print("Not a valid integer"));
+                println("Not an integer value");
             }
         }
         return null;
     }
 
     @Override
-    public Boolean queryBoolean(String query, boolean allowNull){
+    public Double queryDouble(String queryPrompt, boolean allowNull) {
+        while (true) {
+            try {
+                return Double.parseDouble(query(queryPrompt));
+            } catch (NumberFormatException e) {
+                if (allowNull) {
+                    break;
+                }
+                println("Not a double value");
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Boolean queryBoolean(String queryPrompt, boolean allowNull){
         while(true) {
-            switch (getQueryResponse(query).toLowerCase()){
+            switch (query(queryPrompt).toLowerCase()){
                 case "t":
                 case "true":
                     return true;
@@ -206,24 +160,18 @@ public class Terminal implements TerminalEventListener, TerminalInterface{
                     if(allowNull){
                         return null;
                     }
-                    this.printBlock(() -> this.print("Not a valid boolean"));
+                    println("Not a boolean value");
             }
         }
     }
 
     @Override
-    public Double queryDouble(String query, boolean allowNull) {
-        while (true) {
-            try {
-                return Double.parseDouble(getQueryResponse(query));
-            } catch (NumberFormatException e) {
-                if (allowNull) {
-                    break;
-                }
-                this.printBlock(() -> this.print("Not a valid double"));
-            }
-        }
-        return null;
+    public void advance(){
+        inputComponent.advance();
+    }
+
+    public void clear(){
+        inputComponent.clear();
     }
 
     @Override
@@ -232,13 +180,52 @@ public class Terminal implements TerminalEventListener, TerminalInterface{
         try {
             commandQueue.put(e.commandString);
             inputComponent.updateHistory(e.commandString);
+            newLine();
         }catch (InterruptedException ex){
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
     }
 
     @Override
     public synchronized void queryActionPerformed(QueryEvent e) {
+        newLine();
         this.notifyAll();
+    }
+
+    public void newLine(){
+        inputComponent.newLine();
+    }
+
+    @Override
+    public void printf(String format, Object... args){
+        inputComponent.print(String.format(format, args));
+    }
+
+    @Override
+    public void print(String s){
+        inputComponent.print(s);
+    }
+    public void print(Integer n){
+        inputComponent.print(n.toString());
+    }
+    public void print(Double d){
+        inputComponent.print(d.toString());
+    }
+    public void print(Boolean b){
+        inputComponent.print(b.toString());
+    }
+
+    @Override
+    public void println(String s){
+        inputComponent.println(s);
+    }
+    public void println(Integer n){
+        inputComponent.println(n.toString());
+    }
+    public void println(Double d){
+        inputComponent.println(d.toString());
+    }
+    public void println(Boolean b){
+        inputComponent.println(b.toString());
     }
 }

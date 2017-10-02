@@ -14,7 +14,7 @@ public class StatIO {
             } else {
                 stat = pc.getStat(statName);
                 if (stat == null) {
-                    CharacterCommand.terminal.printOut(Message.MSG_NO_SKILL);
+                    CharacterCommand.terminal.println(Message.MSG_NO_SKILL);
                 } else {
                     return stat;
                 }
@@ -26,7 +26,7 @@ public class StatIO {
         if (!CharacterCommand.tokens.isEmpty()) {
             statsParser(pc);
         } else {
-            CharacterCommand.terminal.printOut("view | edit | cancel");
+            CharacterCommand.terminal.println("view | edit | cancel");
             //System.out.println("view | edit | cancel");
             boolean exit = false;
             while (!exit) {
@@ -38,7 +38,7 @@ public class StatIO {
                     case "view":
                         Stat stat = getStatByName(pc);
                         if (stat != null) {
-                            CharacterCommand.terminal.printOut(stat.detailString());
+                            CharacterCommand.terminal.println(stat.detailString());
                             //System.out.println(stat.detailString());
                         }
                         exit = true;
@@ -74,7 +74,7 @@ public class StatIO {
                     break;
                 default:
                     if (CharacterCommand.tokens.peek().startsWith("-")) {
-                        CharacterCommand.terminal.printOut("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
+                        CharacterCommand.terminal.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
                     } else {
                         nameBuilder.append(CharacterCommand.tokens.pop());
                         nameBuilder.append(" ");
@@ -88,7 +88,7 @@ public class StatIO {
             String statName = nameBuilder.toString().trim();
             Stat stat = CharacterCommand.getActiveChar().getStat(statName);
             if (stat != null && view) {
-                CharacterCommand.terminal.printOut(stat.detailString());
+                CharacterCommand.terminal.println(stat.detailString());
             }
         }
     }

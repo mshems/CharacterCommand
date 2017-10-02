@@ -31,7 +31,7 @@ public class SpellBookIO {
                 case "--level":
                     CharacterCommand.tokens.pop();
                     if (CharacterCommand.tokens.isEmpty()) {
-                        CharacterCommand.terminal.printOut(Message.ERROR_NO_ARG + ": level");
+                        CharacterCommand.terminal.println(Message.ERROR_NO_ARG + ": level");
                         spellLevel = null;
                     } else {
                         spellLevel = CharacterCommand.getIntToken();
@@ -48,7 +48,7 @@ public class SpellBookIO {
                     break;
                 default:
                     if (CharacterCommand.tokens.peek().startsWith("-")) {
-                        CharacterCommand.terminal.printOut("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
+                        CharacterCommand.terminal.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
                     } else {
                         nameBuilder.append(CharacterCommand.tokens.pop());
                         nameBuilder.append(" ");
@@ -64,7 +64,7 @@ public class SpellBookIO {
                 spellLevel = Spell.CANTRIP;    //default level
             }
             if (help) {
-                CharacterCommand.terminal.printOut(Help.LEARN);
+                CharacterCommand.terminal.println(Help.LEARN);
             } else {
                 String spellName = nameBuilder.toString().trim();
                 if (!spellName.isEmpty()) {
@@ -73,7 +73,7 @@ public class SpellBookIO {
                 }
             }
         } else {
-            CharacterCommand.terminal.printOut(Message.MSG_NOT_CAST);
+            CharacterCommand.terminal.println(Message.MSG_NOT_CAST);
         }
     }
 
@@ -82,9 +82,9 @@ public class SpellBookIO {
     private static void learnSpell(PlayerCharacter pc, Spell spell) {
         pc.getSpellBook().learn(spell);
         if (spell.isCantrip()) {
-            CharacterCommand.terminal.printOut("Learned cantrip " + spell.getSpellName());
+            CharacterCommand.terminal.println("Learned cantrip " + spell.getSpellName());
         } else {
-            CharacterCommand.terminal.printOut("Learned level " + spell.getSpellLevel() + " spell " + spell.getSpellName());
+            CharacterCommand.terminal.println("Learned level " + spell.getSpellLevel() + " spell " + spell.getSpellName());
         }
     }
 
@@ -111,7 +111,7 @@ public class SpellBookIO {
                     break;
                 default:
                     if (CharacterCommand.tokens.peek().startsWith("-")) {
-                        CharacterCommand.terminal.printOut("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
+                        CharacterCommand.terminal.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
                     } else {
                         nameBuilder.append(CharacterCommand.tokens.pop());
                         nameBuilder.append(" ");
@@ -120,13 +120,13 @@ public class SpellBookIO {
             }
         }
         if (help) {
-            CharacterCommand.terminal.printOut(Help.FORGET);
+            CharacterCommand.terminal.println(Help.FORGET);
         } else {
             Spell spell = pc.getSpell(nameBuilder.toString().trim());
             if (spell != null) {
                 forgetSpell(pc, spell);
             } else {
-                CharacterCommand.terminal.printOut(Message.MSG_NO_SPELL);
+                CharacterCommand.terminal.println(Message.MSG_NO_SPELL);
             }
         }
     }
@@ -134,9 +134,9 @@ public class SpellBookIO {
     private static void forgetSpell(PlayerCharacter pc, Spell spell) {
         pc.getSpellBook().forget(spell);
         if (spell.isCantrip()) {
-            CharacterCommand.terminal.printOut("Forgot cantrip " + spell.getSpellName());
+            CharacterCommand.terminal.println("Forgot cantrip " + spell.getSpellName());
         } else {
-            CharacterCommand.terminal.printOut("Forgot level " + spell.getSpellLevel() + " spell " + spell.getSpellName());
+            CharacterCommand.terminal.println("Forgot level " + spell.getSpellLevel() + " spell " + spell.getSpellName());
         }
     }
 }

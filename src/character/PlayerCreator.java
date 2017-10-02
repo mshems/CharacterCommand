@@ -37,7 +37,7 @@ public class PlayerCreator {
         }
         c.updateStats();
         CharacterCommand.characterList.put(c.getName().toLowerCase(), c);
-        CharacterCommand.terminal.printOut("Created "+c.getName());
+        CharacterCommand.terminal.println("Created "+c.getName());
         CharacterCommand.setActiveChar(c);
     }
 }
