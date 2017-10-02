@@ -9,6 +9,7 @@ data
 .idea/tasks.xml
 META-INF
 *.bat
+*.zip
 out
 
 # Windows image file caches
