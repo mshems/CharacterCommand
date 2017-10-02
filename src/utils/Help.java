@@ -313,7 +313,7 @@ public class Help{
             newLine+"  edit...............edit stats" +
             newLine+"  skills.............edit/view skills" +
             newLine+"  ap.................edit/view ability points" +
-            newLine+"  spells..............edit/view spellbook" +
+            newLine+"  spells.............edit/view spellbook" +
             newLine+"  spellslots.........edit/view spell slots" +
             newLine+"  charge.............recharge spell slots" +
             newLine+"  cast...............cast a spell" +

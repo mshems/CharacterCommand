@@ -43,14 +43,12 @@ public class CharacterCommand {
 
         makeTestCharacter();
 
-        terminal = new Terminal(splash, "CharacterCommand@~ > ");
+        terminal = new Terminal(splash, "CharacterCommand ~ ");
         terminal.start();
     }
 
     private static void initApp() {
-        //System.out.println("---" + splash + "---");
         propertiesHandler = new PropertiesHandler();
-        //commandHandler = new CommandHandler();
         readWriteHandler = new ReadWriteHandler();
         ReadWriteHandler.checkDirs();
         tokens = new LinkedList<>();
