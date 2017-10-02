@@ -1,10 +1,10 @@
 package magic;
 
-import app.App;
+import app.CharacterCommand;
 import character.CounterStat;
 
 public class SpellSlot extends CounterStat{
-	private static final long serialVersionUID = App.VERSION;
+	private static final long serialVersionUID = CharacterCommand.VERSION;
 	private int level;
 	
 	public SpellSlot(int level, int maxVal){

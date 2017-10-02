@@ -1,11 +1,11 @@
 package character;
 
-import app.App;
+import app.CharacterCommand;
 
 import java.io.Serializable;
 
 public class Stat implements Serializable {
-	private static final long serialVersionUID = App.VERSION;
+	private static final long serialVersionUID = CharacterCommand.VERSION;
 	private String name;
 	private double baseVal;
 	private double bonusVal;

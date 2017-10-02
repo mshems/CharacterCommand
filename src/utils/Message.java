@@ -1,5 +1,7 @@
 package utils;
 
+import terminal.Terminal;
+
 public class Message{
 	public static final String ERROR_NO_VALUE = 	"ERROR: No value given";
 	public static final String ERROR_ITEM_TYPE = 	"ERROR: Not a valid item type";
@@ -21,4 +23,10 @@ public class Message{
     public static final String MSG_NO_SPELL = "No spell by that name";
     public static final String MSG_NO_SKILL = "No skill by that name";
 	public static final String MSG_NO_STAT = "No stat by that name";
+
+	public static void errorMessage(Terminal terminal, String message){
+		terminal.printBlock(() ->
+				terminal.print(message)
+		);
+	}
 }

@@ -1,11 +1,11 @@
 package character;
 
-import app.App;
+import app.CharacterCommand;
 
 import java.io.Serializable;
 
 public class Skill implements Serializable {
-	private static final long serialVersionUID = App.VERSION;
+	private static final long serialVersionUID = CharacterCommand.VERSION;
 	private String skillName;
 	private Ability skillAbility;
 	private double skillMod;

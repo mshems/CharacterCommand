@@ -1,6 +1,6 @@
 package magic;
 
-import app.App;
+import app.CharacterCommand;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 
 public class SpellBook implements Serializable {
-	private static final long serialVersionUID = App.VERSION;
+	private static final long serialVersionUID = CharacterCommand.VERSION;
 	private LinkedHashMap<String, Spell> spellIndex;
 	private ArrayList<Spell> spellList;
 	

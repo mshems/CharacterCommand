@@ -1,10 +1,10 @@
 package items;
 
-import app.App;
+import app.CharacterCommand;
 import app.DiceRoll;
 
 public class Weapon extends Equippable{
-	private static final long serialVersionUID = App.VERSION;
+	private static final long serialVersionUID = CharacterCommand.VERSION;
 	private DiceRoll damage;
 	
 	public Weapon(String name){
