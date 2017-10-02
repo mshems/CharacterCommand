@@ -25,8 +25,6 @@ public class Message{
 	public static final String MSG_NO_STAT = "No stat by that name";
 
 	public static void errorMessage(Terminal terminal, String message){
-		terminal.printBlock(() ->
-				terminal.print(message)
-		);
+		terminal.println(message);
 	}
 }

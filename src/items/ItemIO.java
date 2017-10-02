@@ -20,7 +20,7 @@ public class ItemIO {
                 }
                 item = pc.getItem(itemName);
                 if (item == null) {
-                    CharacterCommand.terminal.printOut(Message.MSG_NO_ITEM);
+                    CharacterCommand.terminal.println(Message.MSG_NO_ITEM);
                 } else {
                     return item;
                 }
@@ -37,12 +37,12 @@ public class ItemIO {
                 if (item.isConsumable()) {
                     int amount = CharacterCommand.terminal.queryInteger("Amount: ", false);
                     item.use(amount);
-                    CharacterCommand.terminal.printOut("Used " + amount + "x " + item.getName());
+                    CharacterCommand.terminal.println("Used " + amount + "x " + item.getName());
                     if (item.getCount() <= 0) {
                         pc.removeItem(item);
                     }
                 } else {
-                    CharacterCommand.terminal.printOut(Message.ERROR_NOT_CON);
+                    CharacterCommand.terminal.println(Message.ERROR_NOT_CON);
                 }
             }
         }
@@ -59,7 +59,7 @@ public class ItemIO {
                 case "--count":
                     CharacterCommand.tokens.pop();
                     if (CharacterCommand.tokens.isEmpty()) {
-                        CharacterCommand.terminal.printOut(Message.ERROR_NO_ARG + ": amount");
+                        CharacterCommand.terminal.println(Message.ERROR_NO_ARG + ": amount");
                     } else {
                         amount = CharacterCommand.getIntToken();
                     }
@@ -70,7 +70,7 @@ public class ItemIO {
                     break;
                 default:
                     if (CharacterCommand.tokens.peek().startsWith("-")) {
-                        CharacterCommand.terminal.printOut("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
+                        CharacterCommand.terminal.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
                     } else {
                         nameBuilder.append(CharacterCommand.tokens.pop());
                         nameBuilder.append(" ");
@@ -84,18 +84,18 @@ public class ItemIO {
             if (item != null && amount != null) {
                 if (item.isConsumable()) {
                     item.use(amount);
-                    CharacterCommand.terminal.printOut("Used " + amount + "x " + item.getName());
+                    CharacterCommand.terminal.println("Used " + amount + "x " + item.getName());
                     if (item.getCount() <= 0) {
                         pc.removeItem(item);
                     }
                 } else {
-                    CharacterCommand.terminal.printOut(Message.ERROR_NOT_CON);
+                    CharacterCommand.terminal.println(Message.ERROR_NOT_CON);
                 }
             } else {
-                CharacterCommand.terminal.printOut(Message.MSG_NO_ITEM);
+                CharacterCommand.terminal.println(Message.MSG_NO_ITEM);
             }
         } else {
-            CharacterCommand.terminal.printOut(Help.USE);
+            CharacterCommand.terminal.println(Help.USE);
         }
     }
 
@@ -111,20 +111,20 @@ public class ItemIO {
                         if (!item.isEquipped()) {
                             pc.equip(item);
                         } else {
-                            CharacterCommand.terminal.printOut("ERROR: Item already equipped");
+                            CharacterCommand.terminal.println("ERROR: Item already equipped");
                         }
                     } else {
                         if (item.isEquipped()) {
                             pc.dequip(item);
                         } else {
-                            CharacterCommand.terminal.printOut("ERROR: Item not equipped");
+                            CharacterCommand.terminal.println("ERROR: Item not equipped");
                         }
                     }
                 } else {
-                    CharacterCommand.terminal.printOut(Message.ERROR_NOT_EQUIP);
+                    CharacterCommand.terminal.println(Message.ERROR_NOT_EQUIP);
                 }
             } else {
-                CharacterCommand.terminal.printOut(Message.MSG_NO_ITEM);
+                CharacterCommand.terminal.println(Message.MSG_NO_ITEM);
             }
         }
     }
@@ -151,29 +151,29 @@ public class ItemIO {
                     if (command.equalsIgnoreCase("equip")) {
                         if (!item.isEquipped()) {
                             pc.equip(item);
-                            CharacterCommand.terminal.printOut(item.getName()+" equipped");
+                            CharacterCommand.terminal.println(item.getName()+" equipped");
                         } else {
-                            CharacterCommand.terminal.printOut("ERROR: Item already equipped");
+                            CharacterCommand.terminal.println("ERROR: Item already equipped");
                         }
                     } else {
                         if (item.isEquipped()) {
                             pc.dequip(item);
-                            CharacterCommand.terminal.printOut(item.getName()+" dequipped");
+                            CharacterCommand.terminal.println(item.getName()+" dequipped");
                         } else {
-                            CharacterCommand.terminal.printOut("ERROR: Item not equipped");
+                            CharacterCommand.terminal.println("ERROR: Item not equipped");
                         }
                     }
                 } else {
-                    CharacterCommand.terminal.printOut(Message.ERROR_NOT_EQUIP);
+                    CharacterCommand.terminal.println(Message.ERROR_NOT_EQUIP);
                 }
             } else {
-                CharacterCommand.terminal.printOut(Message.MSG_NO_ITEM);
+                CharacterCommand.terminal.println(Message.MSG_NO_ITEM);
             }
         } else {
             if (command.equalsIgnoreCase("equip")) {
-                CharacterCommand.terminal.printOut(Help.EQUIP);
+                CharacterCommand.terminal.println(Help.EQUIP);
             } else {
-                CharacterCommand.terminal.printOut(Help.DEQUIP);
+                CharacterCommand.terminal.println(Help.DEQUIP);
             }
         }
     }

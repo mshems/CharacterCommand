@@ -15,7 +15,7 @@ public class SpellIO {
             } else {
                 spell = pc.getSpell(spellName);
                 if (spell == null) {
-                    CharacterCommand.terminal.printOut(Message.MSG_NO_SPELL);
+                    CharacterCommand.terminal.println(Message.MSG_NO_SPELL);
                 } else {
                     return spell;
                 }
@@ -36,20 +36,20 @@ public class SpellIO {
                     cast(pc);
                     break;
                 case "--stats":
-                    CharacterCommand.terminal.printOut(pc.spellStatsToString());
+                    CharacterCommand.terminal.println(pc.spellStatsToString());
                     break;
                 case "--slots":
                     SpellSlotIO.spellSlots(pc);
                     break;
                 case "--help":
-                    CharacterCommand.terminal.printOut(Help.SPELLS);
+                    CharacterCommand.terminal.println(Help.SPELLS);
                     break;
                 default:
-                    CharacterCommand.terminal.printOut("Error: command syntax");
+                    CharacterCommand.terminal.println("Error: command syntax");
                     break;
             }
         } else {
-            CharacterCommand.terminal.printOut(pc.getSpellBook().toString());
+            CharacterCommand.terminal.println(pc.getSpellBook().toString());
         }
     }
 
@@ -80,7 +80,7 @@ public class SpellIO {
                 case "--level":
                     CharacterCommand.tokens.pop();
                     if (CharacterCommand.tokens.isEmpty()) {
-                        CharacterCommand.terminal.printOut(Message.ERROR_NO_ARG + ": level");
+                        CharacterCommand.terminal.println(Message.ERROR_NO_ARG + ": level");
                         castLevel = null;
                     } else {
                         castLevel = CharacterCommand.getIntToken();
@@ -92,7 +92,7 @@ public class SpellIO {
                     break;
                 default:
                     if (CharacterCommand.tokens.peek().startsWith("-")) {
-                        CharacterCommand.terminal.printOut("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
+                        CharacterCommand.terminal.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
                     } else {
                         nameBuilder.append(CharacterCommand.tokens.pop());
                         nameBuilder.append(" ");
@@ -100,7 +100,7 @@ public class SpellIO {
             }
         }
         if (help) {
-            CharacterCommand.terminal.printOut(Help.CAST);
+            CharacterCommand.terminal.println(Help.CAST);
         } else {
             String spellName = nameBuilder.toString().trim();
             spell = pc.getSpell(spellName);
@@ -115,19 +115,19 @@ public class SpellIO {
             }
             castLevel = pc.cast(spell, castLevel);
             if (spell.isCantrip()) {
-                CharacterCommand.terminal.printOut("Cast '" + spell.getSpellName() + "' as a cantrip");
+                CharacterCommand.terminal.println("Cast '" + spell.getSpellName() + "' as a cantrip");
             } else {
                 if (castLevel < 0) {
-                    CharacterCommand.terminal.printOut("No level " + (-castLevel) + " spell slots remaining");
+                    CharacterCommand.terminal.println("No level " + (-castLevel) + " spell slots remaining");
                 } else {
-                    CharacterCommand.terminal.printOut("Cast '" + spell.getSpellName() + "' at level " + castLevel);
+                    CharacterCommand.terminal.println("Cast '" + spell.getSpellName() + "' at level " + castLevel);
                 }
             }
         } else {
             if (spellName.equals("")) {
-                CharacterCommand.terminal.printOut("ERROR: Missing argument: spell name");
+                CharacterCommand.terminal.println("ERROR: Missing argument: spell name");
             } else if (spell == null) {
-                CharacterCommand.terminal.printOut("No spell by that name");
+                CharacterCommand.terminal.println("No spell by that name");
             }
         }
     }

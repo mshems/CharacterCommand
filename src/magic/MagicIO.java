@@ -14,7 +14,7 @@ public class MagicIO {
             } else {
                 spellAbility = pc.getAbilities().get(abilityName);
                 if (spellAbility == null) {
-                    CharacterCommand.terminal.printOut("ERROR: Ability not found");
+                    CharacterCommand.terminal.println("ERROR: Ability not found");
                 } else {
                     pc.setSpellcaster(true);
                     pc.initMagicStats(spellAbility);

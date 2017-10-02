@@ -198,97 +198,97 @@ public class Help{
     public static void helpMenu(Terminal terminal, String command){
         switch(command){
             case "load":
-                terminal.printOut(LOAD);
+                terminal.println(LOAD);
                 break;
             case "list":
-                terminal.printOut(LIST);
+                terminal.println(LIST);
                 break;
             case "s":
             case "save":
-                terminal.printOut(SAVE);
+                terminal.println(SAVE);
                 break;
             case "import":
-                terminal.printOut(IMPORT);
+                terminal.println(IMPORT);
                 break;
             case "export":
-                terminal.printOut(EXPORT);
+                terminal.println(EXPORT);
                 break;
             case "n":
             case "new":
-                terminal.printOut(NEW);
+                terminal.println(NEW);
                 break;
             case "v":
             case "view":
-                terminal.printOut(VIEW);
+                terminal.println(VIEW);
                 break;
             case "i":
             case "inv":
-                terminal.printOut(INV);
+                terminal.println(INV);
                 break;
             case "roll":
-                terminal.printOut(ROLL);
+                terminal.println(ROLL);
                 break;
             case "prefs":
-                terminal.printOut(PREFS);
+                terminal.println(PREFS);
                 break;
             case "get":
-                terminal.printOut(GET);
+                terminal.println(GET);
                 break;
             case "add":
-                terminal.printOut(ADD);
+                terminal.println(ADD);
                 break;
             case "drop":
-                terminal.printOut(DROP);
+                terminal.println(DROP);
                 break;
             case "edit":
-                terminal.printOut(EDIT);
+                terminal.println(EDIT);
                 break;
             case "skill":
             case "skills":
-                terminal.printOut(SKILL);
+                terminal.println(SKILL);
                 break;
             case "ap":
-                terminal.printOut(AP);
+                terminal.println(AP);
                 break;
             case "spell":
             case "spells":
-                terminal.printOut(SPELLS);
+                terminal.println(SPELLS);
                 break;
             case "spellslots":
-                terminal.printOut(SPELLSLOTS);
+                terminal.println(SPELLSLOTS);
                 break;
             case "charge":
-                terminal.printOut(CHARGE);
+                terminal.println(CHARGE);
                 break;
             case "cast":
-                terminal.printOut(CAST);
+                terminal.println(CAST);
                 break;
             case "learn":
-                terminal.printOut(LEARN);
+                terminal.println(LEARN);
                 break;
             case "forget":
-                terminal.printOut(FORGET);
+                terminal.println(FORGET);
                 break;
             case "stat":
             case "stats":
-                terminal.printOut(STATS);
+                terminal.println(STATS);
                 break;
             case "heal":
-                terminal.printOut(HEAL);
+                terminal.println(HEAL);
                 break;
             case "hurt":
-                terminal.printOut(HURT);
+                terminal.println(HURT);
                 break;
             case "equip":
-                terminal.printOut(EQUIP);
+                terminal.println(EQUIP);
                 break;
             case "dequip":
-                terminal.printOut(DEQUIP);
+                terminal.println(DEQUIP);
                 break;
             case "use":
-                terminal.printOut(USE);
+                terminal.println(USE);
             case "levelup":
-                terminal.printOut(LEVELUP);
+                terminal.println(LEVELUP);
                 break;
             default:
                 break;

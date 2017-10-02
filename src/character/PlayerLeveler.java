@@ -13,7 +13,7 @@ public class PlayerLeveler {
         boolean help = false;
         if (tokens.isEmpty()) {
             activeChar.levelUp();
-            CharacterCommand.terminal.printOut(
+            CharacterCommand.terminal.println(
                     String.format("%s is now level %.0f", activeChar.getName(), activeChar.getLevel().getBaseVal())
             );
         } else {
@@ -24,7 +24,7 @@ public class PlayerLeveler {
                     case "--level":
                         tokens.pop();
                         if (tokens.isEmpty()) {
-                            CharacterCommand.terminal.printOut(Message.ERROR_NO_ARG + ": level");
+                            CharacterCommand.terminal.println(Message.ERROR_NO_ARG + ": level");
                         } else {
                             level = CharacterCommand.getIntToken();
                         }
@@ -35,7 +35,7 @@ public class PlayerLeveler {
                         break;
                     default:
                         if (tokens.peek().startsWith("-")) {
-                            CharacterCommand.terminal.printOut("ERROR: Invalid flag '" + tokens.pop() + "'");
+                            CharacterCommand.terminal.println("ERROR: Invalid flag '" + tokens.pop() + "'");
                         } else {
                             tokens.pop();
                         }
@@ -45,14 +45,14 @@ public class PlayerLeveler {
             if (!help) {
                 if (level != null) {
                     activeChar.levelUp(level);
-                    CharacterCommand.terminal.printOut(String.format(
+                    CharacterCommand.terminal.println(String.format(
                             "%s is now level %.0f", activeChar.getName(), activeChar.getLevel().getBaseVal())
                     );
                 } else {
                     Message.errorMessage(CharacterCommand.terminal, Message.ERROR_INPUT);
                 }
             } else {
-                CharacterCommand.terminal.printOut(Help.LEVELUP);
+                CharacterCommand.terminal.println(Help.LEVELUP);
             }
         }
     }

@@ -14,7 +14,7 @@ public class SkillIO {
             } else {
                 skill = pc.getSkill(skillName);
                 if (skill == null) {
-                    CharacterCommand.terminal.printOut(Message.MSG_NO_SKILL);
+                    CharacterCommand.terminal.println(Message.MSG_NO_SKILL);
                 } else {
                     return skill;
                 }
@@ -30,14 +30,14 @@ public class SkillIO {
             Skill skill;
             boolean exit = false;
             while (!exit) {
-                CharacterCommand.terminal.printOut("view | train | forget | expert | view all");
+                CharacterCommand.terminal.println("view | train | forget | expert | view all");
                 action = CharacterCommand.terminal.queryString("Action: ",false).toLowerCase();
                 switch (action) {
                     case "v":
                     case "view":
                         skill = getSkillByName(pc);
                         if (skill != null) {
-                            CharacterCommand.terminal.printOut(skill.toString());
+                            CharacterCommand.terminal.println(skill.toString());
                         }
                         exit = true;
                         break;
@@ -46,7 +46,7 @@ public class SkillIO {
                         skill = getSkillByName(pc);
                         if (skill != null) {
                             skill.train(pc);
-                            CharacterCommand.terminal.printOut("Gained proficiency in " + skill.getName());
+                            CharacterCommand.terminal.println("Gained proficiency in " + skill.getName());
                         }
                         exit = true;
                         break;
@@ -55,7 +55,7 @@ public class SkillIO {
                         skill = getSkillByName(pc);
                         if (skill != null) {
                             skill.untrain(pc);
-                            CharacterCommand.terminal.printOut("Lost proficiency in " + skill.getName());
+                            CharacterCommand.terminal.println("Lost proficiency in " + skill.getName());
                         }
                         exit = true;
                         break;
@@ -64,21 +64,21 @@ public class SkillIO {
                         skill = getSkillByName(pc);
                         if (skill != null) {
                             skill.expert(pc);
-                            CharacterCommand.terminal.printOut("Gained expertise in " + skill.getName());
+                            CharacterCommand.terminal.println("Gained expertise in " + skill.getName());
                         }
                         exit = true;
                         break;
                     case "va":
                     case "viewall":
                     case "view all":
-                        CharacterCommand.terminal.printOut(pc.skillsToString());
+                        CharacterCommand.terminal.println(pc.skillsToString());
                         exit = true;
                         break;
                     case "cancel":
                         exit = true;
                         break;
                     default:
-                        CharacterCommand.terminal.printOut(Message.ERROR_SYNTAX+"\nEnter 'cancel' to exit");
+                        CharacterCommand.terminal.println(Message.ERROR_SYNTAX+"\nEnter 'cancel' to exit");
                         exit = false;
                         break;
                 }
@@ -129,7 +129,7 @@ public class SkillIO {
                     break;
                 default:
                     if (CharacterCommand.tokens.peek().startsWith("-")) {
-                        CharacterCommand.terminal.printOut("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
+                        CharacterCommand.terminal.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
                     } else {
                         nameBuilder.append(CharacterCommand.tokens.pop());
                         nameBuilder.append(" ");
@@ -143,30 +143,30 @@ public class SkillIO {
             String skillName = nameBuilder.toString().trim();
             skill = pc.getSkill(skillName);
             if (viewAll) {
-                CharacterCommand.terminal.printOut(pc.skillsToString());
+                CharacterCommand.terminal.println(pc.skillsToString());
             }
             if (skill != null) {
                 if (!forget) {
                     if (expert) {
                         skill.expert(pc);
-                        CharacterCommand.terminal.printOut("Gained expertise in " + skill.getName());
+                        CharacterCommand.terminal.println("Gained expertise in " + skill.getName());
                     } else if (train) {
                         skill.train(pc);
-                        CharacterCommand.terminal.printOut("Gained proficiency in " + skill.getName());
+                        CharacterCommand.terminal.println("Gained proficiency in " + skill.getName());
                     }
                 } else {
                     skill.untrain(pc);
-                    CharacterCommand.terminal.printOut("Lost proficiency in " + skill.getName());
+                    CharacterCommand.terminal.println("Lost proficiency in " + skill.getName());
                 }
                 if (view) {
-                    CharacterCommand.terminal.printOut(skill.toString());
+                    CharacterCommand.terminal.println(skill.toString());
                 }
             } else {
                 if (skillName.equals("") && !viewAll) {
-                    CharacterCommand.terminal.printOut("ERROR: Missing argument: skill name");
+                    CharacterCommand.terminal.println("ERROR: Missing argument: skill name");
                 } else {
                     if (!viewAll) {
-                        CharacterCommand.terminal.printOut("ERROR: No skill by that name");
+                        CharacterCommand.terminal.println("ERROR: No skill by that name");
                         //System.out.println(Message.ERROR_SYNTAX);
                     }
                 }

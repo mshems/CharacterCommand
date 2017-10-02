@@ -19,10 +19,10 @@ public class SpellSlotIO {
                     setSlots(pc);
                     break;
                 case "--help":
-                    CharacterCommand.terminal.printOut(Help.SPELLSLOTS);
+                    CharacterCommand.terminal.println(Help.SPELLSLOTS);
                     break;
                 default:
-                    CharacterCommand.terminal.printOut(Message.ERROR_INPUT);
+                    CharacterCommand.terminal.println(Message.ERROR_INPUT);
                     break;
             }
         } else {
@@ -38,7 +38,7 @@ public class SpellSlotIO {
             int level = CharacterCommand.terminal.queryInteger("Enter spell slot level: ", false);
             int max = CharacterCommand.terminal.queryInteger("Enter new spell slot maximum: ", false);
             pc.getSpellSlots()[level].setMaxVal(max);
-            CharacterCommand.terminal.printOut("Maximum level " + level + " spell slots set to " + max);
+            CharacterCommand.terminal.println("Maximum level " + level + " spell slots set to " + max);
         }
     }
 
@@ -52,7 +52,7 @@ public class SpellSlotIO {
                 case "--level":
                     CharacterCommand.tokens.pop();
                     if (CharacterCommand.tokens.isEmpty()) {
-                        CharacterCommand.terminal.printOut(Message.ERROR_NO_ARG + ": level");
+                        CharacterCommand.terminal.println(Message.ERROR_NO_ARG + ": level");
                     } else {
                         level = CharacterCommand.getIntToken();
                         if (level > Spell.MAX_LEVEL) {
@@ -67,7 +67,7 @@ public class SpellSlotIO {
                 case "--max":
                     CharacterCommand.tokens.pop();
                     if (CharacterCommand.tokens.isEmpty()) {
-                        CharacterCommand.terminal.printOut(Message.ERROR_NO_ARG + ": count");
+                        CharacterCommand.terminal.println(Message.ERROR_NO_ARG + ": count");
                     } else {
                         max = CharacterCommand.getIntToken();
                     }
@@ -78,7 +78,7 @@ public class SpellSlotIO {
                     break;
                 default:
                     if (CharacterCommand.tokens.peek().startsWith("-")) {
-                        CharacterCommand.terminal.printOut("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
+                        CharacterCommand.terminal.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
                     } else {
                         CharacterCommand.tokens.pop();
                     }
@@ -86,11 +86,11 @@ public class SpellSlotIO {
             }
         }
         if (help) {
-            CharacterCommand.terminal.printOut(Help.SETSLOTS);
+            CharacterCommand.terminal.println(Help.SETSLOTS);
         } else {
             if (level != null && max != null) {
                 pc.getSpellSlots()[level].setMaxVal(max);
-                CharacterCommand.terminal.printOut("Maximum level " + level + " spell slots set to " + max);
+                CharacterCommand.terminal.println("Maximum level " + level + " spell slots set to " + max);
             }
         }
     }
@@ -103,7 +103,7 @@ public class SpellSlotIO {
             int level = CharacterCommand.terminal.queryInteger("Enter spell slot level: ", false);
             int count = CharacterCommand.terminal.queryInteger("Enter number of slots to recharge: ", false);
             pc.getSpellSlots()[level].charge(count);
-            CharacterCommand.terminal.printOut("Recharged " + count + " level " + level + " spell slots");
+            CharacterCommand.terminal.println("Recharged " + count + " level " + level + " spell slots");
         }
     }
 
@@ -118,7 +118,7 @@ public class SpellSlotIO {
                 case "--level":
                     CharacterCommand.tokens.pop();
                     if (CharacterCommand.tokens.isEmpty()) {
-                        CharacterCommand.terminal.printOut(Message.ERROR_NO_ARG + ": level");
+                        CharacterCommand.terminal.println(Message.ERROR_NO_ARG + ": level");
                     } else {
                         level = CharacterCommand.getIntToken();
                         if (level > Spell.MAX_LEVEL) {
@@ -133,7 +133,7 @@ public class SpellSlotIO {
                 case "--count":
                     CharacterCommand.tokens.pop();
                     if (CharacterCommand.tokens.isEmpty()) {
-                        CharacterCommand.terminal.printOut(Message.ERROR_NO_ARG + ": count");
+                        CharacterCommand.terminal.println(Message.ERROR_NO_ARG + ": count");
                     } else {
                         count = CharacterCommand.getIntToken();
                     }
@@ -148,7 +148,7 @@ public class SpellSlotIO {
                     break;
                 default:
                     if (CharacterCommand.tokens.peek().startsWith("-")) {
-                        CharacterCommand.terminal.printOut("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
+                        CharacterCommand.terminal.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
                     } else {
                         CharacterCommand.tokens.pop();
                     }
@@ -156,7 +156,7 @@ public class SpellSlotIO {
             }
         }
         if (help) {
-            CharacterCommand.terminal.printOut(Help.CHARGE);
+            CharacterCommand.terminal.println(Help.CHARGE);
         } else {
             if (level == null && count == null) {
                 if (all) {
@@ -165,17 +165,17 @@ public class SpellSlotIO {
                             s.fullCharge();
                         }
                     }
-                    CharacterCommand.terminal.printOut("All spell slots recharged");
+                    CharacterCommand.terminal.println("All spell slots recharged");
                 } else {
-                    CharacterCommand.terminal.printOut(Message.ERROR_NO_VALUE);
+                    CharacterCommand.terminal.println(Message.ERROR_NO_VALUE);
                 }
             } else if (level != null && count == null) {
                 if (all) {
                     pc.getSpellSlots()[level].fullCharge();
-                    CharacterCommand.terminal.printOut("Level " + level + " spell slots fully recharged");
+                    CharacterCommand.terminal.println("Level " + level + " spell slots fully recharged");
                 } else {
                     pc.getSpellSlots()[level].charge();
-                    CharacterCommand.terminal.printOut("Level " + level + " spell slot recharged");
+                    CharacterCommand.terminal.println("Level " + level + " spell slot recharged");
                 }
             }
             if (level == null && count != null) {
@@ -185,13 +185,13 @@ public class SpellSlotIO {
                             s.charge(count);
                         }
                     }
-                    CharacterCommand.terminal.printOut("Recharged " + count + " spell slots of each level known");
+                    CharacterCommand.terminal.println("Recharged " + count + " spell slots of each level known");
                 } else {
-                    CharacterCommand.terminal.printOut(Message.ERROR_NO_ARG + ": level");
+                    CharacterCommand.terminal.println(Message.ERROR_NO_ARG + ": level");
                 }
             } else if (level != null && count != null) {
                 pc.getSpellSlots()[level].charge(count);
-                CharacterCommand.terminal.printOut("Recharged " + count + " level " + level + " spell slots");
+                CharacterCommand.terminal.println("Recharged " + count + " level " + level + " spell slots");
             }
         }
     }
