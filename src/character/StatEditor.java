@@ -10,7 +10,7 @@ public class StatEditor {
         if (!CharacterCommand.tokens.isEmpty()) {
             editParser(pc);
         } else {
-            Stat stat = CharacterCommand.getStatByName();
+            Stat stat = StatIO.getStatByName(pc);
             if (stat != null) {
                 int val = CharacterCommand.terminal.queryInteger(stat.getName()+" value: ", false);
                 //int val = getValidInt(stat.getName() + " value: ");

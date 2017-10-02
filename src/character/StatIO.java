@@ -2,9 +2,25 @@ package character;
 
 import app.CharacterCommand;
 import utils.Help;
+import utils.Message;
 
 public class StatIO {
-
+    public static Stat getStatByName(PlayerCharacter pc) {
+        Stat stat;
+        while (true) {
+            String statName = CharacterCommand.terminal.queryString("Stat name: ", false);
+            if (statName.equalsIgnoreCase("cancel")) {
+                return null;
+            } else {
+                stat = pc.getStat(statName);
+                if (stat == null) {
+                    CharacterCommand.terminal.printOut(Message.MSG_NO_SKILL);
+                } else {
+                    return stat;
+                }
+            }
+        }
+    }
     public static void stats(PlayerCharacter pc) {
         CharacterCommand.tokens.pop();
         if (!CharacterCommand.tokens.isEmpty()) {
@@ -20,7 +36,7 @@ public class StatIO {
                 switch (action) {
                     case "v":
                     case "view":
-                        Stat stat = CharacterCommand.getStatByName();
+                        Stat stat = getStatByName(pc);
                         if (stat != null) {
                             CharacterCommand.terminal.printOut(stat.detailString());
                             //System.out.println(stat.detailString());
@@ -70,7 +86,7 @@ public class StatIO {
             System.out.println(Help.STATS);
         } else {
             String statName = nameBuilder.toString().trim();
-            Stat stat = CharacterCommand.activeChar.getStat(statName);
+            Stat stat = CharacterCommand.getActiveChar().getStat(statName);
             if (stat != null && view) {
                 CharacterCommand.terminal.printOut(stat.detailString());
             }

@@ -5,7 +5,22 @@ import utils.Help;
 import utils.Message;
 
 public class SkillIO {
-
+    public static Skill getSkillByName(PlayerCharacter pc) {
+        Skill skill;
+        while (true) {
+            String skillName = CharacterCommand.terminal.queryString("Stat name: ", false);
+            if (skillName.equalsIgnoreCase("cancel")) {
+                return null;
+            } else {
+                skill = pc.getSkill(skillName);
+                if (skill == null) {
+                    CharacterCommand.terminal.printOut(Message.MSG_NO_SKILL);
+                } else {
+                    return skill;
+                }
+            }
+        }
+    }
     public static void skills(PlayerCharacter pc) {
         CharacterCommand.tokens.pop();
         String action;
@@ -20,7 +35,7 @@ public class SkillIO {
                 switch (action) {
                     case "v":
                     case "view":
-                        skill = CharacterCommand.getSkillByName();
+                        skill = getSkillByName(pc);
                         if (skill != null) {
                             CharacterCommand.terminal.printOut(skill.toString());
                         }
@@ -28,7 +43,7 @@ public class SkillIO {
                         break;
                     case "t":
                     case "train":
-                        skill = CharacterCommand.getSkillByName();
+                        skill = getSkillByName(pc);
                         if (skill != null) {
                             skill.train(pc);
                             CharacterCommand.terminal.printOut("Gained proficiency in " + skill.getName());
@@ -37,7 +52,7 @@ public class SkillIO {
                         break;
                     case "f":
                     case "forget":
-                        skill = CharacterCommand.getSkillByName();
+                        skill = getSkillByName(pc);
                         if (skill != null) {
                             skill.untrain(pc);
                             CharacterCommand.terminal.printOut("Lost proficiency in " + skill.getName());
@@ -46,7 +61,7 @@ public class SkillIO {
                         break;
                     case "e":
                     case "expert":
-                        skill = CharacterCommand.getSkillByName();
+                        skill = getSkillByName(pc);
                         if (skill != null) {
                             skill.expert(pc);
                             CharacterCommand.terminal.printOut("Gained expertise in " + skill.getName());

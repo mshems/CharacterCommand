@@ -37,13 +37,19 @@ public class Terminal implements TerminalEventListener, TerminalInterface{
     @Override
     public synchronized void start(){
         frame.setVisible(true);
+        if(CharacterCommand.hasActiveChar()){
+            String charprompt = CharacterCommand.getActiveChar().getName()+"@CharacterCommand ~ ";
+            inputComponent.setPrompt(charprompt);
+        } else {
+            inputComponent.setPrompt("CharacterCommand ~ ");
+        }
         inputComponent.start();
         while(true) {
              try {
                  wait();
                  if (!commandQueue.isEmpty()) {
                      commandHandler.processCommand(commandQueue.take());
-
+                     //remove lines above max line count
                      if(inputComponent.getLineCount()>maxLines){
                          int linesToRemove = inputComponent.getLineCount()-maxLines;
                          try {
@@ -51,15 +57,19 @@ public class Terminal implements TerminalEventListener, TerminalInterface{
                                      inputComponent.getLineStartOffset(0),
                                      inputComponent.getLineEndOffset(linesToRemove));
                          } catch (BadLocationException e){
-                            //e.printStackTrace();
+                            e.printStackTrace();
                          }
                      }
                  }
              } catch (InterruptedException e) {
-                 //e.printStackTrace();
+                 e.printStackTrace();
                  break;
              }
          }
+    }
+
+    public void setPrompt(String prompt){
+        inputComponent.setPrompt(prompt);
     }
 
     public void clear(){
@@ -135,7 +145,7 @@ public class Terminal implements TerminalEventListener, TerminalInterface{
                 s = inputComponent.getCommand();
                 inputComponent.resetPrompt();
             }catch (InterruptedException ex){
-                //ex.printStackTrace();
+                ex.printStackTrace();
             }
         }
         return s.trim();
@@ -150,7 +160,6 @@ public class Terminal implements TerminalEventListener, TerminalInterface{
             } else if (!s.isEmpty()){
                 return s;
             }
-
             this.printBlock(() -> this.print("Please enter a string"));
         }
     }
@@ -174,10 +183,10 @@ public class Terminal implements TerminalEventListener, TerminalInterface{
             try {
                 return Integer.parseInt(getQueryResponse(query));
             } catch (NumberFormatException e) {
-                this.printBlock(() -> this.print("Not a valid integer"));
                 if(allowNull){
                     break;
                 }
+                this.printBlock(() -> this.print("Not a valid integer"));
             }
         }
         return null;
@@ -208,10 +217,10 @@ public class Terminal implements TerminalEventListener, TerminalInterface{
             try {
                 return Double.parseDouble(getQueryResponse(query));
             } catch (NumberFormatException e) {
-                this.printBlock(() -> this.print("Not a valid double"));
                 if (allowNull) {
                     break;
                 }
+                this.printBlock(() -> this.print("Not a valid double"));
             }
         }
         return null;
@@ -224,7 +233,7 @@ public class Terminal implements TerminalEventListener, TerminalInterface{
             commandQueue.put(e.commandString);
             inputComponent.updateHistory(e.commandString);
         }catch (InterruptedException ex){
-            //ex.printStackTrace();
+            ex.printStackTrace();
         }
     }
 

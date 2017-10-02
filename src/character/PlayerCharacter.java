@@ -293,7 +293,7 @@ public class PlayerCharacter implements Serializable{
             s+=newLine+" | "+attributes.get("ap")+"  ";
         }
         if(spellcaster){
-            s+=spellStatsToString();
+            s+="\n | "+spellStatsToString();
         }
 		return s+newLine+"--------------------------------";
 	}

@@ -34,7 +34,7 @@ public class ReadWriteHandler {
         String characterName=null;
         if(!CharacterCommand.tokens.isEmpty()){
             if (CharacterCommand.tokens.contains("--help")){
-                System.out.println(Help.IMPORT);
+                CharacterCommand.terminal.printOut(Help.IMPORT);
             } else if (CharacterCommand.tokens.contains("--all")){
                 importAll(true);
             } else {
@@ -46,7 +46,7 @@ public class ReadWriteHandler {
                 characterName = nameBuilder.toString().trim();
             }
         } else {
-            System.out.println("manual import placeholder -- use command arguments for now");
+            CharacterCommand.terminal.printOut("manual import placeholder -- use command arguments for now");
         }
         if(characterName!=null){
             Path charPath = Paths.get(CharacterCommand.propertiesHandler.getDataDir() + "/" + characterName + ".data");
@@ -58,9 +58,9 @@ public class ReadWriteHandler {
                     inStream.close();
                     if (!CharacterCommand.characterList.containsKey(playerCharacter.getName().toLowerCase())){
                         CharacterCommand.characterList.put(playerCharacter.getName().toLowerCase(), playerCharacter);
-                        System.out.println("Imported "+playerCharacter.getName());
+                        CharacterCommand.terminal.printOut("Imported "+playerCharacter.getName());
                     } else {
-                        System.out.println(playerCharacter.getName() + " already imported");
+                        CharacterCommand.terminal.printOut(playerCharacter.getName() + " already imported");
                     }
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
@@ -88,7 +88,7 @@ public class ReadWriteHandler {
             }
         }
         if (verbose){
-            System.out.println("All characters imported");
+            CharacterCommand.terminal.printOut("All characters imported");
         }
     }
 
@@ -99,7 +99,7 @@ public class ReadWriteHandler {
         String characterName=null;
         if(!CharacterCommand.tokens.isEmpty()){
             if(CharacterCommand.tokens.contains("--help")){
-                System.out.println(Help.EXPORT);
+                CharacterCommand.terminal.printOut(Help.EXPORT);
                 return true;
             } else if (CharacterCommand.tokens.contains("--all")){
                 exportAll();
@@ -115,7 +115,7 @@ public class ReadWriteHandler {
 
             }
         } else {
-            pc = CharacterCommand.activeChar;
+            pc = CharacterCommand.getActiveChar();
         }
         if(pc!=null && CharacterCommand.characterList.containsKey(pc.getName().toLowerCase())){
             Path path = Paths.get(CharacterCommand.propertiesHandler.getExportDir()+"/" + pc.getName() + ".txt");
@@ -123,12 +123,12 @@ public class ReadWriteHandler {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(path.toString()));
                 writer.write(pc.toTextFile());
                 writer.close();
-                System.out.println("Exported "+pc.getName());
+                CharacterCommand.terminal.printOut("Exported "+pc.getName());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            System.out.println(Message.ERROR_NO_CHAR);
+            CharacterCommand.terminal.printOut(Message.ERROR_NO_CHAR);
         }
         return true;
     }
@@ -143,20 +143,20 @@ public class ReadWriteHandler {
                 writer.write(pc.toTextFile());
                 writer.close();
             }
-            System.out.println("All characters exported");
+            CharacterCommand.terminal.printOut("All characters exported");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**SAVE****************************************************************************************************************/
-    public void saveChar() {
+    public void saveChar(boolean verbose) {
         PlayerCharacter pc=null;
         String characterName;
         CharacterCommand.tokens.pop();
         if(!CharacterCommand.tokens.isEmpty()){
             if(CharacterCommand.tokens.contains("--help")){
-                System.out.println(Help.EXPORT);
+                CharacterCommand.terminal.printOut(Help.EXPORT);
             } else if (CharacterCommand.tokens.contains("--all")){
                 saveAll();
             } else {
@@ -169,7 +169,7 @@ public class ReadWriteHandler {
                 pc = CharacterCommand.characterList.get(characterName.toLowerCase());
             }
         }else{
-            pc = CharacterCommand.activeChar;
+            pc = CharacterCommand.getActiveChar();
         }
         if(pc!=null && CharacterCommand.characterList.containsKey(pc.getName().toLowerCase())){
             try{
@@ -177,7 +177,9 @@ public class ReadWriteHandler {
                 ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(path.toString())));
                 out.writeObject(pc);
                 out.close();
-                System.out.println("Saved " + pc.getName());
+                if(verbose) {
+                    CharacterCommand.terminal.printOut("Saved " + pc.getName());
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -193,7 +195,7 @@ public class ReadWriteHandler {
                 out.writeObject(pc);
                 out.close();
             }
-            System.out.println("Saved all characters");
+            CharacterCommand.terminal.printOut("Saved all characters");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -206,16 +208,16 @@ public class ReadWriteHandler {
         if (!CharacterCommand.tokens.isEmpty()){
             loadChar(command);
         } else {
-            System.out.print("Enter name of character to load, or enter 'new' to create a new character: ");
+            CharacterCommand.terminal.printOut("Enter name of character to load, or enter 'new' to create a new character: ");
             String characterName = CharacterCommand.scanner.nextLine().toLowerCase();
             if (characterName.equalsIgnoreCase("new")) {
                 PlayerCreator.createCharacter();
             } else if (!characterName.equalsIgnoreCase("quit")) {
                 if (CharacterCommand.characterList.get(characterName) != null) {
-                    CharacterCommand.activeChar = CharacterCommand.characterList.get(characterName);
-                    System.out.println(characterName + " loaded");
+                    CharacterCommand.setActiveChar(CharacterCommand.characterList.get(characterName));
+                    CharacterCommand.terminal.printOut(characterName + " loaded");
                 } else {
-                    System.out.println("ERROR: Character not found");
+                    CharacterCommand.terminal.printOut("ERROR: Character not found");
                 }
             }
         }
@@ -228,10 +230,10 @@ public class ReadWriteHandler {
         }
         characterName = characterName.trim().toLowerCase();
         if (CharacterCommand.characterList.get(characterName) != null) {
-            CharacterCommand.activeChar = CharacterCommand.characterList.get(characterName);
-            System.out.println(CharacterCommand.activeChar.getName() + " loaded");
+            CharacterCommand.setActiveChar(CharacterCommand.characterList.get(characterName));
+            CharacterCommand.terminal.printOut(CharacterCommand.getActiveChar().getName() + " loaded");
         } else {
-            System.out.println("ERROR: Character not found");
+            CharacterCommand.terminal.printOut("ERROR: Character not found");
         }
     }
 }

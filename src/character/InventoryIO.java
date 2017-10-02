@@ -13,7 +13,7 @@ public class InventoryIO {
             addDrop(pc, addDrop);
         } else {
             Integer itemCount;
-            item = CharacterCommand.getItemByName();
+            item = ItemIO.getItemByName(pc);
             itemCount = CharacterCommand.terminal.queryInteger("Amount: ", false);
             if (item != null) {
                 switch (item.getName().toLowerCase()) {

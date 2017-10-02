@@ -5,6 +5,9 @@ import app.CharacterCommand;
 import app.DiceRoll;
 import items.Item;
 import items.ItemIO;
+import magic.SpellBookIO;
+import magic.SpellIO;
+import magic.SpellSlotIO;
 import utils.Help;
 import utils.Message;
 
@@ -22,10 +25,10 @@ public class CommandHandler {
                 .trim()
                 .split("\\s+");
         Collections.addAll(CharacterCommand.tokens, input);
-        this.doCommand(CharacterCommand.tokens.peek(), CharacterCommand.activeChar);
+        this.doCommand(CharacterCommand.tokens.peek(), CharacterCommand.getActiveChar());
     }
 
-    void doCommand(String command, PlayerCharacter activeChar){
+    private void doCommand(String command, PlayerCharacter activeChar){
         boolean clearing = false;
         switch(command){
             case "clear":
@@ -44,9 +47,6 @@ public class CommandHandler {
                 break;
             case "load":
                 CharacterCommand.readWriteHandler.loadChar();
-                break;
-            case "roll":
-                DiceRoll.doRoll();
                 break;
             case "prefs":
                 CharacterCommand.propertiesHandler.prefs();
@@ -69,7 +69,7 @@ public class CommandHandler {
                     switch (command){
                         case "s":
                         case "save":
-                            CharacterCommand.readWriteHandler.saveChar();
+                            CharacterCommand.readWriteHandler.saveChar(true);
                             break;
                         case "export":
                             CharacterCommand.readWriteHandler.export();
@@ -100,26 +100,26 @@ public class CommandHandler {
                         case "spellslot":
                         case "spellslots":
                             if(CharacterCommand.checkCaster(CharacterCommand.getActiveChar())){
-                                CharacterCommand.spellSlots();
+                                SpellSlotIO.spellSlots(CharacterCommand.getActiveChar());
                             }
                             break;
                         case "charge":
                             if(CharacterCommand.checkCaster(CharacterCommand.getActiveChar())){
-                                CharacterCommand.charge();
+                                SpellSlotIO.charge(CharacterCommand.getActiveChar());
                             }
                             break;
                         case "spell":
                         case "spells":
                             if(CharacterCommand.checkCaster(CharacterCommand.getActiveChar())){
-                                CharacterCommand.spells();
+                                SpellIO.spells(CharacterCommand.getActiveChar());
                             }
                             break;
                         case "learn":
-                            CharacterCommand.learn();
+                            SpellBookIO.learn(CharacterCommand.getActiveChar());
                             break;
                         case "forget":
                             if(CharacterCommand.checkCaster(CharacterCommand.getActiveChar())){
-                                CharacterCommand.forget();
+                                SpellBookIO.forget(CharacterCommand.getActiveChar());
                             }
                             break;
                         case "spellbook":
@@ -129,7 +129,7 @@ public class CommandHandler {
                             break;
                         case "cast":
                             if(CharacterCommand.checkCaster(CharacterCommand.getActiveChar())){
-                                CharacterCommand.cast();
+                                SpellIO.cast(CharacterCommand.getActiveChar());
                             }
                             break;
                         case "lvl":
@@ -156,7 +156,7 @@ public class CommandHandler {
                             PlayerHealer.heal(CharacterCommand.getActiveChar());
                             break;
                         case "sq":
-                            CharacterCommand.readWriteHandler.saveChar();
+                            CharacterCommand.readWriteHandler.saveChar(false);
                             CharacterCommand.closeApp();
                             System.exit(0);
                             break;
@@ -170,6 +170,12 @@ public class CommandHandler {
                 break;
         }
         CharacterCommand.tokens.clear();
+        if(CharacterCommand.hasActiveChar()){
+            String charprompt = CharacterCommand.getActiveChar().getName()+" @ CharacterCommand ~ ";
+            terminal.setPrompt(charprompt);
+        } else {
+            terminal.setPrompt("CharacterCommand ~ ");
+        }
         if(!clearing) {
             terminal.advance();
         }

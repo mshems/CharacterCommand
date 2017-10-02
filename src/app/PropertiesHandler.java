@@ -107,7 +107,7 @@ public class PropertiesHandler{
             prefs(command);
         } else {
             //TODO: prefs
-            System.out.println("manual prefs editing placeholder -- use command arguments for now");
+            CharacterCommand.terminal.printOut("manual prefs editing placeholder -- use command arguments for now");
         }
     }
 
@@ -122,7 +122,7 @@ public class PropertiesHandler{
                         if (exportFile.isDirectory()){
                             this.exportDir = exportFile.toPath();
                         }
-                        System.out.println("Set toTextFile directory to " + exportFile.toString());
+                        CharacterCommand.terminal.printOut("Set export directory to " + exportFile.toString());
                     }
                     break;
                 case "-d":
@@ -133,7 +133,7 @@ public class PropertiesHandler{
                         if (dataFile.isDirectory()){
                             this.dataDir = dataFile.toPath();
                         }
-                        System.out.println("Set data directory to " + dataFile.toString());
+                        CharacterCommand.terminal.printOut("Set data directory to " + dataFile.toString());
                     }
                     break;
                 case "-v":
@@ -144,9 +144,9 @@ public class PropertiesHandler{
                         String token = CharacterCommand.tokens.pop();
                         if (token.equalsIgnoreCase("true") || token.equalsIgnoreCase("false")){
                             this.viewAlways = Boolean.parseBoolean(token);
-                            System.out.println("Set 'viewAlways' to " + token);
+                            CharacterCommand.terminal.printOut("Set 'viewAlways' to " + token);
                         } else {
-                            System.out.println("ERROR: Argument must be 'true' or 'false'");
+                            CharacterCommand.terminal.printOut("ERROR: Argument must be 'true' or 'false'");
                         }
                     }
                     break;
@@ -157,19 +157,19 @@ public class PropertiesHandler{
                         String token = CharacterCommand.tokens.pop();
                         if (token.equalsIgnoreCase("true") || token.equalsIgnoreCase("false")){
                             this.resume = Boolean.parseBoolean(token);
-                            System.out.println("Set 'resume' to " + token);
+                            CharacterCommand.terminal.printOut("Set 'resume' to " + token);
                         } else {
-                            System.out.println("ERROR: Argument must be 'true' or 'false'");
+                            CharacterCommand.terminal.printOut("ERROR: Argument must be 'true' or 'false'");
                         }
                     }
                     break;
                 case "--help":
                     CharacterCommand.tokens.pop();
-                    System.out.println(Help.PREFS);
+                    CharacterCommand.terminal.printOut(Help.PREFS);
                     break;
                 default:
                     if (CharacterCommand.tokens.peek().startsWith("-")) {
-                        System.out.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
+                        CharacterCommand.terminal.printOut("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
                     } else {
                         CharacterCommand.tokens.pop();
                     }

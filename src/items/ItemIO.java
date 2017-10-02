@@ -6,13 +6,33 @@ import utils.Help;
 import utils.Message;
 
 public class ItemIO {
-
+    public static Item getItemByName(PlayerCharacter pc) {
+        Item item;
+        while (true) {
+            String itemName = CharacterCommand.terminal.queryString("Item name: ", false);
+            if (itemName.equalsIgnoreCase("cancel")) {
+                return null;
+            } else {
+                for (Item coin : pc.getCurrency()) {
+                    if (coin.getName().equalsIgnoreCase(itemName)) {
+                        return coin;
+                    }
+                }
+                item = pc.getItem(itemName);
+                if (item == null) {
+                    CharacterCommand.terminal.printOut(Message.MSG_NO_ITEM);
+                } else {
+                    return item;
+                }
+            }
+        }
+    }
     public static void use(PlayerCharacter pc) {
         CharacterCommand.tokens.pop();
         if (!CharacterCommand.tokens.isEmpty()) {
             useParser(pc);
         } else {
-            Item item = CharacterCommand.getItemByName();
+            Item item = getItemByName(pc);
             if (item != null) {
                 if (item.isConsumable()) {
                     int amount = CharacterCommand.terminal.queryInteger("Amount: ", false);
@@ -84,7 +104,7 @@ public class ItemIO {
         if (!CharacterCommand.tokens.isEmpty()) {
             equipParser(pc, command);
         } else {
-            Item item = CharacterCommand.getItemByName();
+            Item item = getItemByName(pc);
             if (item != null) {
                 if (item.isEquippable()) {
                     if (command.equalsIgnoreCase("equip")) {
