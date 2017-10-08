@@ -80,7 +80,7 @@ public class ReadWriteHandler {
                         CharacterCommand.characterList.put(playerCharacter.getName().toLowerCase(), playerCharacter);
                     }
                     if (verbose){
-                        System.out.println(playerCharacter.getName() + " already imported");
+                        CharacterCommand.terminal.println(playerCharacter.getName() + " already imported");
                     }
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
@@ -208,10 +208,10 @@ public class ReadWriteHandler {
         if (!CharacterCommand.tokens.isEmpty()){
             loadChar(command);
         } else {
-            String characterName = CharacterCommand.terminal.queryString("Enter name of character to load, or enter 'new' to create a new character: \n",false);
+            String characterName = CharacterCommand.terminal.queryString("Enter name of character to load, or 'exit' : ",false);
             if (characterName.equalsIgnoreCase("new")) {
                 PlayerCreator.createCharacter();
-            } else if (!characterName.equalsIgnoreCase("quit")) {
+            } else if (!characterName.equalsIgnoreCase("exit")) {
                 if (CharacterCommand.characterList.get(characterName) != null) {
                     CharacterCommand.setActiveChar(CharacterCommand.characterList.get(characterName));
                     CharacterCommand.terminal.println(characterName + " loaded");

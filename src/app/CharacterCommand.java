@@ -3,6 +3,7 @@ package app;
 import character.*;
 import items.*;
 import magic.*;
+import terminal.CommandExecutor;
 import terminal.Terminal;
 import utils.*;
 
@@ -17,7 +18,6 @@ public class CharacterCommand {
     private static final String splash = "CharacterCommand v0.2.4";
     private static PlayerCharacter activeChar;
     public static LinkedHashMap<String, PlayerCharacter> characterList;
-    public static Scanner scanner;
     public static String[] input;
     public static LinkedList<String> tokens;
     public static PropertiesHandler propertiesHandler;
@@ -49,9 +49,13 @@ public class CharacterCommand {
             }
         }
 
-        //makeTestCharacter();
+//        makeTestCharacter();
 
-        terminal = new Terminal(splash);
+        terminal = new Terminal(splash, false);
+        initCommands();
+        tokens = terminal.getCommandTokens();
+        terminal.setVisible(true);
+        terminal.println(splash, Terminal.CENTERED);
         terminal.start();
     }
 
@@ -59,8 +63,6 @@ public class CharacterCommand {
         propertiesHandler = new PropertiesHandler();
         readWriteHandler = new ReadWriteHandler();
         ReadWriteHandler.checkDirs();
-        tokens = new LinkedList<>();
-        scanner = new Scanner(System.in);
         characterList = new LinkedHashMap<>();
         readWriteHandler.importAll(false);
         if (propertiesHandler.isResume()) {
@@ -74,7 +76,7 @@ public class CharacterCommand {
     public static void quit(){
         boolean quit = terminal.queryYN("Are you sure? Unsaved data will be lost [Y/N] : ");
         if(quit){
-            CharacterCommand.closeApp();
+            closeApp();
             System.exit(0);
         }
     }
@@ -88,9 +90,81 @@ public class CharacterCommand {
         propertiesHandler.writeProperties();
     }
 
-    /**
-     * UTILITY METHODS
-     *****************************************************************************************************/
+    private static void initCommands(){
+        terminal.setCommandExecutor(new CommandExecutor(){
+            public void doCommand(Terminal terminal, String token) {
+                if (activeChar != null || loadNotRequired(token)) {
+                    super.doCommand(terminal, token);
+                } else {
+                    tokens.clear();
+                }
+            }
+        });
+        terminal.putCommand("import", ()->readWriteHandler.importCharacter());
+        terminal.putCommand("export", ()->readWriteHandler.export());
+        terminal.putCommand("load", ()->readWriteHandler.loadChar());
+        terminal.putCommand("list", ()->dispCharacterList());
+        terminal.putCommand("save",()->readWriteHandler.saveChar(true));
+        terminal.putCommand("prefs", ()->propertiesHandler.prefs());
+        terminal.putCommand("new", ()->PlayerCreator.createCharacter());
+        terminal.putCommand("view", ()->terminal.println(activeChar.toString()));
+            terminal.putCommand("v", terminal.getCommand("view"));
+        terminal.putCommand("inv", ()->terminal.println(activeChar.getInventory().toString()));
+            terminal.putCommand("i", terminal.getCommand("inv"));
+        terminal.putCommand("get", ()->InventoryIO.get(activeChar));
+        terminal.putCommand("add", ()->InventoryIO.addDrop(activeChar));
+            terminal.putCommand("drop", terminal.getCommand("add"));
+        terminal.putCommand("equip", ()->ItemIO.equip(activeChar));
+            terminal.putCommand("dequip", terminal.getCommand("equip"));
+        terminal.putCommand("use", ()->ItemIO.use(activeChar));
+        terminal.putCommand("stats", ()->StatIO.stats(activeChar));
+            terminal.putCommand("stat", terminal.getCommand("stats"));
+        terminal.putCommand("edit", ()->StatEditor.edit(activeChar));
+        terminal.putCommand("skills", ()->SkillIO.skills(activeChar));
+            terminal.putCommand("skill", terminal.getCommand("skills"));
+        terminal.putCommand("ap", ()-> AbilityPointsIO.abilityPoints(activeChar));
+        terminal.putCommand("spells", ()->SpellIO.spells(activeChar));
+            terminal.putCommand("spell", terminal.getCommand("spells"));
+        terminal.putCommand("spellslots", ()->SpellSlotIO.spellSlots(activeChar));
+            terminal.putCommand("spellslot", terminal.getCommand("spellslots"));
+        terminal.putCommand("charge", ()->SpellSlotIO.charge(activeChar));
+        terminal.putCommand("cast", ()->SpellIO.cast(activeChar));
+        terminal.putCommand("learn", ()->SpellBookIO.learn(activeChar));
+        terminal.putCommand("forget", ()->SpellBookIO.forget(activeChar));
+        terminal.putCommand("heal", ()->PlayerHealer.heal(activeChar));
+            terminal.putCommand("hurt", terminal.getCommand("heal"));
+        terminal.putCommand("levelup", ()->PlayerLeveler.levelUp(activeChar));
+            terminal.putCommand("lvl", terminal.getCommand("levelup"));
+        terminal.putCommand("help", ()->Help.helpMenu(terminal));
+        terminal.putCommand("quit", ()->quit());
+            terminal.putCommand("q", terminal.getCommand("quit"));
+        terminal.putCommand("sq", ()->{
+            readWriteHandler.saveChar(false);
+            closeApp();
+            System.exit(0);
+        });
+    }
+
+    private static boolean loadNotRequired(String token){
+        if(terminal.getCommand(token) == null){
+            return true;
+        }
+        switch (token.toLowerCase()){
+            case "import":
+            case "load":
+            case "list":
+            case "prefs":
+            case "new":
+            case "quit":
+            case "help":
+                return true;
+            default:
+                terminal.newLine();
+                terminal.println(Message.ERROR_NO_LOAD);
+                return false;
+        }
+    }
+
     public static Integer getIntToken() {
         Integer n = null;
         try {
@@ -128,7 +202,7 @@ public class CharacterCommand {
         }
     }
 
-    public static void dispCharacterList() {
+    private static void dispCharacterList() {
         if (!characterList.isEmpty()) {
             terminal.println("Characters:");
             for (PlayerCharacter c : characterList.values()) {

@@ -12,6 +12,7 @@ public class ItemBuilderIO {
         while (true) {
             String type = CharacterCommand.terminal.queryString("Item type: ", false);
             if (type.equals("cancel")) {
+                itemBuilder.itemType = null;
                 return;
             }
             itemBuilder.itemType = Item.parseItemType(type);
@@ -48,7 +49,7 @@ public class ItemBuilderIO {
             case WEAPON:
                 inputItemInfo(itemBuilder);
                 //TODO
-                System.out.println("Weapon damage: ");
+                CharacterCommand.terminal.println("Weapon damage: ");
                 itemBuilder.damage = CharacterCommand.getDiceRoll();
                 inputEffects(pc, itemBuilder);
                 break;

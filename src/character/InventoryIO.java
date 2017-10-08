@@ -172,7 +172,9 @@ public class InventoryIO {
         } else {
             ItemBuilder itemBuilder = new ItemBuilder();
             ItemBuilderIO.buildItem(pc, itemBuilder);
-            getItem(pc, itemBuilder);
+            if(itemBuilder.itemType!=null) {
+                getItem(pc, itemBuilder);
+            }
         }
     }
 
@@ -253,7 +255,7 @@ public class InventoryIO {
                             return;
                         }
                     } else {
-                        System.out.println("ERROR: Effect target not found");
+                        CharacterCommand.terminal.println("ERROR: Effect target not found");
                         return;
                     }
                     break;

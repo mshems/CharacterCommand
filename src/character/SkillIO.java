@@ -138,7 +138,7 @@ public class SkillIO {
             }
         }
         if (help) {
-            System.out.println(Help.SKILL);
+            CharacterCommand.terminal.println(Help.SKILL);
         } else {
             String skillName = nameBuilder.toString().trim();
             skill = pc.getSkill(skillName);
@@ -167,7 +167,7 @@ public class SkillIO {
                 } else {
                     if (!viewAll) {
                         CharacterCommand.terminal.println("ERROR: No skill by that name");
-                        //System.out.println(Message.ERROR_SYNTAX);
+                        //CharacterCommand.terminal.println(Message.ERROR_SYNTAX);
                     }
                 }
             }

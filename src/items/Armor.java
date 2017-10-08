@@ -49,9 +49,9 @@ public class Armor extends Equippable{
                         playerAC.addBonusVal(dexMod);
                         c.setArmored(true);
                         this.setEquipped(true);
-                        //System.out.println(this.getName()+" equipped");
+                        //CharacterCommand.terminal.println(this.getName()+" equipped");
                     } else {
-                        //System.out.println("ERROR: Already wearing armor");
+                        //CharacterCommand.terminal.println("ERROR: Already wearing armor");
                     }
                     break;
                 case M_ARMOR:
@@ -64,9 +64,9 @@ public class Armor extends Equippable{
                         }
                         c.setArmored(true);
                         this.setEquipped(true);
-                        //System.out.println(this.getName()+" equipped");
+                        //CharacterCommand.terminal.println(this.getName()+" equipped");
                     } else {
-                        //System.out.println("ERROR: Already wearing armor");
+                        //CharacterCommand.terminal.println("ERROR: Already wearing armor");
                     }
                     break;
                 case H_ARMOR:
@@ -74,20 +74,20 @@ public class Armor extends Equippable{
                         playerAC.setBaseVal(AC);
                         c.setArmored(true);
                         this.setEquipped(true);
-                        //System.out.println(this.getName()+" equipped");
+                        //CharacterCommand.terminal.println(this.getName()+" equipped");
                     } else {
-                        //System.out.println("ERROR: Already wearing armor");
+                        //CharacterCommand.terminal.println("ERROR: Already wearing armor");
                     }
                     break;
                 case SHIELD:
                     playerAC.addBonusVal(2);
                     this.setEquipped(true);
-                    //System.out.println(this.getName()+" equipped");
+                    //CharacterCommand.terminal.println(this.getName()+" equipped");
                     break;
                 case OTHER:
                     playerAC.addBonusVal(AC);
                     this.setEquipped(true);
-                    //System.out.println(this.getName()+" equipped");
+                    //CharacterCommand.terminal.println(this.getName()+" equipped");
                     break;
             }
         }
@@ -104,7 +104,7 @@ public class Armor extends Equippable{
                     playerAC.setBaseVal(c.getAttributes().get(Attribute.NAC).getBaseVal());
                     playerAC.decBonusVal(dexMod);
                     c.setArmored(false);
-                    //System.out.println(this.getName()+" dequipped");
+                    //CharacterCommand.terminal.println(this.getName()+" dequipped");
                     break;
                 case M_ARMOR:
                     playerAC.setBaseVal(c.getAttributes().get(Attribute.NAC).getBaseVal());
@@ -114,20 +114,20 @@ public class Armor extends Equippable{
                         playerAC.decBonusVal(2);
                     }
                     c.setArmored(false);
-                    //System.out.println(this.getName()+" dequipped");
+                    //CharacterCommand.terminal.println(this.getName()+" dequipped");
                     break;
                 case H_ARMOR:
                     playerAC.setBaseVal(c.getAttributes().get(Attribute.NAC).getBaseVal());
                     c.setArmored(false);
-                    //System.out.println(this.getName()+" dequipped");
+                    //CharacterCommand.terminal.println(this.getName()+" dequipped");
                     break;
                 case SHIELD:
                     playerAC.decBonusVal(2);
-                    //System.out.println(this.getName()+" dequipped");
+                    //CharacterCommand.terminal.println(this.getName()+" dequipped");
                     break;
                 case OTHER:
                     playerAC.decBonusVal(AC);
-                    //System.out.println(this.getName()+" dequipped");
+                    //CharacterCommand.terminal.println(this.getName()+" dequipped");
                     break;
             }
             if(getEffects()!=null){

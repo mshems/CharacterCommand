@@ -23,10 +23,10 @@ public class PlayerCreator {
         if (CharacterCommand.terminal.queryYN("Spellcaster? [Y/N] : ")) {
             Ability spellAbility = null;
             while (spellAbility == null) {
-                String abilityName = CharacterCommand.terminal.queryString("Spellcasting ability: ", false);
+                String abilityName = CharacterCommand.terminal.queryString("Spellcasting ability: ", false).toLowerCase();
                 spellAbility = c.getAbilities().get(abilityName);
                 if (spellAbility == null) {
-                    System.out.println("ERROR: Ability not found");
+                    CharacterCommand.terminal.println("ERROR: Ability not found");
                 } else {
                     c.setSpellcaster(true);
                     c.initMagicStats(spellAbility);

@@ -1,5 +1,6 @@
 package utils;
 
+import app.CharacterCommand;
 import terminal.Terminal;
 
 public class Help{
@@ -195,103 +196,108 @@ public class Help{
 
 
 
-    public static void helpMenu(Terminal terminal, String command){
-        switch(command){
-            case "load":
-                terminal.println(LOAD);
-                break;
-            case "list":
-                terminal.println(LIST);
-                break;
-            case "s":
-            case "save":
-                terminal.println(SAVE);
-                break;
-            case "import":
-                terminal.println(IMPORT);
-                break;
-            case "export":
-                terminal.println(EXPORT);
-                break;
-            case "n":
-            case "new":
-                terminal.println(NEW);
-                break;
-            case "v":
-            case "view":
-                terminal.println(VIEW);
-                break;
-            case "i":
-            case "inv":
-                terminal.println(INV);
-                break;
-            case "roll":
-                terminal.println(ROLL);
-                break;
-            case "prefs":
-                terminal.println(PREFS);
-                break;
-            case "get":
-                terminal.println(GET);
-                break;
-            case "add":
-                terminal.println(ADD);
-                break;
-            case "drop":
-                terminal.println(DROP);
-                break;
-            case "edit":
-                terminal.println(EDIT);
-                break;
-            case "skill":
-            case "skills":
-                terminal.println(SKILL);
-                break;
-            case "ap":
-                terminal.println(AP);
-                break;
-            case "spell":
-            case "spells":
-                terminal.println(SPELLS);
-                break;
-            case "spellslots":
-                terminal.println(SPELLSLOTS);
-                break;
-            case "charge":
-                terminal.println(CHARGE);
-                break;
-            case "cast":
-                terminal.println(CAST);
-                break;
-            case "learn":
-                terminal.println(LEARN);
-                break;
-            case "forget":
-                terminal.println(FORGET);
-                break;
-            case "stat":
-            case "stats":
-                terminal.println(STATS);
-                break;
-            case "heal":
-                terminal.println(HEAL);
-                break;
-            case "hurt":
-                terminal.println(HURT);
-                break;
-            case "equip":
-                terminal.println(EQUIP);
-                break;
-            case "dequip":
-                terminal.println(DEQUIP);
-                break;
-            case "use":
-                terminal.println(USE);
-            case "levelup":
-                terminal.println(LEVELUP);
-                break;
-            default:
-                break;
+    public static void helpMenu(Terminal terminal){
+        CharacterCommand.tokens.pop();
+        if(!CharacterCommand.tokens.isEmpty()) {
+            switch (CharacterCommand.tokens.pop()) {
+                case "load":
+                    terminal.println(LOAD);
+                    break;
+                case "list":
+                    terminal.println(LIST);
+                    break;
+                case "s":
+                case "save":
+                    terminal.println(SAVE);
+                    break;
+                case "import":
+                    terminal.println(IMPORT);
+                    break;
+                case "export":
+                    terminal.println(EXPORT);
+                    break;
+                case "n":
+                case "new":
+                    terminal.println(NEW);
+                    break;
+                case "v":
+                case "view":
+                    terminal.println(VIEW);
+                    break;
+                case "i":
+                case "inv":
+                    terminal.println(INV);
+                    break;
+                case "roll":
+                    terminal.println(ROLL);
+                    break;
+                case "prefs":
+                    terminal.println(PREFS);
+                    break;
+                case "get":
+                    terminal.println(GET);
+                    break;
+                case "add":
+                    terminal.println(ADD);
+                    break;
+                case "drop":
+                    terminal.println(DROP);
+                    break;
+                case "edit":
+                    terminal.println(EDIT);
+                    break;
+                case "skill":
+                case "skills":
+                    terminal.println(SKILL);
+                    break;
+                case "ap":
+                    terminal.println(AP);
+                    break;
+                case "spell":
+                case "spells":
+                    terminal.println(SPELLS);
+                    break;
+                case "spellslots":
+                    terminal.println(SPELLSLOTS);
+                    break;
+                case "charge":
+                    terminal.println(CHARGE);
+                    break;
+                case "cast":
+                    terminal.println(CAST);
+                    break;
+                case "learn":
+                    terminal.println(LEARN);
+                    break;
+                case "forget":
+                    terminal.println(FORGET);
+                    break;
+                case "stat":
+                case "stats":
+                    terminal.println(STATS);
+                    break;
+                case "heal":
+                    terminal.println(HEAL);
+                    break;
+                case "hurt":
+                    terminal.println(HURT);
+                    break;
+                case "equip":
+                    terminal.println(EQUIP);
+                    break;
+                case "dequip":
+                    terminal.println(DEQUIP);
+                    break;
+                case "use":
+                    terminal.println(USE);
+                case "levelup":
+                    terminal.println(LEVELUP);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            terminal.println(COMMANDS_LIST);
         }
     }
 

@@ -31,7 +31,7 @@ public class PlayerHealer {
                 case "--health":
                     CharacterCommand.tokens.pop();
                     if (CharacterCommand.tokens.isEmpty()) {
-                        System.out.println(Message.ERROR_NO_ARG + ": amount");
+                        CharacterCommand.terminal.println(Message.ERROR_NO_ARG + ": amount");
                     } else {
                         amount = CharacterCommand.getIntToken();
                     }
@@ -46,7 +46,7 @@ public class PlayerHealer {
                     break;
                 default:
                     if (CharacterCommand.tokens.peek().startsWith("-")) {
-                        System.out.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
+                        CharacterCommand.terminal.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
                     } else {
                         CharacterCommand.tokens.pop();
                     }
@@ -55,17 +55,17 @@ public class PlayerHealer {
         }
         if (help) {
             if (command.equals("heal")) {
-                System.out.println(Help.HEAL);
+                CharacterCommand.terminal.println(Help.HEAL);
             }
             if (command.equals("hurt")) {
-                System.out.println(Help.HURT);
+                CharacterCommand.terminal.println(Help.HURT);
             }
         } else if (healAll) {
             healAll(activeChar, command);
         } else if (amount != null) {
             heal(activeChar, command, amount);
         } else {
-            System.out.println(Message.ERROR_SYNTAX);
+            CharacterCommand.terminal.println(Message.ERROR_SYNTAX);
         }
     }
 
@@ -73,11 +73,11 @@ public class PlayerHealer {
         switch (command) {
             case "heal":
                 activeChar.heal(amount);
-                System.out.println(String.format("Gained %d HP", amount));
+                CharacterCommand.terminal.println(String.format("Gained %d HP", amount));
                 break;
             case "hurt":
                 activeChar.hurt(amount);
-                System.out.println(String.format("Lost %d HP", amount));
+                CharacterCommand.terminal.println(String.format("Lost %d HP", amount));
                 break;
             default:
                 break;
@@ -88,11 +88,11 @@ public class PlayerHealer {
         switch (command) {
             case "heal":
                 activeChar.fullHeal();
-                System.out.println("HP fully restored");
+                CharacterCommand.terminal.println("HP fully restored");
                 break;
             case "hurt":
                 activeChar.fullHurt();
-                System.out.println("No HP remaining");
+                CharacterCommand.terminal.println("No HP remaining");
                 break;
             default:
                 break;

@@ -26,7 +26,7 @@ public class SpellSlotIO {
                     break;
             }
         } else {
-            System.out.println(pc.spellSlotsToString());
+            CharacterCommand.terminal.println(pc.spellSlotsToString());
         }
     }
 

@@ -27,10 +27,10 @@ public class StatIO {
             statsParser(pc);
         } else {
             CharacterCommand.terminal.println("view | edit | cancel");
-            //System.out.println("view | edit | cancel");
+            //CharacterCommand.terminal.println("view | edit | cancel");
             boolean exit = false;
             while (!exit) {
-                //System.out.print("Action: ");
+                //CharacterCommand.terminal.print("Action: ");
                 //String action = scanner.nextLine().toLowerCase().trim();
                 String action = CharacterCommand.terminal.queryString("Action: ", false).toLowerCase();
                 switch (action) {
@@ -39,7 +39,7 @@ public class StatIO {
                         Stat stat = getStatByName(pc);
                         if (stat != null) {
                             CharacterCommand.terminal.println(stat.detailString());
-                            //System.out.println(stat.detailString());
+                            //CharacterCommand.terminal.println(stat.detailString());
                         }
                         exit = true;
                         break;
@@ -83,7 +83,7 @@ public class StatIO {
             }
         }
         if (help) {
-            System.out.println(Help.STATS);
+            CharacterCommand.terminal.println(Help.STATS);
         } else {
             String statName = nameBuilder.toString().trim();
             Stat stat = CharacterCommand.getActiveChar().getStat(statName);

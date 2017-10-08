@@ -252,7 +252,7 @@ public class PlayerCharacter implements Serializable{
 				s += newLine + spellSlot;
 			}
 		}
-    	return s+newLine+"--------------------------------";
+    	return s+newLine+"-------------------------------";
 	}
 
     public String skillsToString(){

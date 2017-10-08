@@ -3,10 +3,10 @@ package terminal;
 import java.awt.event.ActionEvent;
 
 public class SubmitEvent extends ActionEvent {
-    String commandString;
+    public String inputString;
 
-    public SubmitEvent(Object source, int id, String commandID, String commandString ) {
+    public SubmitEvent(Object source, int id, String commandID, String inputString ) {
         super(source, id, commandID);
-        this.commandString = commandString;
+        this.inputString = inputString;
     }
 }

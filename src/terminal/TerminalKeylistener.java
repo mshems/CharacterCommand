@@ -4,10 +4,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class TerminalKeylistener implements KeyListener {
-    private TerminalInputComponent inputComponent;
-    private static final int SUBMIT_EVENT_ID = 1;
+    private TerminalIOComponent inputComponent;
 
-    public TerminalKeylistener(TerminalInputComponent inputComponent){
+    public TerminalKeylistener(TerminalIOComponent inputComponent){
         this.inputComponent = inputComponent;
     }
 
@@ -19,11 +18,9 @@ public class TerminalKeylistener implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if(inputComponent.getCaretPosition() < inputComponent.getLastPromptPos()){
-            inputComponent.advanceCaret();
+            inputComponent.setCaretPosition(inputComponent.getText().length());
         }
-//        if(inputComponent.getCaretPosition() < inputComponent.getPrompt().length() && e.getKeyCode() != KeyEvent.VK_RIGHT){
-//            inputComponent.advanceCaret();
-//        }
+
         if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
             if(inputComponent.getCaretPosition() <= inputComponent.getLastPromptPos()){
                 inputComponent.disableBackSpace();
@@ -35,12 +32,10 @@ public class TerminalKeylistener implements KeyListener {
         }
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
             if(inputComponent.isQuerying()){
-                //inputComponent.getEventDispatcher().fireEvent(new terminal.QueryEvent(inputComponent, SUBMIT_EVENT_ID, "submit-event", inputComponent.getCommand()));
-                inputComponent.fireEvent(new QueryEvent(inputComponent, SUBMIT_EVENT_ID, "submit-event", inputComponent.getCommand()));
+                inputComponent.fireEvent(new QueryEvent(inputComponent, 1, "query-event", inputComponent.getInput()));
                 inputComponent.setQuerying(false);
             } else {
-                //inputComponent.getEventDispatcher().fireEvent(new terminal.SubmitEvent(inputComponent, SUBMIT_EVENT_ID, "submit-event", inputComponent.getCommand()));
-                inputComponent.fireEvent(new SubmitEvent(inputComponent, SUBMIT_EVENT_ID, "submit-event", inputComponent.getCommand()));
+                inputComponent.fireEvent(new SubmitEvent(inputComponent, 1, "submit-event", inputComponent.getInput()));
             }
         }
     }

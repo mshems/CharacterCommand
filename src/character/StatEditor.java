@@ -16,7 +16,7 @@ public class StatEditor {
                 //int val = getValidInt(stat.getName() + " value: ");
                 stat.setBaseVal(val);
                 pc.updateStats();
-                System.out.println("Updated " + stat.getName());
+                CharacterCommand.terminal.println("Updated " + stat.getName());
             }
         }
     }
@@ -32,7 +32,7 @@ public class StatEditor {
                 case "--value":
                     CharacterCommand.tokens.pop();
                     if (CharacterCommand.tokens.isEmpty()) {
-                        System.out.println(Message.ERROR_NO_ARG + ": stat value");
+                        CharacterCommand.terminal.println(Message.ERROR_NO_ARG + ": stat value");
                     } else {
                         value = CharacterCommand.getIntToken();
                     }
@@ -41,7 +41,7 @@ public class StatEditor {
                 case "--bonus":
                     CharacterCommand.tokens.pop();
                     if (CharacterCommand.tokens.isEmpty()) {
-                        System.out.println(Message.ERROR_NO_ARG + ": bonus");
+                        CharacterCommand.terminal.println(Message.ERROR_NO_ARG + ": bonus");
                     } else {
                         bonus = CharacterCommand.getIntToken();
                     }
@@ -51,7 +51,7 @@ public class StatEditor {
                     break;
                 default:
                     if (CharacterCommand.tokens.peek().startsWith("-")) {
-                        System.out.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
+                        CharacterCommand.terminal.println("ERROR: Invalid flag '" + CharacterCommand.tokens.pop() + "'");
                     } else {
                         nameBuilder.append(CharacterCommand.tokens.pop());
                         nameBuilder.append(" ");
@@ -60,7 +60,7 @@ public class StatEditor {
             }
         }
         if (help) {
-            System.out.println(Help.EDIT);
+            CharacterCommand.terminal.println(Help.EDIT);
         } else {
             String statName = nameBuilder.toString().trim();
             Stat stat = pc.getStat(statName);
@@ -68,16 +68,16 @@ public class StatEditor {
                 if (stat != null) {
                     if (bonus != null) {
                         stat.setBonusVal(bonus);
-                        System.out.println("Updated " + stat.getName());
+                        CharacterCommand.terminal.println("Updated " + stat.getName());
                     }
                     stat.setBaseVal(value);
                     pc.updateStats();
-                    System.out.println("Updated " + stat.getName());
+                    CharacterCommand.terminal.println("Updated " + stat.getName());
                 } else {
-                    System.out.println(Message.MSG_NO_STAT);
+                    CharacterCommand.terminal.println(Message.MSG_NO_STAT);
                 }
             } else {
-                System.out.println(Message.ERROR_INPUT);
+                CharacterCommand.terminal.println(Message.ERROR_INPUT);
             }
         }
     }
