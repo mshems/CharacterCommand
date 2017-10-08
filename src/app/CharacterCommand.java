@@ -39,21 +39,11 @@ public class CharacterCommand {
     public static void main(String[] args) {
         initApp();
 
-        if (args.length > 0) {
-            switch (args[0]) {
-                case "--test":
-                    makeTestCharacter();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-//        makeTestCharacter();
-
-        terminal = new Terminal(splash, false);
-        initCommands();
+        terminal = new Terminal(splash);
         tokens = terminal.getCommandTokens();
+        terminal.setDefaultPrompt("CharacterCommand ~ ");
+        initCommands();
+
         terminal.setVisible(true);
         terminal.println(splash, Terminal.CENTERED);
         terminal.start();
@@ -71,6 +61,7 @@ public class CharacterCommand {
                 activeChar = characterList.get(key);
             }
         }
+        //makeTestCharacter();
     }
 
     public static void quit(){
@@ -97,6 +88,11 @@ public class CharacterCommand {
                     super.doCommand(terminal, token);
                 } else {
                     tokens.clear();
+                }
+                if(activeChar!=null){
+                    terminal.getOutputComponent().setCurrPrompt(activeChar.getName()+" @ CharacterCommand ~ ");
+                } else {
+                    terminal.getOutputComponent().resetPrompt();
                 }
             }
         });

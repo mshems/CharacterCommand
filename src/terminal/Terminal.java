@@ -24,8 +24,7 @@ public class Terminal implements TerminalEventListener{
     public static final int CENTERED = 1;
     public static final int RIGHT_ALIGNED = 2;
 
-
-    public Terminal(String title, boolean dualDisplay){
+    public Terminal(String title){
         this.dualDisplay = dualDisplay;
         commandQueue = new LinkedBlockingQueue<>();
         commandTokens = new LinkedList<>();
@@ -300,5 +299,10 @@ public class Terminal implements TerminalEventListener{
     }
     public TerminalIOComponent getOutputComponent() {
         return outputComponent;
+    }
+
+    public void setDefaultPrompt(String defaultPrompt){
+        inputComponent.setDefaultPrompt(defaultPrompt);
+        inputComponent.setCurrPrompt(defaultPrompt);
     }
 }

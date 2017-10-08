@@ -5,14 +5,11 @@
 
 package terminal;
 
-import app.CharacterCommand;
-
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.LinkedList;
 
 public class TerminalIOComponent extends JTextArea{
@@ -26,7 +23,9 @@ public class TerminalIOComponent extends JTextArea{
 
     private String currPrompt;
     private static final String USER_NAME = System.getProperty("user.name");
-    private static final String DEFAULT_PROMPT = "CharacterCommand ~ ";
+    private static final String DEFAULT_PROMPT = "TEST ~ ";
+
+    private String defaultPrompt;
     private LinkedList<String> history;
     private int historyPointer = 0;
 
@@ -45,7 +44,8 @@ public class TerminalIOComponent extends JTextArea{
         this.setCaretColor(new Color(245,245,245));
         this.setFont(new Font("consolas", Font.PLAIN, 17));
         this.multiline = multiline;
-        this.currPrompt = DEFAULT_PROMPT;
+        this.defaultPrompt = DEFAULT_PROMPT;
+        this.currPrompt = defaultPrompt;
         this.querying = false;
         this.allowBackSpace = false;
     }
@@ -61,7 +61,6 @@ public class TerminalIOComponent extends JTextArea{
     }
 
     private boolean isOnNewLine(){
-        //System.out.println("on new line");
         return (this.getText().endsWith(System.lineSeparator()) || this.getText().endsWith("\n"));
     }
 
@@ -89,11 +88,6 @@ public class TerminalIOComponent extends JTextArea{
     }
 
     private void prompt(){
-        if(CharacterCommand.hasActiveChar()){
-            currPrompt = CharacterCommand.getActiveChar().getName()+" @ CharacterCommand ~ ";
-        } else {
-            currPrompt = DEFAULT_PROMPT;
-        }
         if(multiline){
             if(this.isOnNewLine() || this.isClear()){
                 this.append(currPrompt);
@@ -251,7 +245,15 @@ public class TerminalIOComponent extends JTextArea{
     }
 
     public void resetPrompt(){
-        this.currPrompt = DEFAULT_PROMPT;
+        this.currPrompt = defaultPrompt;
+    }
+
+    public String getDefaultPrompt() {
+        return defaultPrompt;
+    }
+
+    public void setDefaultPrompt(String defaultPrompt) {
+        this.defaultPrompt = defaultPrompt;
     }
 
     public boolean isMultiline() {
