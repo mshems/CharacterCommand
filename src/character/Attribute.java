@@ -7,7 +7,7 @@ public class Attribute extends Stat {
 	public static final String HP = "hp";
 	public static final String AC = "ac";
 	public static final String PB = "pb";
-	public static final String NAC = "nac";
+	public static final String NAC ="nac";
 
 	public Attribute(){
 		super();

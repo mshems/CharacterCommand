@@ -5,22 +5,7 @@ import utils.Help;
 import utils.Message;
 
 public class SkillIO {
-    public static Skill getSkillByName(PlayerCharacter pc) {
-        Skill skill;
-        while (true) {
-            String skillName = CharacterCommand.terminal.queryString("Stat name: ", false);
-            if (skillName.equalsIgnoreCase("cancel")) {
-                return null;
-            } else {
-                skill = pc.getSkill(skillName);
-                if (skill == null) {
-                    CharacterCommand.terminal.println(Message.MSG_NO_SKILL);
-                } else {
-                    return skill;
-                }
-            }
-        }
-    }
+
     public static void skills(PlayerCharacter pc) {
         CharacterCommand.tokens.pop();
         String action;
@@ -169,6 +154,23 @@ public class SkillIO {
                         CharacterCommand.terminal.println("ERROR: No skill by that name");
                         //CharacterCommand.terminal.println(Message.ERROR_SYNTAX);
                     }
+                }
+            }
+        }
+    }
+
+    public static Skill getSkillByName(PlayerCharacter pc) {
+        Skill skill;
+        while (true) {
+            String skillName = CharacterCommand.terminal.queryString("Stat name: ", false);
+            if (skillName.equalsIgnoreCase("cancel")) {
+                return null;
+            } else {
+                skill = pc.getSkill(skillName);
+                if (skill == null) {
+                    CharacterCommand.terminal.println(Message.MSG_NO_SKILL);
+                } else {
+                    return skill;
                 }
             }
         }

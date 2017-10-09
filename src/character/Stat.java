@@ -72,11 +72,11 @@ public class Stat implements Serializable {
 
 	public String detailString() {
 		String newLine = System.lineSeparator();
-		return String.format("---- %s -----------------------"+
+		return String.format("---- %s"+
 				newLine+"Base value: %.0f"+
-				newLine+"Bonuses: %.0f"+
+				newLine+"Bonuses:    %+.0f"+
 				newLine+"Total: %.0f"+
-				"--------------------------------",
+				newLine+"--------------------------------",
 				this.name,
 				this.baseVal,
 				this.bonusVal,

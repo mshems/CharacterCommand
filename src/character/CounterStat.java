@@ -63,7 +63,10 @@ public class CounterStat extends Stat {
 	}
 	public String detailString() {
 		String newLine = System.lineSeparator();
-		return String.format("%s"+newLine+"Current value: %.0f"+newLine+"Max value: %.0f",
+		return String.format("---- %s" +
+                    newLine+"Current value: %.0f"+
+                    newLine+"Max value:     %.0f"+
+                    newLine+"--------------------------------",
 				this.getName(),
 				this.currVal,
 				this.getMaxVal()

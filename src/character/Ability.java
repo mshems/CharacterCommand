@@ -34,14 +34,21 @@ public class Ability extends Attribute implements Serializable{
 		return String.format("%s: %.0f (%+.0f)", this.getName(), this.getTotal(), this.getMod());
 	}
 
+	@Override
 	public String detailString() {
 		String newLine = System.lineSeparator();
-		return String.format("%s"+newLine+"Base value: %.0f"+newLine+"Bonuses: %.0f"+newLine+"Total: %.0f (%+.0f)",
+		return String.format("---- %s"+
+				newLine+"Base value:   %.0f"+
+				newLine+"Bonuses:      %+.0f"+
+				newLine+"Ability Mod:  %+.0f"+
+				newLine+"Total: %.0f (%+.0f)"+
+				newLine+"--------------------------------",
 				this.getName(),
 				this.getBaseVal(),
 				this.getBonusVal(),
+				this.getMod(),
 				this.getTotal(),
-				this.getMod()
+                this.getMod()
 		);
 	}
 }

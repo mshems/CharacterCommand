@@ -118,7 +118,7 @@ public class InventoryIO {
         }
     }
 
-    private static void addDropCoin(PlayerCharacter pc, int coinType, Integer itemCount, boolean dropAll, String command) {
+    public static void addDropCoin(PlayerCharacter pc, int coinType, Integer itemCount, boolean dropAll, String command) {
         String itemName = "";
         switch (coinType) {
             case Inventory.indexPL:
@@ -149,7 +149,7 @@ public class InventoryIO {
         }
     }
 
-    private static void addDropItem(PlayerCharacter pc, Item item, Integer itemCount, boolean dropAll, String command) {
+    public static void addDropItem(PlayerCharacter pc, Item item, Integer itemCount, boolean dropAll, String command) {
         if (command.equals("drop") && !dropAll) {
             itemCount = -itemCount;
             CharacterCommand.terminal.println(String.format("Dropped %dx \"%s\"", -itemCount, item.getName()));
@@ -233,7 +233,7 @@ public class InventoryIO {
                         CharacterCommand.terminal.println(Message.ERROR_NO_ARG + ": damage");
                         return;
                     }
-                    itemBuilder.damage = CharacterCommand.getDiceRoll(CharacterCommand.tokens.pop());
+                    itemBuilder.damage = CharacterCommand.toDiceRoll(CharacterCommand.tokens.pop());
                     break;
                 case "-e":
                 case "--enchant":

@@ -259,7 +259,17 @@ public class PlayerCharacter implements Serializable{
         String newLine = System.lineSeparator();
         String s = "---- SKILLS --------------------";
         for(Skill skill:skills.values()){
-            s += newLine+" - "+skill;
+            switch(skill.getName().toLowerCase()){
+//				case "str saves":
+				case "dex saves":
+				case "con saves":
+				case "wis saves":
+				case "int saves":
+				case "cha saves":
+					s+=newLine;
+					break;
+			}
+        	s += newLine+" - "+skill;
         }
         return s+newLine+"--------------------------------";
     }

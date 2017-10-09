@@ -49,6 +49,7 @@ public class SpellIO {
                     break;
             }
         } else {
+            //TODO menu
             CharacterCommand.terminal.println(pc.getSpellBook().toString());
         }
     }

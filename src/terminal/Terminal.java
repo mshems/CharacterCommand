@@ -192,6 +192,12 @@ public class Terminal implements TerminalEventListener{
         commandMap.put(key, command);
     }
 
+    public void putCommand(TerminalCommand command, String... keys){
+        for(String str:keys){
+            commandMap.put(str, command);
+        }
+    }
+
     public void replaceCommand(String key, TerminalCommand command){
         commandMap.replace(key, command);
     }

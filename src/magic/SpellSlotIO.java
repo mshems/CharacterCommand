@@ -26,6 +26,7 @@ public class SpellSlotIO {
                     break;
             }
         } else {
+            //TODO menu
             CharacterCommand.terminal.println(pc.spellSlotsToString());
         }
     }

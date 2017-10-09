@@ -97,43 +97,71 @@ public class CharacterCommand {
             }
         });
         terminal.putCommand("import", ()->readWriteHandler.importCharacter());
+
         terminal.putCommand("export", ()->readWriteHandler.export());
+
         terminal.putCommand("load", ()->readWriteHandler.loadChar());
+
         terminal.putCommand("list", ()->dispCharacterList());
+
         terminal.putCommand("save",()->readWriteHandler.saveChar(true));
+
         terminal.putCommand("prefs", ()->propertiesHandler.prefs());
+
         terminal.putCommand("new", ()->PlayerCreator.createCharacter());
+
         terminal.putCommand("view", ()->terminal.println(activeChar.toString()));
-            terminal.putCommand("v", terminal.getCommand("view"));
+        terminal.putCommand("v", terminal.getCommand("view"));
+
         terminal.putCommand("inv", ()->terminal.println(activeChar.getInventory().toString()));
-            terminal.putCommand("i", terminal.getCommand("inv"));
+        terminal.putCommand("i", terminal.getCommand("inv"));
+
         terminal.putCommand("get", ()->InventoryIO.get(activeChar));
+
         terminal.putCommand("add", ()->InventoryIO.addDrop(activeChar));
-            terminal.putCommand("drop", terminal.getCommand("add"));
+        terminal.putCommand("drop", terminal.getCommand("add"));
+
         terminal.putCommand("equip", ()->ItemIO.equip(activeChar));
-            terminal.putCommand("dequip", terminal.getCommand("equip"));
+        terminal.putCommand("dequip", terminal.getCommand("equip"));
+
         terminal.putCommand("use", ()->ItemIO.use(activeChar));
+
         terminal.putCommand("stats", ()->StatIO.stats(activeChar));
-            terminal.putCommand("stat", terminal.getCommand("stats"));
+
+        terminal.putCommand("stat", terminal.getCommand("stats"));
+
         terminal.putCommand("edit", ()->StatEditor.edit(activeChar));
-        terminal.putCommand("skills", ()->SkillIO.skills(activeChar));
-            terminal.putCommand("skill", terminal.getCommand("skills"));
+
+        terminal.putCommand("skills", ()->terminal.println(activeChar.skillsToString()));
+        terminal.putCommand("skill", ()->SkillIO.skills(activeChar));
+
         terminal.putCommand("ap", ()-> AbilityPointsIO.abilityPoints(activeChar));
-        terminal.putCommand("spells", ()->SpellIO.spells(activeChar));
-            terminal.putCommand("spell", terminal.getCommand("spells"));
-        terminal.putCommand("spellslots", ()->SpellSlotIO.spellSlots(activeChar));
-            terminal.putCommand("spellslot", terminal.getCommand("spellslots"));
+
+        terminal.putCommand("spells", ()->terminal.println(activeChar.getSpellBook().toString()));
+        terminal.putCommand("spell", ()->SpellIO.spells(activeChar));
+
+        terminal.putCommand("spellslots", ()->terminal.println(activeChar.spellSlotsToString()));
+        terminal.putCommand("spellslot", ()->SpellSlotIO.spellSlots(activeChar));
+
         terminal.putCommand("charge", ()->SpellSlotIO.charge(activeChar));
+
         terminal.putCommand("cast", ()->SpellIO.cast(activeChar));
+
         terminal.putCommand("learn", ()->SpellBookIO.learn(activeChar));
+
         terminal.putCommand("forget", ()->SpellBookIO.forget(activeChar));
+
         terminal.putCommand("heal", ()->PlayerHealer.heal(activeChar));
-            terminal.putCommand("hurt", terminal.getCommand("heal"));
+        terminal.putCommand("hurt", terminal.getCommand("heal"));
+
         terminal.putCommand("levelup", ()->PlayerLeveler.levelUp(activeChar));
-            terminal.putCommand("lvl", terminal.getCommand("levelup"));
+        terminal.putCommand("lvl", terminal.getCommand("levelup"));
+
         terminal.putCommand("help", ()->Help.helpMenu(terminal));
+
         terminal.putCommand("quit", ()->quit());
-            terminal.putCommand("q", terminal.getCommand("quit"));
+        terminal.putCommand("q", terminal.getCommand("quit"));
+
         terminal.putCommand("sq", ()->{
             readWriteHandler.saveChar(false);
             closeApp();
@@ -175,9 +203,9 @@ public class CharacterCommand {
         return n;
     }
 
-    public static DiceRoll getDiceRoll() {
+    public static DiceRoll getDiceRoll(String message) {
         while (true) {
-            String s = terminal.queryString("Dice roll: ", false);
+            String s = terminal.queryString(message, false);
             if (s.matches("(\\d+d\\d+)")) {
                 String[] a = s.split("d");
                 return new DiceRoll(Integer.parseInt(a[0]), Integer.parseInt(a[1]));
@@ -189,7 +217,7 @@ public class CharacterCommand {
         }
     }
 
-    public static DiceRoll getDiceRoll(String s) {
+    public static DiceRoll toDiceRoll(String s) {
         if (s.matches("(\\d+d\\d+)")) {
             String[] a = s.split("d");
             return new DiceRoll(Integer.parseInt(a[0]), Integer.parseInt(a[1]));

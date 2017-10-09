@@ -60,14 +60,14 @@ public class Help{
             newLine+"  -c, --count <item_count>                   " +
             newLine+"  -t, --type <item_type>                     " +
             newLine+"     item_type:" +
-            newLine+"         i ,item" +
+            newLine+"         i, item" +
             newLine+"         c, consumable" +
             newLine+"         e, equippable" +
             newLine+"         a, armor" +
             newLine+"         w, weapon" +
             newLine+"  -e, --effect <fx_tgt> <fx_bonus>           " +
-            newLine+"     fx_tgt:   name of stat affected         " +
-            newLine+"     fx_bonus: bonus applied to fx_target    " +
+            newLine+"     fx_tgt:     name of stat affected         " +
+            newLine+"     fx_bonus:   bonus applied to fx_target    " +
             newLine+"  -at, --armortype <armor_type>              type of armor" +
             newLine+"     armor_type:" +
             newLine+"         l, light" +
@@ -129,9 +129,9 @@ public class Help{
             newLine+"  --help";
     public static final String ROLL="Usage:" +
             newLine+"  roll <num_dice>d<num_sides>[modifier] [options]" +
-            newLine+"     num_dice:  # of dice to roll" +
-            newLine+"     num_sides: # of sides" +
-            newLine+"     modifier:  optional modifier to result of roll (+5, -2, etc...)" +
+            newLine+"     num_dice:    # of dice to roll" +
+            newLine+"     num_sides:   # of sides" +
+            newLine+"     modifier:    optional modifier to result of roll (+5, -2, etc...)" +
             newLine+"Options:" +
             newLine+"  --help";
     public static final String SPELLSLOTS="Usage:" +
@@ -228,9 +228,9 @@ public class Help{
                 case "inv":
                     terminal.println(INV);
                     break;
-                case "roll":
+                /*case "roll":
                     terminal.println(ROLL);
-                    break;
+                    break;*/
                 case "prefs":
                     terminal.println(PREFS);
                     break;
@@ -317,17 +317,17 @@ public class Help{
             newLine+"  use................use items in inventory" +
             newLine+"  stats..............edit/view stats" +
             newLine+"  edit...............edit stats" +
-            newLine+"  skills.............edit/view skills" +
-            newLine+"  ap.................edit/view ability points" +
-            newLine+"  spells.............edit/view spellbook" +
-            newLine+"  spellslots.........edit/view spell slots" +
+            newLine+"  skill(s).............edit (view) skills" +
+            newLine+"  spell(s).............edit (view) spellbook" +
+            newLine+"  spellslot(s).........edit (view) spell slots" +
             newLine+"  charge.............recharge spell slots" +
             newLine+"  cast...............cast a spell" +
             newLine+"  learn..............learn a spell" +
             newLine+"  forget.............forget a spell" +
+            newLine+"  ap.................edit/view ability points" +
             newLine+"  heal/hurt..........heal/hurt HP" +
             newLine+"  levelup............increase character level" +
-            newLine+"  roll...............roll dice" +
+            //newLine+"  roll...............roll dice" +
             newLine+"  help...............help menu" +
             newLine+"  quit...............quit the program" +
             newLine+"Enter 'help <command_name>' for details";

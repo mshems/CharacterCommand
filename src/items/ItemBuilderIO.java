@@ -1,6 +1,7 @@
 package items;
 
 import app.CharacterCommand;
+import character.Inventory;
 import character.InventoryIO;
 import character.PlayerCharacter;
 import character.Stat;
@@ -22,9 +23,40 @@ public class ItemBuilderIO {
             CharacterCommand.terminal.println(Message.ERROR_ITEM_TYPE);
         }
 
+        inputItemInfo(itemBuilder);
+        if(pc.getInventory().contains(itemBuilder.itemName.toLowerCase())){
+            if(itemBuilder.itemType == Item.ItemType.COIN){
+                int coinType = -1;
+                switch (itemBuilder.itemName) {
+                    case "pp":
+                    case "platinum":
+                        coinType = Inventory.indexPL;
+                        break;
+                    case "gp":
+                    case "gold":
+                        coinType = Inventory.indexGP;
+                        break;
+                    case "sp":
+                    case "silver":
+                        coinType = Inventory.indexCP;
+                        break;
+                    case "cp":
+                    case "copper":
+                        coinType = Inventory.indexCP;
+                        break;
+                }
+                if(coinType!= -1) {
+                    InventoryIO.addDropCoin(pc, Inventory.indexCP, itemBuilder.itemCount, false, "add");
+                }
+            } else {
+                InventoryIO.addDropItem(pc, pc.getItem(itemBuilder.itemName.toLowerCase()), itemBuilder.itemCount, false, "add");
+            }
+            itemBuilder.itemType = null;
+            return;
+        }
         switch (itemBuilder.itemType) {
             case ARMOR:
-                inputItemInfo(itemBuilder);
+
                 CharacterCommand.terminal.println("light | medium | heavy | shield | other");
                 while (itemBuilder.armorType == null) {
                     itemBuilder.armorType = Armor.parseType(
@@ -38,23 +70,21 @@ public class ItemBuilderIO {
                 inputEffects(pc,itemBuilder);
                 break;
             case COIN:
-                itemBuilder.itemName = CharacterCommand.terminal.queryString("Coin type: ",false);
-                itemBuilder.itemCount = CharacterCommand.terminal.queryInteger("Amount: ", false);
+                //itemBuilder.itemName = CharacterCommand.terminal.queryString("Coin type: ",false);
+                //itemBuilder.itemCount = CharacterCommand.terminal.queryInteger("Amount: ", false);
                 InventoryIO.getCoins(pc, itemBuilder);
                 return;
             case CONSUMABLE:
             case ITEM:
-                inputItemInfo(itemBuilder);
+                //inputItemInfo(itemBuilder);
                 break;
             case WEAPON:
-                inputItemInfo(itemBuilder);
-                //TODO
-                CharacterCommand.terminal.println("Weapon damage: ");
-                itemBuilder.damage = CharacterCommand.getDiceRoll();
+                //inputItemInfo(itemBuilder);
+                itemBuilder.damage = CharacterCommand.getDiceRoll("Weapon damage: ");
                 inputEffects(pc, itemBuilder);
                 break;
             case EQUIPPABLE:
-                inputItemInfo(itemBuilder);
+                //inputItemInfo(itemBuilder);
                 inputEffects(pc,itemBuilder);
                 break;
             default:
