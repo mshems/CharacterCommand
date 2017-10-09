@@ -20,6 +20,16 @@ public class ItemIO {
                 }
                 item = pc.getItem(itemName);
                 if (item == null) {
+                    /*int matches = 0;
+                    for(String str:pc.getInventory().getContents().keySet()){
+                        if(str.startsWith(itemName.toLowerCase())){
+                            item = pc.getItem(str);
+                            matches++;
+                        }
+                    }
+                    if(matches == 1){
+                        return item;
+                    }*/
                     CharacterCommand.terminal.println(Message.MSG_NO_ITEM);
                 } else {
                     return item;

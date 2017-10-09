@@ -18,36 +18,33 @@ public class TerminalIOComponent extends JTextArea{
     private boolean multiline;
     private boolean querying;
     private int lastPromptPos;
-    private static final int MAXLINES = 256;
-    private TerminalKeylistener terminalKeylistener;
-
     private String currPrompt;
-    private static final String USER_NAME = System.getProperty("user.name");
-    private static final String DEFAULT_PROMPT = "TEST ~ ";
-
     private String defaultPrompt;
     private LinkedList<String> history;
     private int historyPointer = 0;
+    private static final int MAX_LINES = 256;
+    private int fontSize = 17;
+
+    private static final String USER_NAME = System.getProperty("user.name");
+    private static final String DEFAULT_PROMPT = USER_NAME+" ~ ";
 
     public TerminalIOComponent(){}
 
-    public TerminalIOComponent(boolean multiline){
-        this.history = new LinkedList<>();
-        terminalKeylistener = new TerminalKeylistener(this);
-        this.addKeyListener(terminalKeylistener);
+    public TerminalIOComponent(boolean multi){
+        this.addKeyListener(new TerminalKeylistener(this));
         this.remapEnterKey();
         this.remapArrows();
-
         this.setMargin(new Insets(5,5,5,5));
-        this.setBackground(new Color(33,33,33));
-        this.setForeground(new Color(245,245,245));
-        this.setCaretColor(new Color(245,245,245));
-        this.setFont(new Font("consolas", Font.PLAIN, 17));
-        this.multiline = multiline;
-        this.defaultPrompt = DEFAULT_PROMPT;
-        this.currPrompt = defaultPrompt;
-        this.querying = false;
-        this.allowBackSpace = false;
+        this.setBackground(Terminal.background_color);
+        this.setForeground(Terminal.foreground_color);
+        this.setCaretColor(Terminal.highlight_color);
+        this.setFont(new Font("consolas", Font.PLAIN, fontSize));
+        history = new LinkedList<>();
+        multiline = multi;
+        defaultPrompt = DEFAULT_PROMPT;
+        currPrompt = defaultPrompt;
+        querying = false;
+        allowBackSpace = false;
     }
 
     void start(){
@@ -73,8 +70,8 @@ public class TerminalIOComponent extends JTextArea{
     }
 
     void advance(){
-        if(this.getLineCount()>=MAXLINES){
-            int linesToRemove = this.getLineCount()-MAXLINES;
+        if(this.getLineCount()>=MAX_LINES){
+            int linesToRemove = this.getLineCount()-MAX_LINES;
             try {
                 this.replaceRange("",
                         this.getLineStartOffset(0),
@@ -99,7 +96,7 @@ public class TerminalIOComponent extends JTextArea{
         }
     }
 
-    void advanceCaret(){
+    private void advanceCaret(){
         this.lastPromptPos = getText().lastIndexOf(currPrompt) + currPrompt.length();
         this.setCaretPosition(lastPromptPos);
     }
@@ -121,11 +118,11 @@ public class TerminalIOComponent extends JTextArea{
     }
 
     void printCentered(String str){
-        int width = ((this.getWidth()/this.getColumnWidth())-str.length()-1);
-        for(int i=0; i<(width)/2; i++){
+        int width = ((this.getWidth()/this.getColumnWidth())-str.length());
+        for(int i=0; i<(width-1)/2; i++){
             str = " "+str+" ";
         }
-        println(str);
+        this.println(str);
     }
 
     void printRightAligned(String str){
@@ -133,7 +130,7 @@ public class TerminalIOComponent extends JTextArea{
         for(int i=0; i<width-1; i++){
             str = " "+str;
         }
-        println(str);
+        this.println(str);
     }
 
     void updateHistory(String command){
@@ -157,12 +154,12 @@ public class TerminalIOComponent extends JTextArea{
     }
 
     void disableBackSpace(){
-        this.allowBackSpace = false;
+        allowBackSpace = false;
         this.getInputMap().put(KeyStroke.getKeyStroke("BACK_SPACE"), "none");
     }
 
     void enableBackSpace(){
-        this.allowBackSpace = true;
+        allowBackSpace = true;
         this.getInputMap().put(KeyStroke.getKeyStroke("BACK_SPACE"), "delete-previous");
     }
 
@@ -170,7 +167,7 @@ public class TerminalIOComponent extends JTextArea{
         this.getInputMap().put((KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0)), "");
     }
 
-    public void remapArrows(){
+    private void remapArrows(){
         //LEFT ARROW
         this.getActionMap().put("leftArrowAction", new AbstractAction(){
             @Override
@@ -221,19 +218,13 @@ public class TerminalIOComponent extends JTextArea{
         this.getInputMap().put((KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0)), "downArrowAction");
     }
 
-    public void unmapArrows(){
-        this.getInputMap().put((KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0)), "");
-        this.getInputMap().put((KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0)), "");
-        this.getInputMap().put((KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0)), "");
-        this.getInputMap().put((KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0)), "");
+    public int getFontSize() {
+        return fontSize;
     }
 
-    public void removeTerminalKeyListener(){
-        this.removeKeyListener(terminalKeylistener);
-    }
-
-    public void addTerminalKeyListener(){
-        this.addKeyListener(terminalKeylistener);
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
+        this.setFont(new Font("consolas", Font.PLAIN, fontSize));
     }
 
     public String getCurrPrompt() {
@@ -248,16 +239,8 @@ public class TerminalIOComponent extends JTextArea{
         this.currPrompt = defaultPrompt;
     }
 
-    public String getDefaultPrompt() {
-        return defaultPrompt;
-    }
-
-    public void setDefaultPrompt(String defaultPrompt) {
-        this.defaultPrompt = defaultPrompt;
-    }
-
-    public boolean isMultiline() {
-        return multiline;
+    public void setDefaultPrompt(String prompt){
+        this.defaultPrompt = prompt;
     }
 
     public int getLastPromptPos() {
@@ -278,9 +261,5 @@ public class TerminalIOComponent extends JTextArea{
 
     public void setTerminalEventListener(TerminalEventListener listener){
         this.listener = listener;
-    }
-
-    public TerminalEventListener getTerminalEventListener() {
-        return this.listener;
     }
 }

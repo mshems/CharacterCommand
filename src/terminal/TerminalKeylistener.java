@@ -20,7 +20,6 @@ public class TerminalKeylistener implements KeyListener {
         if(inputComponent.getCaretPosition() < inputComponent.getLastPromptPos()){
             inputComponent.setCaretPosition(inputComponent.getText().length());
         }
-
         if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
             if(inputComponent.getCaretPosition() <= inputComponent.getLastPromptPos()){
                 inputComponent.disableBackSpace();

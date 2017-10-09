@@ -44,6 +44,10 @@ public class Inventory implements Serializable {
 		return this.currency;
 	}
 
+	public LinkedHashMap<String, Item> getContents() {
+		return contents;
+	}
+
 	public boolean contains(String key){
 		return this.contents.containsKey(key);
 	}

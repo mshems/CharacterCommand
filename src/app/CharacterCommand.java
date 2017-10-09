@@ -42,9 +42,8 @@ public class CharacterCommand {
         terminal = new Terminal(splash);
         tokens = terminal.getCommandTokens();
         terminal.setDefaultPrompt("CharacterCommand ~ ");
-        initCommands();
 
-        terminal.setVisible(true);
+        initCommands();
         terminal.println(splash, Terminal.CENTERED);
         terminal.start();
     }
@@ -181,6 +180,7 @@ public class CharacterCommand {
             case "new":
             case "quit":
             case "help":
+            case "terminal-config":
                 return true;
             default:
                 terminal.newLine();

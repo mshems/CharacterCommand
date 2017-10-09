@@ -208,13 +208,26 @@ public class ReadWriteHandler {
         if (!CharacterCommand.tokens.isEmpty()){
             loadChar(command);
         } else {
-            String characterName = CharacterCommand.terminal.queryString("Enter name of character to load, or 'exit' : ",false);
+            String characterName = CharacterCommand.terminal.queryString("Enter name of character to load, 'cancel', or 'new': ",false);
             if (characterName.equalsIgnoreCase("new")) {
                 PlayerCreator.createCharacter();
-            } else if (!characterName.equalsIgnoreCase("exit")) {
-                if (CharacterCommand.characterList.get(characterName) != null) {
+            } else if (!characterName.equalsIgnoreCase("cancel")) {
+                int matches = 0;
+                PlayerCharacter character=null;
+                for(PlayerCharacter pc:CharacterCommand.characterList.values()){
+                    if(pc.getName().toLowerCase().startsWith(characterName)){
+                        character = pc;
+                        matches++;
+                    }
+                }
+                if(matches==1){
+                    CharacterCommand.setActiveChar(character);
+                    CharacterCommand.terminal.println(CharacterCommand.getActiveChar().getName() + " loaded");
+                    return;
+                }
+                if (CharacterCommand.characterList.get(characterName.toLowerCase()) != null) {
                     CharacterCommand.setActiveChar(CharacterCommand.characterList.get(characterName));
-                    CharacterCommand.terminal.println(characterName + " loaded");
+                    CharacterCommand.terminal.println(CharacterCommand.getActiveChar().getName() + " loaded");
                 } else {
                     CharacterCommand.terminal.println("ERROR: Character not found");
                 }
@@ -228,6 +241,19 @@ public class ReadWriteHandler {
             characterName += CharacterCommand.tokens.pop()+" ";
         }
         characterName = characterName.trim().toLowerCase();
+        int matches = 0;
+        PlayerCharacter character=null;
+        for(PlayerCharacter pc:CharacterCommand.characterList.values()){
+            if(pc.getName().toLowerCase().startsWith(characterName)){
+                character = pc;
+                matches++;
+            }
+        }
+        if(matches==1){
+            CharacterCommand.setActiveChar(character);
+            CharacterCommand.terminal.println(CharacterCommand.getActiveChar().getName() + " loaded");
+            return;
+        }
         if (CharacterCommand.characterList.get(characterName) != null) {
             CharacterCommand.setActiveChar(CharacterCommand.characterList.get(characterName));
             CharacterCommand.terminal.println(CharacterCommand.getActiveChar().getName() + " loaded");

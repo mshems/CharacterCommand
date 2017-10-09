@@ -14,7 +14,17 @@ public class StatIO {
             } else {
                 stat = pc.getStat(statName);
                 if (stat == null) {
-                    CharacterCommand.terminal.println(Message.MSG_NO_SKILL);
+                    int matches = 0;
+                    for(String str:pc.getAllStats().keySet()){
+                        if(str.startsWith(statName.toLowerCase())){
+                            stat = pc.getAllStats().get(str);
+                            matches++;
+                        }
+                    }
+                    if(matches == 1){
+                        return stat;
+                    }
+                    CharacterCommand.terminal.println(Message.MSG_NO_STAT);
                 } else {
                     return stat;
                 }

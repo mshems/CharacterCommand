@@ -162,12 +162,22 @@ public class SkillIO {
     public static Skill getSkillByName(PlayerCharacter pc) {
         Skill skill;
         while (true) {
-            String skillName = CharacterCommand.terminal.queryString("Stat name: ", false);
+            String skillName = CharacterCommand.terminal.queryString("Skill name: ", false);
             if (skillName.equalsIgnoreCase("cancel")) {
                 return null;
             } else {
                 skill = pc.getSkill(skillName);
                 if (skill == null) {
+                    int matches = 0;
+                    for(String str:pc.getSkillSet().keySet()){
+                        if(str.startsWith(skillName.toLowerCase())){
+                            skill = pc.getSkillSet().get(str);
+                            matches++;
+                        }
+                    }
+                    if(matches == 1){
+                        return skill;
+                    }
                     CharacterCommand.terminal.println(Message.MSG_NO_SKILL);
                 } else {
                     return skill;

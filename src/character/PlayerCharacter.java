@@ -410,7 +410,15 @@ public class PlayerCharacter implements Serializable{
 		return this.allStats.get(statName.toLowerCase());
 	}
 
-	public boolean isArmored(){
+    public LinkedHashMap<String, Stat> getAllStats() {
+        return allStats;
+    }
+
+    public LinkedHashMap<String, Skill> getSkillSet() {
+        return skills;
+    }
+
+    public boolean isArmored(){
 		return armored;
 	}
 
