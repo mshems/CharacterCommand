@@ -1,11 +1,12 @@
 package app;
 
-import character.*;
-import items.*;
-import magic.*;
-import terminal.CommandExecutor;
-import terminal.Terminal;
-import utils.*;
+import app.io.*;
+import app.core.character.*;
+import app.core.items.*;
+import app.core.magic.*;
+import app.terminal.CommandExecutor;
+import app.terminal.Terminal;
+import app.utils.*;
 
 import java.util.*;
 
@@ -120,7 +121,7 @@ public class CharacterCommand {
         terminal.putCommand("add", ()->InventoryIO.addDrop(activeChar));
         terminal.putCommand("drop", terminal.getCommand("add"));
 
-        terminal.putCommand("equip", ()->ItemIO.equip(activeChar));
+        terminal.putCommand("equip", ()-> ItemIO.equip(activeChar));
         terminal.putCommand("dequip", terminal.getCommand("equip"));
 
         terminal.putCommand("use", ()->ItemIO.use(activeChar));
@@ -132,21 +133,21 @@ public class CharacterCommand {
         terminal.putCommand("edit", ()->StatEditor.edit(activeChar));
 
         terminal.putCommand("skills", ()->terminal.println(activeChar.skillsToString()));
-        terminal.putCommand("skill", ()->SkillIO.skills(activeChar));
+        terminal.putCommand("skill", ()-> SkillIO.skills(activeChar));
 
         terminal.putCommand("ap", ()-> AbilityPointsIO.abilityPoints(activeChar));
 
         terminal.putCommand("spells", ()->terminal.println(activeChar.getSpellBook().toString()));
-        terminal.putCommand("spell", ()->SpellIO.spells(activeChar));
+        terminal.putCommand("spell", ()-> SpellIO.spells(activeChar));
 
         terminal.putCommand("spellslots", ()->terminal.println(activeChar.spellSlotsToString()));
-        terminal.putCommand("spellslot", ()->SpellSlotIO.spellSlots(activeChar));
+        terminal.putCommand("spellslot", ()-> SpellSlotIO.spellSlots(activeChar));
 
         terminal.putCommand("charge", ()->SpellSlotIO.charge(activeChar));
 
         terminal.putCommand("cast", ()->SpellIO.cast(activeChar));
 
-        terminal.putCommand("learn", ()->SpellBookIO.learn(activeChar));
+        terminal.putCommand("learn", ()-> SpellBookIO.learn(activeChar));
 
         terminal.putCommand("forget", ()->SpellBookIO.forget(activeChar));
 
