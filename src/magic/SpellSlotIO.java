@@ -11,7 +11,6 @@ public class SpellSlotIO {
         CharacterCommand.tokens.pop();
         if (!CharacterCommand.tokens.isEmpty()) {
             switch (CharacterCommand.tokens.peek()) {
-                case "--get":
                 case "--charge":
                     charge(pc);
                     break;
@@ -26,8 +25,22 @@ public class SpellSlotIO {
                     break;
             }
         } else {
-            //TODO menu
-            CharacterCommand.terminal.println(pc.spellSlotsToString());
+            CharacterCommand.terminal.println("charge | set | view");
+            String action = CharacterCommand.terminal.queryString("Action: ", false);
+            switch (action.toLowerCase()){
+                case "c":
+                case "charge":
+                    charge(pc);
+                    break;
+                case "s":
+                case "set":
+                    setSlots(pc);
+                    break;
+                case "v":
+                case "view":
+                    CharacterCommand.terminal.println(pc.spellSlotsToString());
+
+            }
         }
     }
 

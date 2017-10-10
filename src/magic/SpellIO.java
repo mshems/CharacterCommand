@@ -49,8 +49,33 @@ public class SpellIO {
                     break;
             }
         } else {
-            //TODO menu
-            CharacterCommand.terminal.println(pc.getSpellBook().toString());
+            CharacterCommand.terminal.println("learn | forget | cast | book | slots | stats");
+            String action = CharacterCommand.terminal.queryString("Action: ", false);
+            switch (action.toLowerCase()){
+                case "l":
+                case "learn":
+                    SpellBookIO.learn(pc);
+                    break;
+                case "f":
+                case "forget":
+                    SpellBookIO.forget(pc);
+                    break;
+                case "c":
+                case "cast":
+                    cast(pc);
+                    break;
+                case "b":
+                case "book":
+                    CharacterCommand.terminal.println(pc.getSpellBook().toString());
+                    break;
+                case "slots":
+                    SpellSlotIO.spellSlots(pc);
+                    break;
+                case "stats":
+                    CharacterCommand.terminal.println(pc.spellStatsToString());
+                    break;
+            }
+
         }
     }
 

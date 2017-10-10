@@ -14,8 +14,11 @@ public class InventoryIO {
         } else {
             Integer itemCount;
             item = ItemIO.getItemByName(pc);
+            if(item==null){
+                return;
+            }
             itemCount = CharacterCommand.terminal.queryInteger("Amount: ", false);
-            if (item != null) {
+            //if (item != null) {
                 switch (item.getName().toLowerCase()) {
                     case "pp":
                     case "platinum":
@@ -37,7 +40,7 @@ public class InventoryIO {
                         addDropItem(pc, item, itemCount, false, addDrop);
                         break;
                 }
-            }
+            //}
         }
     }
 
@@ -107,6 +110,8 @@ public class InventoryIO {
             }
             if (item != null) {
                 addDropItem(pc, item, itemCount, dropAll, command);
+            } else {
+                CharacterCommand.terminal.println(Message.MSG_NO_ITEM);
             }
         } else {
             if (command.equals("add")) {

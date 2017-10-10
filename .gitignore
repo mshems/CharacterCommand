@@ -1,4 +1,4 @@
-config.properties
+*.properties
 *.data
 *.txt
 *.bat
