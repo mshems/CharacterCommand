@@ -11,21 +11,11 @@ import app.utils.Message;
 
 public class ItemBuilderIO {
     public static void buildItem(PlayerCharacter pc, ItemBuilder itemBuilder){
-        CharacterCommand.terminal.println("item | equippable | weapon | armor | consumable | coin");
-        while (true) {
-            String type = CharacterCommand.terminal.queryString("Item type: ", false);
-            if (type.equals("cancel")) {
-                itemBuilder.itemType = null;
-                return;
-            }
-            itemBuilder.itemType = Item.parseItemType(type);
-            if (itemBuilder.itemType != null) {
-                break;
-            }
-            CharacterCommand.terminal.println(Message.ERROR_ITEM_TYPE);
-        }
-
         inputItemInfo(itemBuilder);
+        if(itemBuilder.itemName.equalsIgnoreCase("cancel")){
+            itemBuilder.itemType=null;
+            return;
+        }
         if(pc.getInventory().contains(itemBuilder.itemName.toLowerCase())){
             if(itemBuilder.itemType == Item.ItemType.COIN){
                 int coinType = -1;
@@ -56,6 +46,53 @@ public class ItemBuilderIO {
             itemBuilder.itemType = null;
             return;
         }
+
+        CharacterCommand.terminal.println("item | equippable | weapon | armor | consumable | coin");
+        while (true) {
+            String type = CharacterCommand.terminal.queryString("Item type: ", false);
+            if (type.equals("cancel")) {
+                itemBuilder.itemType = null;
+                return;
+            }
+            itemBuilder.itemType = Item.parseItemType(type);
+            if (itemBuilder.itemType != null) {
+                break;
+            }
+            CharacterCommand.terminal.println(Message.ERROR_ITEM_TYPE);
+        }
+
+        /*inputItemInfo(itemBuilder);
+        if(pc.getInventory().contains(itemBuilder.itemName.toLowerCase())){
+            if(itemBuilder.itemType == Item.ItemType.COIN){
+                int coinType = -1;
+                switch (itemBuilder.itemName) {
+                    case "pp":
+                    case "platinum":
+                        coinType = Inventory.indexPL;
+                        break;
+                    case "gp":
+                    case "gold":
+                        coinType = Inventory.indexGP;
+                        break;
+                    case "sp":
+                    case "silver":
+                        coinType = Inventory.indexCP;
+                        break;
+                    case "cp":
+                    case "copper":
+                        coinType = Inventory.indexCP;
+                        break;
+                }
+                if(coinType!= -1) {
+                    InventoryIO.addDropCoin(pc, Inventory.indexCP, itemBuilder.itemCount, false, "add");
+                }
+            } else {
+                InventoryIO.addDropItem(pc, pc.getItem(itemBuilder.itemName.toLowerCase()), itemBuilder.itemCount, false, "add");
+            }
+            itemBuilder.itemType = null;
+            return;
+        }
+        */
         switch (itemBuilder.itemType) {
             case ARMOR:
 
@@ -96,7 +133,9 @@ public class ItemBuilderIO {
 
     private static void inputItemInfo(ItemBuilder itemBuilder) {
         itemBuilder.itemName = CharacterCommand.terminal.queryString("Item name: ",false);
-        itemBuilder.itemCount = CharacterCommand.terminal.queryInteger("Count: ", false);
+        if(!itemBuilder.itemName.equalsIgnoreCase("cancel")) {
+            itemBuilder.itemCount = CharacterCommand.terminal.queryInteger("Count: ", false);
+        }
     }
 
     private static void inputEffects(PlayerCharacter pc, ItemBuilder itemBuilder) {

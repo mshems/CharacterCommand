@@ -57,6 +57,7 @@ public class Terminal implements TerminalEventListener {
         //}
 
         JScrollPane scrollPane = new JScrollPane(outputComponent);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         frame.add(scrollPane, BorderLayout.CENTER);
         frame.pack();
     }

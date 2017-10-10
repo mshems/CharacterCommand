@@ -54,7 +54,16 @@ public class Inventory implements Serializable {
 	public boolean contains(Item i){
 		return this.contents.containsValue(i);
 	}
-	
+
+	private boolean hasCurrency(){
+		for(Item i:currency){
+			if(i.getCount()!=0){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static boolean isCurrency(String itemName){
 		switch(itemName){
 			case "pp":
@@ -74,19 +83,22 @@ public class Inventory implements Serializable {
 	public String toString(){
 		//String s="\033[1;33mInventory: \033[0m";
 		String newLine = System.lineSeparator();
-		String s="---- INVENTORY -----------------"+newLine;
-		for(Item i:currency){
-			if (i.getCount()!=0){
-				//s+=String.format("%s: %d  ", i.getName(), i.getCount());
-				s+=String.format(" %d%s ", i.getCount(), i.getName());
-			}
-		}
+		String s="---- INVENTORY -----------------";
+		if(hasCurrency()) {
+            s+=newLine;
+		    for (Item i : currency) {
+                if (i.getCount() != 0) {
+                    //s+=String.format("%s: %d  ", i.getName(), i.getCount());
+                    s += String.format(" %d%s ", i.getCount(), i.getName());
+                }
+            }
+        }
 		if(!s.isEmpty()){
 			//s=newLine+s;
 		}
 		//s = "Inventory: "+s;
-		if (contents.isEmpty()){
-			s+=" Empty";
+		if (contents.isEmpty() && !hasCurrency()){
+			s+=newLine+" Empty";
 		} else {
 			for (Item item : contents.values()){
                 if (item.isEquipped()){

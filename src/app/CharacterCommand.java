@@ -42,8 +42,11 @@ public class CharacterCommand {
 
         terminal = new Terminal(splash);
         tokens = terminal.getCommandTokens();
-        terminal.setDefaultPrompt("CharacterCommand ~ ");
 
+        terminal.setDefaultPrompt("CharacterCommand ~ ");
+        if(activeChar!= null){
+            terminal.getOutputComponent().setCurrPrompt(activeChar.getName()+" @ CharacterCommand ~ ");
+        }
         initCommands();
         terminal.println(splash, Terminal.CENTERED);
         terminal.start();
@@ -181,6 +184,7 @@ public class CharacterCommand {
             case "new":
             case "quit":
             case "help":
+            case "credits":
             case "terminal-config":
                 return true;
             default:
