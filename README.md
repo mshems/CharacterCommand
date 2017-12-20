@@ -11,10 +11,3 @@ Create, edit, save, and export multiple characters, all via a command-line inter
 ##### For a list of commands, enter: 'help'
 ##### For details, enter: 'help <command_name>' or '<command_name> --help'
 ___
-### To compile and run from source code (from repository):
-###### 1. Create a new folder named 'bin' (or your choice)
-###### 2. Open command line
-###### 3. Enter 'javac -d bin src/app/\*.java src/terminal/\*.java src/character/\*.java src/items/\*.java src/magic/*\.java src/utils/\*.java' to compile
-###### 4. Enter 'java -cp bin app.CharacterCommand' to run
-### To run from .jar file (from release):
-###### 1. Simply double-click CharacterCommand.jar!
