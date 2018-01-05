@@ -8,6 +8,7 @@ META-INF
 *.bat
 *.zip
 out
+/out
 
 # Windows image file caches
 Thumbs.db
