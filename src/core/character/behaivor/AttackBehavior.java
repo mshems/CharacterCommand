@@ -4,7 +4,7 @@ import core.actions.DiceRoll;
 import core.character.PlayerCharacter;
 import core.items.equippable.weapon.Weapon;
 
-public class AttackBehavior extends Behavior{
+public class AttackBehavior extends AbstractBehavior {
     public AttackBehavior(PlayerCharacter pc) {
         super(pc);
     }

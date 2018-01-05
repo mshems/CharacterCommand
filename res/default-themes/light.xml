@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<THEME>
+    <theme-name>light</theme-name>
+    <background-color>#f5f5f5</background-color>
+    <foreground-color>#212121</foreground-color>
+    <caret-color>#212121</caret-color>
+    <highlight-color>#404040</highlight-color>
+    <font>
+        <font-name>Monospaced</font-name>
+        <font-default-size>16</font-default-size>
+    </font>
+</THEME>

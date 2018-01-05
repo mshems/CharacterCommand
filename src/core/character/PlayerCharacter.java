@@ -7,19 +7,19 @@ import core.character.skills.Skill;
 import core.character.skills.SkillSet;
 import core.character.stats.CounterStat;
 
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 public class PlayerCharacter extends MagicCharacter{
 
-    protected String characterRace;
-    protected String characterClass;
+
 
     private SkillSet skillSet;
     private Inventory inventory;
     private LinkedHashMap<String, CounterStat> counters;
     private GearSet gearSet;
-    private LinkedList<String> proficiencies;
+    private HashSet<String> proficiencies;
 
     public EquipBehavior equipBehavior = new EquipBehavior(this);
     public HealthBehavior healthBehavior = new HealthBehavior(this);
@@ -34,6 +34,7 @@ public class PlayerCharacter extends MagicCharacter{
         inventory = new Inventory();
         gearSet = new GearSet();
         counters = new LinkedHashMap<>();
+        proficiencies = new HashSet<>();
     }
 
     public void levelUp(int amt){

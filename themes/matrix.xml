@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<THEME>
+    <theme-name>dark</theme-name>
+    <background-color>#000000</background-color>
+    <foreground-color>#a8ea6e</foreground-color>
+    <caret-color>#a8ea6e</caret-color>
+    <highlight-color>#a8ea6e</highlight-color>
+    <font>
+        <font-name>Consolas</font-name>
+        <font-default-size>16</font-default-size>
+    </font>
+</THEME>

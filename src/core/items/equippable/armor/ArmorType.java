@@ -1,6 +1,6 @@
 package core.items.equippable.armor;
 
-import app.ui.terminal.core.IllegalTokenException;
+import jterminal.core.IllegalTokenException;
 
 import java.util.Arrays;
 import java.util.List;

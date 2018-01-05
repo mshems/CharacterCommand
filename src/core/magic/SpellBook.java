@@ -1,6 +1,9 @@
 package core.magic;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class SpellBook {
     private HashMap<String, Spell> contents;
@@ -27,5 +30,20 @@ public class SpellBook {
 
     public boolean contains(String spellName){
         return contents.containsKey(spellName.toLowerCase());
+    }
+
+    public String toString() {
+        LinkedList<Spell> list  = new LinkedList<>();
+        list.addAll(this.contents.values());
+        Collections.sort(list);
+        String s = "Spells Known:";
+        if(this.contents.isEmpty()){
+         s += "...";
+        } else {
+            for (Spell spell : list) {
+                s += "\n" + spell.toString();
+            }
+        }
+        return s;
     }
 }

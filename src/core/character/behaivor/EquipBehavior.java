@@ -3,7 +3,7 @@ package core.character.behaivor;
 import core.character.PlayerCharacter;
 import core.items.Item;
 
-public class EquipBehavior extends Behavior {
+public class EquipBehavior extends AbstractBehavior {
 
     public EquipBehavior(PlayerCharacter pc) {
         super(pc);

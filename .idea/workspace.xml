@@ -1,61 +1,165 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="CharacterCommand:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="9390ed71-f757-4cb9-8d6c-6a479b75093b" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gitattributes" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gitignore" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CODE_OF_CONDUCT.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/character/Ability.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/character/Attribute.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/character/CounterStat.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/character/Inventory.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/character/PlayerCharacter.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/character/Skill.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/character/Stat.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/character/StatEditor.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/character/StatIO.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/items/Armor.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/items/Consumable.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/items/DiceRoll.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/items/Equippable.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/items/Item.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/items/ItemBuilder.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/items/ItemEffect.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/items/Weapon.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/magic/Spell.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/magic/SpellBook.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/core/magic/SpellSlot.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/io/AbilityPointsIO.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/io/InventoryIO.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/io/ItemBuilderIO.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/io/ItemIO.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/io/MagicIO.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/io/PlayerCreator.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/io/PlayerHealer.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/io/PlayerLeveler.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/io/PropertiesHandler.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/io/ReadWriteHandler.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/io/SkillIO.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/io/SpellBookIO.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/io/SpellIO.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/io/SpellSlotIO.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/terminal/CommandExecutor.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/terminal/CommandMap.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/terminal/MenuEvent.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/terminal/PropertyHandler.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/terminal/QueryEvent.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/terminal/SubmitEvent.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/terminal/Terminal.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/terminal/TerminalCommand.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/terminal/TerminalDisplayComponent.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/terminal/TerminalEventListener.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/terminal/TerminalIOComponent.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/terminal/TerminalKeylistener.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/utils/Help.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app/utils/Message.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CharacterCommand.iml" afterPath="$PROJECT_DIR$/CharacterCommand.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/CharacterCommand.java" afterPath="$PROJECT_DIR$/src/app/CharacterCommand.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/app/ui/useraction/SpellAction.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/core/magic/SpellConstants.java" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/CharacterCommand.iml" afterPath="$PROJECT_DIR$/CharacterCommand.iml" />
+      <change beforePath="$PROJECT_DIR$/data/Morris Stormraven.data" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/data/NewChar.data" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/CharacterCommand$1.class" afterPath="$PROJECT_DIR$/out/app/CharacterCommand$1.class" />
+      <change beforePath="$PROJECT_DIR$/out/app/CharacterCommand.class" afterPath="$PROJECT_DIR$/out/app/CharacterCommand.class" />
+      <change beforePath="$PROJECT_DIR$/out/app/Test.class" afterPath="$PROJECT_DIR$/out/app/Test.class" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/CommandAction.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/CommandMap.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/IOContainerPanel.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/IllegalTokenException.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/JTerminal.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/JTerminalEventListener.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/JTerminalIOComponent$1.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/JTerminalIOComponent$2.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/JTerminalIOComponent$3.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/JTerminalIOComponent$4.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/JTerminalIOComponent$5.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/JTerminalIOComponent$6.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/JTerminalIOComponent.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/JTerminalKeylistener.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/JTerminalPrinter.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/UnknownCommandException.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/behavior/CloseBehavior.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/behavior/CommandExecutor.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/behavior/CommandTokenizer.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/behavior/ExceptionHandler.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/behavior/StartBehavior.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/event/QueryEvent.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/event/SubmitEvent.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/theme/Theme.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/theme/ThemeXMLReader.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/theme/ThemedComponent.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/core/util/Strings.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/optional/CCExtensions.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/optional/menu/ActionMenu.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/optional/menu/BasicMenu.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/optional/menu/LabelFactory.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/optional/menu/ListMenu.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/optional/menu/MenuBuilder.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/optional/menu/MenuKeyListener.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/optional/menu/ObjectMenu.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/optional/properties/PropertiesConfigCommand.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/optional/properties/PropertiesManager.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/terminal/test.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/useraction/HealthAction.class" afterPath="$PROJECT_DIR$/out/app/ui/useraction/HealthAction.class" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/useraction/InventoryAction$1.class" afterPath="$PROJECT_DIR$/out/app/ui/useraction/InventoryAction$1.class" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/useraction/InventoryAction.class" afterPath="$PROJECT_DIR$/out/app/ui/useraction/InventoryAction.class" />
+      <change beforePath="$PROJECT_DIR$/out/app/ui/useraction/NewCharacterAction.class" afterPath="$PROJECT_DIR$/out/app/ui/useraction/NewCharacterAction.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/TaggedObject.class" afterPath="$PROJECT_DIR$/out/core/TaggedObject.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/actions/DiceRoll.class" afterPath="$PROJECT_DIR$/out/core/actions/DiceRoll.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/AbstractCharacter.class" afterPath="$PROJECT_DIR$/out/core/character/AbstractCharacter.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/MagicCharacter.class" afterPath="$PROJECT_DIR$/out/core/character/MagicCharacter.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/PlayerCharacter.class" afterPath="$PROJECT_DIR$/out/core/character/PlayerCharacter.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/behaivor/AttackBehavior.class" afterPath="$PROJECT_DIR$/out/core/character/behaivor/AttackBehavior.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/behaivor/Behavior.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/behaivor/EquipBehavior.class" afterPath="$PROJECT_DIR$/out/core/character/behaivor/EquipBehavior.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/behaivor/HealthBehavior.class" afterPath="$PROJECT_DIR$/out/core/character/behaivor/HealthBehavior.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/behaivor/InventoryBehavior.class" afterPath="$PROJECT_DIR$/out/core/character/behaivor/InventoryBehavior.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/behaivor/MagicBehavior.class" afterPath="$PROJECT_DIR$/out/core/character/behaivor/MagicBehavior.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/behaivor/SkillBehavior.class" afterPath="$PROJECT_DIR$/out/core/character/behaivor/SkillBehavior.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/inventory/GearSet.class" afterPath="$PROJECT_DIR$/out/core/character/inventory/GearSet.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/inventory/GearSlot.class" afterPath="$PROJECT_DIR$/out/core/character/inventory/GearSlot.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/inventory/Inventory.class" afterPath="$PROJECT_DIR$/out/core/character/inventory/Inventory.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/inventory/ItemStack.class" afterPath="$PROJECT_DIR$/out/core/character/inventory/ItemStack.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/skills/Skill$1.class" afterPath="$PROJECT_DIR$/out/core/character/skills/Skill$1.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/skills/Skill.class" afterPath="$PROJECT_DIR$/out/core/character/skills/Skill.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/skills/SkillLevel.class" afterPath="$PROJECT_DIR$/out/core/character/skills/SkillLevel.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/skills/SkillSet.class" afterPath="$PROJECT_DIR$/out/core/character/skills/SkillSet.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/stats/Ability.class" afterPath="$PROJECT_DIR$/out/core/character/stats/Ability.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/stats/AbilityScoreTable.class" afterPath="$PROJECT_DIR$/out/core/character/stats/AbilityScoreTable.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/stats/AbstractStat.class" afterPath="$PROJECT_DIR$/out/core/character/stats/AbstractStat.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/stats/CounterStat.class" afterPath="$PROJECT_DIR$/out/core/character/stats/CounterStat.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/stats/LinkedStat.class" afterPath="$PROJECT_DIR$/out/core/character/stats/LinkedStat.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/stats/Stat.class" afterPath="$PROJECT_DIR$/out/core/character/stats/Stat.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/character/stats/StatLink.class" afterPath="$PROJECT_DIR$/out/core/character/stats/StatLink.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/AbstractItem.class" afterPath="$PROJECT_DIR$/out/core/items/AbstractItem.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/AbstractItemBuilder.class" afterPath="$PROJECT_DIR$/out/core/items/AbstractItemBuilder.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/Item.class" afterPath="$PROJECT_DIR$/out/core/items/Item.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/ItemTags.class" afterPath="$PROJECT_DIR$/out/core/items/ItemTags.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/ItemType.class" afterPath="$PROJECT_DIR$/out/core/items/ItemType.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/consumable/Consumable.class" afterPath="$PROJECT_DIR$/out/core/items/consumable/Consumable.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/consumable/ConsumableEffect.class" afterPath="$PROJECT_DIR$/out/core/items/consumable/ConsumableEffect.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/equippable/Equipment.class" afterPath="$PROJECT_DIR$/out/core/items/equippable/Equipment.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/equippable/EquippableItem.class" afterPath="$PROJECT_DIR$/out/core/items/equippable/EquippableItem.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/equippable/Shield.class" afterPath="$PROJECT_DIR$/out/core/items/equippable/Shield.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/equippable/armor/Armor$1.class" afterPath="$PROJECT_DIR$/out/core/items/equippable/armor/Armor$1.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/equippable/armor/Armor.class" afterPath="$PROJECT_DIR$/out/core/items/equippable/armor/Armor.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/equippable/armor/ArmorType.class" afterPath="$PROJECT_DIR$/out/core/items/equippable/armor/ArmorType.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/equippable/weapon/DamageRoll.class" afterPath="$PROJECT_DIR$/out/core/items/equippable/weapon/DamageRoll.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/equippable/weapon/Weapon.class" afterPath="$PROJECT_DIR$/out/core/items/equippable/weapon/Weapon.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/equippable/weapon/WeaponDamage.class" afterPath="$PROJECT_DIR$/out/core/items/equippable/weapon/WeaponDamage.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/magic/MagicEffect.class" afterPath="$PROJECT_DIR$/out/core/items/magic/MagicEffect.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/items/magic/MagicItem.class" afterPath="$PROJECT_DIR$/out/core/items/magic/MagicItem.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/magic/Spell.class" afterPath="$PROJECT_DIR$/out/core/magic/Spell.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/magic/SpellBook.class" afterPath="$PROJECT_DIR$/out/core/magic/SpellBook.class" />
+      <change beforePath="$PROJECT_DIR$/out/core/magic/SpellSlot.class" afterPath="$PROJECT_DIR$/out/core/magic/SpellSlot.class" />
+      <change beforePath="$PROJECT_DIR$/src/app/CharacterCommand.java" afterPath="$PROJECT_DIR$/src/app/CharacterCommand.java" />
+      <change beforePath="$PROJECT_DIR$/src/app/Test.java" afterPath="$PROJECT_DIR$/src/app/Test.java" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/CommandAction.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/CommandMap.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/IOContainerPanel.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/IllegalTokenException.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/JTerminal.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/JTerminalEventListener.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/JTerminalIOComponent.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/JTerminalKeylistener.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/JTerminalPrinter.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/UnknownCommandException.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/behavior/CloseBehavior.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/behavior/CommandExecutor.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/behavior/CommandTokenizer.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/behavior/ExceptionHandler.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/behavior/StartBehavior.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/event/QueryEvent.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/event/SubmitEvent.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/theme/Theme.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/theme/ThemeXMLReader.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/theme/ThemedComponent.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/core/util/Strings.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/optional/CCExtensions.java" afterPath="$PROJECT_DIR$/src/app/ui/CCExtensions.java" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/optional/menu/ActionMenu.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/optional/menu/BasicMenu.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/optional/menu/LabelFactory.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/optional/menu/ListMenu.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/optional/menu/MenuBuilder.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/optional/menu/MenuKeyListener.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/optional/menu/ObjectMenu.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/optional/properties/PropertiesConfigCommand.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/optional/properties/PropertiesManager.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/terminal/test.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/useraction/HealthAction.java" afterPath="$PROJECT_DIR$/src/app/ui/useraction/HealthAction.java" />
+      <change beforePath="$PROJECT_DIR$/src/app/ui/useraction/InventoryAction.java" afterPath="$PROJECT_DIR$/src/app/ui/useraction/InventoryAction.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/character/AbstractCharacter.java" afterPath="$PROJECT_DIR$/src/core/character/AbstractCharacter.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/character/MagicCharacter.java" afterPath="$PROJECT_DIR$/src/core/character/MagicCharacter.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/character/PlayerCharacter.java" afterPath="$PROJECT_DIR$/src/core/character/PlayerCharacter.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/character/behaivor/AttackBehavior.java" afterPath="$PROJECT_DIR$/src/core/character/behaivor/AttackBehavior.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/character/behaivor/Behavior.java" afterPath="$PROJECT_DIR$/src/core/character/behaivor/AbstractBehavior.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/character/behaivor/EquipBehavior.java" afterPath="$PROJECT_DIR$/src/core/character/behaivor/EquipBehavior.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/character/behaivor/HealthBehavior.java" afterPath="$PROJECT_DIR$/src/core/character/behaivor/HealthBehavior.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/character/behaivor/InventoryBehavior.java" afterPath="$PROJECT_DIR$/src/core/character/behaivor/InventoryBehavior.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/character/behaivor/MagicBehavior.java" afterPath="$PROJECT_DIR$/src/core/character/behaivor/MagicBehavior.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/character/behaivor/SkillBehavior.java" afterPath="$PROJECT_DIR$/src/core/character/behaivor/SkillBehavior.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/character/inventory/GearSlot.java" afterPath="$PROJECT_DIR$/src/core/character/inventory/GearSlot.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/items/ItemType.java" afterPath="$PROJECT_DIR$/src/core/items/ItemType.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/items/equippable/armor/ArmorType.java" afterPath="$PROJECT_DIR$/src/core/items/equippable/armor/ArmorType.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/magic/Spell.java" afterPath="$PROJECT_DIR$/src/core/magic/Spell.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/magic/SpellBook.java" afterPath="$PROJECT_DIR$/src/core/magic/SpellBook.java" />
+      <change beforePath="$PROJECT_DIR$/src/core/magic/SpellSlot.java" afterPath="$PROJECT_DIR$/src/core/magic/SpellSlot.java" />
+      <change beforePath="$PROJECT_DIR$/terminal-config.properties" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -67,11 +171,51 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Test.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MagicCharacter.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/core/character/MagicCharacter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="811">
+              <caret line="73" column="5" lean-forward="true" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CharacterCommand.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/CharacterCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="113" column="16" lean-forward="true" selection-start-line="113" selection-start-column="16" selection-end-line="113" selection-end-column="38" />
+              <folding>
+                <element signature="e#5169#5170#0" expanded="true" />
+                <element signature="e#5237#5238#0" expanded="true" />
+                <element signature="e#5288#5289#0" expanded="true" />
+                <element signature="e#5326#5327#0" expanded="true" />
+                <element signature="e#5397#5398#0" expanded="true" />
+                <element signature="e#5451#5452#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SpellSlot.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/magic/SpellSlot.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="551">
+              <caret line="22" column="37" lean-forward="false" selection-start-line="22" selection-start-column="37" selection-end-line="22" selection-end-column="37" />
+              <folding>
+                <element signature="e#354#355#0" expanded="true" />
+                <element signature="e#392#393#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Test.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/app/Test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="13" column="13" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+            <state relative-caret-position="550">
+              <caret line="55" column="25" lean-forward="false" selection-start-line="55" selection-start-column="25" selection-end-line="55" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -79,9 +223,17 @@
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="FindInProjectRecents">
     <findStrings>
       <find>disp</find>
+      <find>3</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -111,7 +263,33 @@
         <option value="$PROJECT_DIR$/src/items/ItemBuilderIO.java" />
         <option value="$PROJECT_DIR$/src/magic/SpellSlotIO.java" />
         <option value="$PROJECT_DIR$/src/magic/SpellIO.java" />
+        <option value="$PROJECT_DIR$/src/core/actions/Behavior.java" />
+        <option value="$PROJECT_DIR$/src/core/character/behaivor/Behavior.java" />
+        <option value="$PROJECT_DIR$/src/core/character/behaivor/AbstractBehavior.java" />
+        <option value="$PROJECT_DIR$/src/core/character/PlayerCharacter.java" />
+        <option value="$PROJECT_DIR$/src/core/character/AbstractCharacter.java" />
+        <option value="$PROJECT_DIR$/src/core/character/stats/CounterStat.java" />
+        <option value="$PROJECT_DIR$/src/core/magic/SpellCostants.java" />
+        <option value="$PROJECT_DIR$/src/app/ui/terminal/test.java" />
+        <option value="$PROJECT_DIR$/src/app/ui/CCExtensions.java" />
+        <option value="$PROJECT_DIR$/src/core/items/ItemType.java" />
+        <option value="$PROJECT_DIR$/src/core/character/inventory/GearSlot.java" />
+        <option value="$PROJECT_DIR$/src/core/items/equippable/armor/ArmorType.java" />
+        <option value="$PROJECT_DIR$/src/jterminal/optional/properties/PropertiesManager.java" />
+        <option value="$PROJECT_DIR$/src/jterminal/core/JTerminal.java" />
+        <option value="$PROJECT_DIR$/themes/matrix.xml" />
+        <option value="$PROJECT_DIR$/src/jterminal/optional/menu/ListMenu.java" />
+        <option value="$PROJECT_DIR$/src/core/magic/SpellConstants.java" />
+        <option value="$PROJECT_DIR$/src/core/character/behaivor/MagicBehavior.java" />
+        <option value="$PROJECT_DIR$/src/core/magic/Spell.java" />
+        <option value="$PROJECT_DIR$/src/core/magic/SpellBook.java" />
+        <option value="$PROJECT_DIR$/src/app/ui/useraction/InventoryAction.java" />
+        <option value="$PROJECT_DIR$/src/app/ui/useraction/SpellAction.java" />
+        <option value="$PROJECT_DIR$/src/app/ui/useraction/HealthAction.java" />
+        <option value="$PROJECT_DIR$/src/app/Test.java" />
+        <option value="$PROJECT_DIR$/src/core/character/MagicCharacter.java" />
         <option value="$PROJECT_DIR$/src/app/CharacterCommand.java" />
+        <option value="$PROJECT_DIR$/src/core/magic/SpellSlot.java" />
       </list>
     </option>
   </component>
@@ -135,8 +313,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope" />
-      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -155,18 +334,60 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="charactercommand" type="b2602c69:ProjectViewProjectNode" />
+              <item name="charactercommand" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="ui" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="charactercommand" type="b2602c69:ProjectViewProjectNode" />
+              <item name="charactercommand" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="ui" type="462c0819:PsiDirectoryNode" />
+              <item name="useraction" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="charactercommand" type="b2602c69:ProjectViewProjectNode" />
+              <item name="charactercommand" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="charactercommand" type="b2602c69:ProjectViewProjectNode" />
+              <item name="charactercommand" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="character" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="charactercommand" type="b2602c69:ProjectViewProjectNode" />
+              <item name="charactercommand" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="character" type="462c0819:PsiDirectoryNode" />
+              <item name="behaivor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="charactercommand" type="b2602c69:ProjectViewProjectNode" />
+              <item name="charactercommand" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="magic" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Java" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
@@ -182,21 +403,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Unnamed">
-    <configuration name="Unnamed" type="Application" factoryName="Application">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="app.Test" />
-      <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="CharacterCommand" />
-      <envs />
-    </configuration>
+  <component name="RunManager">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="HTML_USED" value="false" />
       <option name="WIDTH" value="400" />
@@ -218,6 +425,20 @@
       <module name="" />
       <envs />
     </configuration>
+    <configuration name="default" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="app.Test" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="CharacterCommand" />
+      <envs />
+    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -237,12 +458,6 @@
       </option>
       <envs />
       <patterns />
-    </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
-      <module name="" />
-      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
-      <option name="PROGRAM_PARAMETERS" />
-      <predefined_log_file id="idea.log" enabled="true" />
     </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
@@ -278,9 +493,18 @@
       <properties />
       <listeners />
     </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <predefined_log_file id="idea.log" enabled="true" />
+    </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -302,23 +526,23 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <frame x="-13" y="-13" width="2762" height="1770" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915568" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298153" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21503958" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915568" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298153" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31354168" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17258309" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915568" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -330,7 +554,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -351,291 +574,19 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/terminal/Terminal.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1005">
-          <caret line="70" column="46" lean-forward="true" selection-start-line="70" selection-start-column="46" selection-end-line="70" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/CharacterCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2400">
-          <caret line="171" column="5" lean-forward="true" selection-start-line="171" selection-start-column="5" selection-end-line="171" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/character/PlayerCharacter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3000">
-          <caret line="212" column="0" lean-forward="false" selection-start-line="212" selection-start-column="0" selection-end-line="212" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/character/Inventory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/character/InventoryIO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4560">
-          <caret line="307" column="0" lean-forward="false" selection-start-line="307" selection-start-column="0" selection-end-line="307" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/terminal/CommandHandler.java" />
-    <entry file="file://$PROJECT_DIR$/src/items/ItemBuilderIO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/character/PlayerCharacter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/App.java" />
-    <entry file="file://$PROJECT_DIR$/src/character/PlayerCharacter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4065">
-          <caret line="287" column="32" lean-forward="false" selection-start-line="287" selection-start-column="32" selection-end-line="287" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/CommandHandler.java" />
-    <entry file="file://$PROJECT_DIR$/src/app/App.java" />
-    <entry file="file://$PROJECT_DIR$/src/character/PlayerCharacter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4305">
-          <caret line="287" column="32" lean-forward="true" selection-start-line="287" selection-start-column="32" selection-end-line="287" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/CommandHandler.java" />
-    <entry file="file://$PROJECT_DIR$/src/app/App.java" />
-    <entry file="file://$PROJECT_DIR$/src/items/ItemBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/character/Ability.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/character/PlayerCharacter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4560">
-          <caret line="334" column="56" lean-forward="false" selection-start-line="334" selection-start-column="56" selection-end-line="334" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/App.java" />
-    <entry file="file://$PROJECT_DIR$/src/character/Ability.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/character/PlayerCharacter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4560">
-          <caret line="334" column="56" lean-forward="false" selection-start-line="334" selection-start-column="56" selection-end-line="334" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/emulator/CTWindow.java" />
-    <entry file="file://$PROJECT_DIR$/src/emulator/CTerm.java" />
-    <entry file="file://$PROJECT_DIR$/src/character/Ability.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/items/ItemBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/emulator/CTTextArea.java" />
-    <entry file="file://$PROJECT_DIR$/src/app/App.java" />
-    <entry file="file://$PROJECT_DIR$/src/character/Stat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="775">
-          <caret line="82" column="16" lean-forward="false" selection-start-line="82" selection-start-column="16" selection-end-line="82" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/character/Skill.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/magic/SpellBook.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="660">
-          <caret line="53" column="27" lean-forward="false" selection-start-line="53" selection-start-column="27" selection-end-line="53" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/items/Weapon.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="31" column="18" lean-forward="false" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/items/Armor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="160" column="34" lean-forward="false" selection-start-line="160" selection-start-column="34" selection-end-line="160" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/CommandHandler.java" />
-    <entry file="file://$PROJECT_DIR$/src/terminal/CommandHandler.java" />
-    <entry file="file://$PROJECT_DIR$/src/terminal/TerminalIOComponent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="35" column="27" lean-forward="true" selection-start-line="35" selection-start-column="27" selection-end-line="35" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/items/Item.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-797">
-          <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/character/Inventory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="100" column="32" lean-forward="true" selection-start-line="100" selection-start-column="32" selection-end-line="100" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/character/PlayerCharacter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1606">
-          <caret line="212" column="0" lean-forward="false" selection-start-line="212" selection-start-column="0" selection-end-line="212" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/magic/SpellSlotIO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="28" column="85" lean-forward="true" selection-start-line="27" selection-start-column="12" selection-end-line="28" selection-end-column="85" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/items/ItemBuilderIO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/magic/SpellIO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="48" column="26" lean-forward="true" selection-start-line="48" selection-start-column="26" selection-end-line="48" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/Help.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1740">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/character/InventoryIO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="111" column="67" lean-forward="true" selection-start-line="111" selection-start-column="67" selection-end-line="111" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/items/ItemIO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/character/AbilityPointsIO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/terminal/Terminal.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1005">
-          <caret line="70" column="46" lean-forward="false" selection-start-line="70" selection-start-column="46" selection-end-line="70" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/CharacterCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="505">
-          <caret line="59" column="5" lean-forward="false" selection-start-line="59" selection-start-column="5" selection-end-line="59" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/terminal/TerminalIOComponent.java" />
+    <entry file="file://$PROJECT_DIR$/src/items/Item.java" />
+    <entry file="file://$PROJECT_DIR$/src/character/Inventory.java" />
+    <entry file="file://$PROJECT_DIR$/src/character/PlayerCharacter.java" />
+    <entry file="file://$PROJECT_DIR$/src/magic/SpellSlotIO.java" />
+    <entry file="file://$PROJECT_DIR$/src/items/ItemBuilderIO.java" />
+    <entry file="file://$PROJECT_DIR$/src/magic/SpellIO.java" />
+    <entry file="file://$PROJECT_DIR$/src/utils/Help.java" />
+    <entry file="file://$PROJECT_DIR$/src/character/InventoryIO.java" />
+    <entry file="file://$PROJECT_DIR$/src/items/ItemIO.java" />
+    <entry file="file://$PROJECT_DIR$/src/character/AbilityPointsIO.java" />
+    <entry file="file://$PROJECT_DIR$/src/terminal/Terminal.java" />
     <entry file="file://$PROJECT_DIR$/terminal-config.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -644,10 +595,323 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/character/behaivor/AttackBehavior.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/character/behaivor/EquipBehavior.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/character/behaivor/AbstractBehavior.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="4" column="22" lean-forward="false" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+          <folding>
+            <element signature="e#197#198#0" expanded="false" />
+            <element signature="e#225#226#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/character/AbstractCharacter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="986">
+          <caret line="64" column="4" lean-forward="false" selection-start-line="64" selection-start-column="4" selection-end-line="64" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/character/behaivor/SkillBehavior.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/character/PlayerCharacter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/character/stats/CounterStat.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="26" column="5" lean-forward="false" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/ui/terminal/core/JTerminal.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/ui/terminal/test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="19" lean-forward="true" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/jterminal/core/behavior/CloseBehavior.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="7" column="17" lean-forward="false" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/jterminal/core/AbstractTerminal.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="58">
+          <caret line="2" column="22" lean-forward="false" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/jterminal/resume.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="8" lean-forward="false" selection-start-line="0" selection-start-column="8" selection-end-line="0" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/ui/CCExtensions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="58">
+          <caret line="2" column="7" lean-forward="false" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/items/ItemType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="4" column="24" lean-forward="false" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/character/inventory/GearSlot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-87">
+          <caret line="2" column="8" lean-forward="false" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/items/equippable/armor/ArmorType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="58">
+          <caret line="2" column="8" lean-forward="false" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/jterminal/core/util/Strings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="58">
+          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/jterminal/optional/properties/PropertiesConfigCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/jterminal/optional/properties/PropertiesManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="15" column="53" lean-forward="false" selection-start-line="15" selection-start-column="53" selection-end-line="15" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/jterminal/test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="724">
+          <caret line="78" column="35" lean-forward="false" selection-start-line="78" selection-start-column="35" selection-end-line="78" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/themes/matrix.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="6" column="35" lean-forward="true" selection-start-line="6" selection-start-column="35" selection-end-line="6" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/jterminal/core/JTerminal.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="82" column="21" lean-forward="true" selection-start-line="82" selection-start-column="21" selection-end-line="82" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/jterminal/optional/menu/ListMenu.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="377">
+          <caret line="70" column="48" lean-forward="true" selection-start-line="70" selection-start-column="48" selection-end-line="70" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/magic/SpellConstants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="58">
+          <caret line="2" column="29" lean-forward="false" selection-start-line="2" selection-start-column="29" selection-end-line="2" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/magic/SpellBook.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="811">
+          <caret line="37" column="31" lean-forward="true" selection-start-line="37" selection-start-column="31" selection-end-line="37" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/ui/useraction/InventoryAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6119">
+          <caret line="225" column="48" lean-forward="false" selection-start-line="225" selection-start-column="48" selection-end-line="225" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/character/behaivor/InventoryBehavior.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/character/behaivor/MagicBehavior.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="8" column="4" lean-forward="false" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
+          <folding>
+            <element signature="e#969#970#0" expanded="true" />
+            <element signature="e#1020#1021#0" expanded="true" />
+            <element signature="e#1066#1067#0" expanded="true" />
+            <element signature="e#1120#1121#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/magic/Spell.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="956">
+          <caret line="66" column="23" lean-forward="false" selection-start-line="66" selection-start-column="23" selection-end-line="66" selection-end-column="23" />
+          <folding>
+            <element signature="e#1674#1675#0" expanded="true" />
+            <element signature="e#1736#1737#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/ui/useraction/HealthAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="928">
+          <caret line="32" column="17" lean-forward="true" selection-start-line="32" selection-start-column="17" selection-end-line="32" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/ui/useraction/NewCharacterAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="9" column="84" lean-forward="true" selection-start-line="9" selection-start-column="84" selection-end-line="9" selection-end-column="84" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/ui/useraction/SpellAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="841">
+          <caret line="47" column="32" lean-forward="true" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/app/Test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="13" column="13" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+        <state relative-caret-position="550">
+          <caret line="55" column="25" lean-forward="false" selection-start-line="55" selection-start-column="25" selection-end-line="55" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/CharacterCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="113" column="16" lean-forward="true" selection-start-line="113" selection-start-column="16" selection-end-line="113" selection-end-column="38" />
+          <folding>
+            <element signature="e#5169#5170#0" expanded="true" />
+            <element signature="e#5237#5238#0" expanded="true" />
+            <element signature="e#5288#5289#0" expanded="true" />
+            <element signature="e#5326#5327#0" expanded="true" />
+            <element signature="e#5397#5398#0" expanded="true" />
+            <element signature="e#5451#5452#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/magic/SpellSlot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="551">
+          <caret line="22" column="37" lean-forward="false" selection-start-line="22" selection-start-column="37" selection-end-line="22" selection-end-column="37" />
+          <folding>
+            <element signature="e#354#355#0" expanded="true" />
+            <element signature="e#392#393#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/character/MagicCharacter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="811">
+          <caret line="73" column="5" lean-forward="true" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
           <folding />
         </state>
       </provider>
@@ -694,7 +958,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.8</last-edited>
+          <last-edited>9.0</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -711,6 +975,7 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

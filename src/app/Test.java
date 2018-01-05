@@ -10,17 +10,19 @@ import core.items.equippable.weapon.DamageRoll;
 import core.items.equippable.weapon.Weapon;
 import core.items.equippable.weapon.WeaponDamage;
 import core.items.magic.MagicEffect;
+import core.magic.Spell;
+import core.magic.SpellSlot;
 
 public class Test {
 
-    public static void main(String[] args) throws InterruptedException{
+    public static void main(String[] args){
         CharacterCommand app = new CharacterCommand();
         addTestPC(app);
         app.start();
     }
 
     private static void addTestPC(CharacterCommand app){
-        PlayerCharacter pc = new PlayerCharacter("CharacterName");
+        PlayerCharacter pc = new PlayerCharacter("Morris Stormraven");
         Armor a = new Armor("Chainmail Armor of Bluntness", 14, ArmorType.MEDIUM, GearSlot.BODY,".hidden-tag");
         a.addEffect(new MagicEffect(pc.getAbilities().CON(), +2));
         a.addEffect(new MagicEffect(pc.getAbilities().INT(), -2));
@@ -47,6 +49,23 @@ public class Test {
         pc.inventoryBehavior.add(
                 new Consumable("Potion of Minor Healing", (activeCharacter)->
                                 activeCharacter.healthBehavior.heal(DiceRoll.doRoll(2,4,0))), 5);
+
+        pc.makeCaster(pc.getAbilities().CHA());
+        pc.getSpellSlot(1).setMaxSlots(4);
+        pc.getSpellSlot(2).setMaxSlots(3);
+        pc.getSpellSlot(3).setMaxSlots(2);
+
+        for(SpellSlot s:pc.getSpellSlots()){
+            if(s.getMaxValue()>0){
+                s.recharge();
+            }
+        }
+        pc.magicBehavior.learnSpell(new Spell("Firebolt", 0));
+        pc.magicBehavior.learnSpell(new Spell("Magic Missile", 1));
+        pc.magicBehavior.learnSpell(new Spell("Shatter", 2));
+        pc.magicBehavior.learnSpell(new Spell("Lightning Bolt", 3));
+        pc.magicBehavior.learnSpell(new Spell("Fireball", 3));
+
         app.loadCharacter(pc);
         app.setActiveCharacter(pc);
     }

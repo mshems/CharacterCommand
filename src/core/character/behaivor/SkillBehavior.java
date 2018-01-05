@@ -4,7 +4,7 @@ import core.character.PlayerCharacter;
 import core.character.skills.Skill;
 import core.character.skills.SkillLevel;
 
-public class SkillBehavior extends Behavior {
+public class SkillBehavior extends AbstractBehavior {
     public SkillBehavior(PlayerCharacter pc) {
         super(pc);
     }

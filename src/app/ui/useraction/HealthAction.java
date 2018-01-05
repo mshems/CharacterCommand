@@ -1,7 +1,7 @@
 package app.ui.useraction;
 
 import app.CharacterCommand;
-import app.ui.terminal.core.IllegalTokenException;
+import jterminal.core.IllegalTokenException;
 
 public class HealthAction {
 
@@ -17,6 +17,11 @@ public class HealthAction {
                         try {
                             amt = cc.terminal.nextIntToken();
                         } catch (IllegalTokenException e) {
+                            if (e.getToken() == null){
+                                cc.terminal.out.println("No amount specified");
+                            } else {
+                                cc.terminal.out.println("Invalid token \""+e.getToken()+"\"");
+                            }
                             return;
                         }
                         break;
@@ -24,7 +29,7 @@ public class HealthAction {
                         //TODO: helpmenu
                         break;
                     default:
-                        return;
+                        cc.terminal.nextToken();
                 }
             }
         }
@@ -44,6 +49,11 @@ public class HealthAction {
                         try {
                             amt = cc.terminal.nextIntToken();
                         } catch (IllegalTokenException e) {
+                            if(e.getToken()==null){
+                                cc.terminal.out.println("No amount specified");
+                            } else {
+                                cc.terminal.out.println("Invalid token \""+e.getToken()+"\"");
+                            }
                             return;
                         }
                         break;
@@ -51,7 +61,7 @@ public class HealthAction {
                         //TODO: helpmenu
                         break;
                     default:
-                        return;
+                        cc.terminal.nextToken();
                 }
             }
         }

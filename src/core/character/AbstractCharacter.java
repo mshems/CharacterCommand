@@ -10,7 +10,10 @@ import java.util.HashMap;
 
 public abstract class AbstractCharacter extends TaggedObject{
     private String characterName;
-    AbilityScoreTable abilities;
+    protected String characterRace;
+    protected String characterClass;
+
+    private AbilityScoreTable abilities;
     private HashMap<String, Stat> statBlock;
 
     AbstractCharacter(String name){

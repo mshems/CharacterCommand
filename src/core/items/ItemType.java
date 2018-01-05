@@ -1,10 +1,8 @@
 package core.items;
 
-import app.ui.terminal.core.IllegalTokenException;
+import jterminal.core.IllegalTokenException;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public enum ItemType {

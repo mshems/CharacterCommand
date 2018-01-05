@@ -6,7 +6,7 @@ public class SpellSlot extends CounterStat{
     private int level;
 
     public SpellSlot(int lvl, double val) {
-        super(".SPELLSLOT:"+lvl, val);
+        super(""+lvl, val);
         this.level = lvl;
     }
 
@@ -14,8 +14,12 @@ public class SpellSlot extends CounterStat{
         this.setCurrValue(this.getMaxValue());
     }
 
+    public void setMaxSlots(int max){
+        this.setBaseValue(max);
+    }
+
     @Override
     public String toString() {
-        return String.format("lvl: %d %.0f/%.0f", level, getCurrValue(), getMaxValue());
+        return String.format("lvl %d: %.0f/%.0f", level, getCurrValue(), getMaxValue());
     }
 }

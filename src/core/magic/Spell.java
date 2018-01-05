@@ -2,16 +2,12 @@ package core.magic;
 
 import core.TaggedObject;
 
-import java.util.Collections;
-import java.util.LinkedList;
-
-public class Spell extends TaggedObject{
+public class Spell extends TaggedObject implements Comparable<Spell>{
     private String spellName;
     private int spellLevel;
     private boolean prepared;
-    private LinkedList<String> tags;
 
-    public static final int CANTRIP = 0;
+    private static final int CANTRIP_SPELL = 0;
 
     public Spell(String spellName, int spellLevel, String...t){
         super(t);
@@ -20,8 +16,10 @@ public class Spell extends TaggedObject{
         this.prepared = false;
     }
 
-    public boolean cast(boolean requirePrep) {
-        return !requirePrep || prepared;
+    public int cast(boolean requirePrep) {
+        if(requirePrep && prepared) return SpellConstants.SUCCESSFUL_CAST;
+        if(requirePrep && !prepared) return SpellConstants.NOT_PREPARED;
+        return SpellConstants.SUCCESSFUL_CAST;
     }
 
     public void setSpellName(String spellName) {
@@ -40,11 +38,38 @@ public class Spell extends TaggedObject{
         return prepared;
     }
 
+    public boolean isCantrip() {
+        return spellLevel== CANTRIP_SPELL;
+    }
+
     public void setPrepared(boolean prepared) {
         this.prepared = prepared;
     }
 
     public String getSpellName() {
         return spellName;
+    }
+
+    //TODO:
+    @Override
+    public String toString() {
+        String s="";
+        if(this.isCantrip()){
+            s+= "Cantrip - ";
+        } else {
+            s+= spellLevel;
+            if(isPrepared()) {
+                s += " # ";
+            } else {
+                s += " - ";
+            }
+        }
+        s += spellName;
+        return s;
+    }
+
+    @Override
+    public int compareTo(Spell otherSpell) {
+        return this.spellLevel - otherSpell.spellLevel;
     }
 }

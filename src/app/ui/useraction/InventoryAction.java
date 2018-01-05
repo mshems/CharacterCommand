@@ -1,10 +1,10 @@
 package app.ui.useraction;
 
 import app.CharacterCommand;
-import app.ui.terminal.core.IllegalTokenException;
-import app.ui.terminal.optional.CCExtensions;
+import jterminal.core.IllegalTokenException;
+import app.ui.CCExtensions;
 import core.character.inventory.*;
-import app.ui.terminal.optional.menu.*;
+import jterminal.optional.menu.*;
 import core.character.stats.Stat;
 import core.items.*;
 import core.items.consumable.*;
@@ -45,8 +45,7 @@ public class InventoryAction {
     public static void viewInventoryMenu(CharacterCommand cc){
         cc.terminal.out.println(
                 ListMenu.queryMenu(
-                        cc.terminal,
-                        new MenuBuilder()
+                        new MenuFactory()
                                 .setDirection(ListMenu.VERTICAL)
                                 .buildObjectMenu(
                                         cc.terminal,
@@ -84,8 +83,7 @@ public class InventoryAction {
             //adding a new item
                 count = cc.terminal.queryInteger("Item count: ");
                 itemType = ListMenu.queryMenu(
-                        cc.terminal,
-                        new MenuBuilder()
+                        new MenuFactory()
                                 .setDirection(ListMenu.HORIZONTAL)
                                 .buildObjectMenu(
                                         cc.terminal,
@@ -112,8 +110,7 @@ public class InventoryAction {
                     case ARMOR:
                         int ac = cc.terminal.queryInteger("Armor AC: ");
                         ArmorType armorType = ListMenu.queryMenu(
-                                cc.terminal,
-                                new MenuBuilder()
+                                new MenuFactory()
                                         .setDirection(ListMenu.HORIZONTAL)
                                         .buildObjectMenu(
                                                 cc.terminal,
@@ -121,8 +118,7 @@ public class InventoryAction {
                                                 Enum::toString));
                         if(armorType==null) break;
                         GearSlot gearSlot = ListMenu.queryMenu(
-                                cc.terminal,
-                                new MenuBuilder()
+                                new MenuFactory()
                                         .setDirection(ListMenu.HORIZONTAL)
                                         .buildObjectMenu(
                                                 cc.terminal,
@@ -133,7 +129,7 @@ public class InventoryAction {
                         cc.getActiveCharacter().inventoryBehavior.add(item, count);
                         break;
                     case WEAPON:
-                        if(cc.terminal.queryYN("Specify weapon damage? [Y/N] : ")){
+                        if(cc.terminal.queryYN("Specify weapon damage? [Y/N]: ")){
                             //TODO
                             cc.terminal.out.println("[WORK IN PROGRESS]");
                         } else {
@@ -150,7 +146,7 @@ public class InventoryAction {
     }
 
     private static MagicItem enchantItem(CharacterCommand cc, MagicItem item){
-        if(cc.terminal.queryYN("Enchant item? [Y/N] : ")){
+        if(cc.terminal.queryYN("Enchant item? [Y/N]: ")){
             do {
                 Stat targetStat;
                 do {
@@ -158,7 +154,7 @@ public class InventoryAction {
                 } while(targetStat==null);
                 int bonus = cc.terminal.queryInteger("Effect stat bonus: ");
                 item.addEffect(new MagicEffect(targetStat, bonus));
-            } while(cc.terminal.queryYN("Add another enchantment? [Y/N] : "));
+            } while(cc.terminal.queryYN("Add another enchantment? [Y/N]: "));
         }
         return item;
     }
@@ -215,6 +211,7 @@ public class InventoryAction {
                     case "-dmg":
                     case "--damage":
                         //TODO
+                        cc.terminal.out.println("[DAMAGE ROLL WIP]");
                         break;
                     case "--tags":
                         if(tags==null) tags = new ArrayList<>();
@@ -226,11 +223,7 @@ public class InventoryAction {
                         cc.terminal.out.println("HELP MENU WIP :D");
                         break;
                     default:
-                        if(cc.terminal.peekToken().startsWith("-")){
-                            throw new IllegalTokenException(cc.terminal.nextToken());
-                        } else {
-                            cc.terminal.nextToken();
-                        }
+                        cc.terminal.nextToken();
                         break;
                 }
             }

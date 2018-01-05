@@ -2,7 +2,7 @@ package core.character.behaivor;
 
 import core.character.PlayerCharacter;
 
-public class HealthBehavior extends Behavior{
+public class HealthBehavior extends AbstractBehavior {
 
     public HealthBehavior(PlayerCharacter pc) {
         super(pc);

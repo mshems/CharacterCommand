@@ -3,7 +3,7 @@ package core.character.behaivor;
 import core.character.PlayerCharacter;
 import core.items.Item;
 
-public class InventoryBehavior extends Behavior {
+public class InventoryBehavior extends AbstractBehavior {
     public InventoryBehavior(PlayerCharacter pc) {
         super(pc);
     }
