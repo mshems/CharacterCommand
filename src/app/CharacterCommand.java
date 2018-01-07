@@ -1,5 +1,6 @@
 package app;
 
+import app.io.Writer;
 import core.magic.SpellSlot;
 import jterminal.core.*;
 import jterminal.core.behavior.*;
@@ -16,6 +17,9 @@ import jterminal.optional.theme.ThemeManager;
 import java.util.HashMap;
 
 public class CharacterCommand {
+    private static final String defaultExportDir = "./data";
+    private static final String defaultDataDir = "./data";
+
     public JTerminal terminal;
     private PlayerCharacter activeCharacter;
     private HashMap<String, PlayerCharacter> loadedCharacters = new HashMap<>();
@@ -30,33 +34,26 @@ public class CharacterCommand {
     }
 
     private void initTerminal(){
-        //Create new JTerminal instance
         this.terminal = new JTerminal("CharacterCommand");
         terminal.setDefaultPrompt("CharacterCommand ~ ");
-        //Set new app icon
         terminal.setAppIcon("./res/jterminal-icon.png");
-        //Add properties manager
         PropertiesManager.addPropertiesManager(terminal);
-
-        //Add theme property and config command action
+        PropertiesManager.addProperty("export", defaultExportDir);
+        PropertiesManager.addProperty("data", defaultDataDir);
         PropertiesManager.addProperty("theme","default", ()-> {
-            //Theme selection menu
             String themeName = ListMenu.queryMenu(new MenuFactory()
                     .setDirection(ListMenu.HORIZONTAL)
                     .buildObjectMenu(terminal, ThemeManager.themeList, (str) -> str));
             if (themeName == null) return;
-            //Set theme property and load selected theme
             PropertiesManager.setProperty("theme", themeName);
             ThemeManager.setTheme(terminal, themeName);
         });
 
-        //Define startup behavior
+
+
         terminal.setStartBehavior((t)->{
-            //Read properties from file
             PropertiesManager.readProperties(terminal);
-            //Get list of themes
             ThemeManager.makeThemesList();
-            //Load theme
             ThemeManager.setTheme(terminal, PropertiesManager.getProperty("theme"));
 
             if(activeCharacter!=null){
@@ -66,10 +63,8 @@ public class CharacterCommand {
             }
 
             try{
-                //Load font size
                 t.setFontSize(Integer.parseInt(PropertiesManager.getProperty("font-size")));
             } catch (NumberFormatException e){
-                //Default to font size in theme
                 t.setFontSize(terminal.getTheme().font.getSize());
             }
         });
@@ -114,6 +109,7 @@ public class CharacterCommand {
                 if(s.getMaxValue()>0) terminal.out.println(s.toString());
             }
         });
+        terminal.putCommand("save",     ()-> Writer.writeCharacter(this, activeCharacter, true));
         terminal.putCommand("quit", ()->{
                 if(terminal.hasTokens()){
                     String token = terminal.nextToken();
@@ -139,4 +135,13 @@ public class CharacterCommand {
     public void setActiveCharacter(PlayerCharacter activeCharacter) {
         this.activeCharacter = activeCharacter;
     }
+
+    public String dataDir(){
+        return PropertiesManager.getProperty("data");
+    }
+
+    public String exportDir(){
+        return PropertiesManager.getProperty("export");
+    }
 }
+

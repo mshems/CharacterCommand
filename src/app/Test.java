@@ -1,9 +1,11 @@
 package app;
 
+import app.io.Reader;
 import core.actions.DiceRoll;
 import core.character.PlayerCharacter;
 import core.character.inventory.GearSlot;
 import core.items.consumable.Consumable;
+import core.items.consumable.ConsumableEffect;
 import core.items.equippable.armor.Armor;
 import core.items.equippable.armor.ArmorType;
 import core.items.equippable.weapon.DamageRoll;
@@ -12,6 +14,8 @@ import core.items.equippable.weapon.WeaponDamage;
 import core.items.magic.MagicEffect;
 import core.magic.Spell;
 import core.magic.SpellSlot;
+
+import java.io.Serializable;
 
 public class Test {
 
@@ -47,7 +51,7 @@ public class Test {
         pc.inventoryBehavior.add(w2, 1);
         pc.inventoryBehavior.add(w2, 1);
         pc.inventoryBehavior.add(
-                new Consumable("Potion of Minor Healing", (activeCharacter)->
+                new Consumable("Potion of Minor Healing", (ConsumableEffect & Serializable)(activeCharacter)->
                                 activeCharacter.healthBehavior.heal(DiceRoll.doRoll(2,4,0))), 5);
 
         pc.makeCaster(pc.getAbilities().CHA());
@@ -66,7 +70,10 @@ public class Test {
         pc.magicBehavior.learnSpell(new Spell("Lightning Bolt", 3));
         pc.magicBehavior.learnSpell(new Spell("Fireball", 3));
 
-        app.loadCharacter(pc);
-        app.setActiveCharacter(pc);
+        PlayerCharacter pc2 = Reader.readCharacter(app, "Morris Stormraven");
+        app.loadCharacter(pc2);
+        app.setActiveCharacter(pc2);
+        //app.loadCharacter(pc);
+        //app.setActiveCharacter(pc);
     }
 }

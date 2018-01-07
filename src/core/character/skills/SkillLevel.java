@@ -1,6 +1,8 @@
 package core.character.skills;
 
-public enum SkillLevel {
+import java.io.Serializable;
+
+public enum SkillLevel implements Serializable{
     UNTRAINED, PROFICIENT, EXPERTISE;
 
     public SkillLevel parseSkillLevel(String str){

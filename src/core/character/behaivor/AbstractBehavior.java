@@ -2,7 +2,9 @@ package core.character.behaivor;
 
 import core.character.PlayerCharacter;
 
-public abstract class AbstractBehavior {
+import java.io.Serializable;
+
+public abstract class AbstractBehavior implements Serializable{
     protected PlayerCharacter pc;
 
     public AbstractBehavior(PlayerCharacter pc){

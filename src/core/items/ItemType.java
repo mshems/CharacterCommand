@@ -2,10 +2,11 @@ package core.items;
 
 import jterminal.core.IllegalTokenException;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-public enum ItemType {
+public enum ItemType implements Serializable{
     ITEM, CONSUMABLE, EQUIPMENT, ARMOR, WEAPON, SHIELD;
 
     public static List<ItemType> TypeList(){

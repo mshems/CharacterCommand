@@ -1,17 +1,18 @@
 package core.character;
 
 import core.TaggedObject;
-import core.character.stats.AbilityScoreTable;
-import core.character.stats.CounterStat;
-import core.character.stats.LinkedStat;
-import core.character.stats.Stat;
+import core.character.stats.*;
 
+import java.io.Serializable;
+import java.lang.invoke.SerializedLambda;
 import java.util.HashMap;
+import java.util.function.Function;
 
-public abstract class AbstractCharacter extends TaggedObject{
-    private String characterName;
-    protected String characterRace;
-    protected String characterClass;
+public abstract class AbstractCharacter extends TaggedObject implements Serializable{
+
+    protected String characterName;
+    protected String characterRace = "";
+    protected String characterClass = "";
 
     private AbilityScoreTable abilities;
     private HashMap<String, Stat> statBlock;
@@ -35,8 +36,11 @@ public abstract class AbstractCharacter extends TaggedObject{
         statBlock.put("hp",   new CounterStat("Hit Points", 3));
         //statBlock.put("ap",   new CounterStat("Ability Points", 0));
 
-        statBlock.put("per",  new LinkedStat("Passive Perception", this::PER));
-        statBlock.put("ini",  new LinkedStat("Initiative", this::INI));
+        statBlock.put("per",  new LinkedStat("Passive Perception", (StatLink & Serializable) this::PER));
+        statBlock.put("ini",  new LinkedStat("Initiative", (StatLink & Serializable) this::INI));
+
+        /*statBlock.put("per",  new LinkedStat("Passive Perception", ()->this.PER()));
+        statBlock.put("ini",  new LinkedStat("Initiative", ()-> this.INI()));*/
     }
 
     public double PB(){

@@ -3,7 +3,9 @@ package core.character.skills;
 import core.character.PlayerCharacter;
 import core.character.stats.Ability;
 
-public class Skill {
+import java.io.Serializable;
+
+public class Skill implements Serializable{
     private String skillName;
     private Ability skillAbility;
     private SkillLevel skillLevel;

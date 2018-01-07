@@ -2,7 +2,9 @@ package core.items.magic;
 
 import core.character.stats.Stat;
 
-public class MagicEffect{
+import java.io.Serializable;
+
+public class MagicEffect implements Serializable{
     String effectName;
     private Stat stat;
     private double bonus;

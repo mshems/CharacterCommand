@@ -1,6 +1,8 @@
 package core.character.stats;
 
-public class Stat extends AbstractStat{
+import java.io.Serializable;
+
+public class Stat extends AbstractStat implements Serializable{
     private double bonusValue;
     protected boolean counter = false;
     protected boolean ability = false;

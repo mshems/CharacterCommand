@@ -2,7 +2,9 @@ package core.magic;
 
 import core.TaggedObject;
 
-public class Spell extends TaggedObject implements Comparable<Spell>{
+import java.io.Serializable;
+
+public class Spell extends TaggedObject implements Comparable<Spell>, Serializable{
     private String spellName;
     private int spellLevel;
     private boolean prepared;

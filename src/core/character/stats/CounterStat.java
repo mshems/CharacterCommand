@@ -34,4 +34,8 @@ public class CounterStat extends Stat{
     public String toString() {
         return String.format("%s: %.0f/%.0f", statName, currValue, getTotal());
     }
+
+    public String countToString(){
+        return String.format("%.0f/%.0f", currValue, getTotal());
+    }
 }

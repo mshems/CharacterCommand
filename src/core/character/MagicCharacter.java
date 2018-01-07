@@ -2,10 +2,13 @@ package core.character;
 
 import core.character.stats.Ability;
 import core.character.stats.LinkedStat;
+import core.character.stats.StatLink;
 import core.magic.SpellBook;
 import core.magic.SpellSlot;
 
-public class MagicCharacter extends AbstractCharacter{
+import java.io.Serializable;
+
+public class MagicCharacter extends AbstractCharacter implements Serializable{
     private SpellBook spellBook;
     private Ability spellAbility;
     private boolean spellcaster = false;
@@ -30,9 +33,9 @@ public class MagicCharacter extends AbstractCharacter{
             setSpellAbility(a);
             setSpellcaster(true);
             setSpellBook(new SpellBook());
-            getStatBlock().put("ssdc", new LinkedStat("Spell Save DC", this::SSDC));
-            getStatBlock().put("sam",  new LinkedStat("Spell Attack Modifier", this::SAM));
-            getStatBlock().put("pb",   new LinkedStat("Proficiency Bonus", this::PB));
+            getStatBlock().put("ssdc", new LinkedStat("Spell Save DC", (StatLink & Serializable) this::SSDC));
+            getStatBlock().put("sam",  new LinkedStat("Spell Attack Modifier", (StatLink & Serializable) this::SAM));
+            getStatBlock().put("pb",   new LinkedStat("Proficiency Bonus", (StatLink & Serializable) this::PB));
             if(spellSlots==null){
                 spellSlots = new SpellSlot[]{
                         new SpellSlot(1, 0),

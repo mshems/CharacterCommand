@@ -1,11 +1,12 @@
 package core.magic;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class SpellBook {
+public class SpellBook implements Serializable{
     private HashMap<String, Spell> contents;
 
     public SpellBook(){

@@ -1,8 +1,9 @@
 package core.actions;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class DiceRoll{
+public class DiceRoll implements Serializable{
     private double sides;
     private double num;
     private double mod;

@@ -3,9 +3,10 @@ package core.items;
 import core.TaggedObject;
 import core.character.PlayerCharacter;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public abstract class AbstractItem extends TaggedObject{
+public abstract class AbstractItem extends TaggedObject implements Serializable{
     protected String itemName;
     protected String itemDescription = "";
     protected double itemValue = 0;

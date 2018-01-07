@@ -7,11 +7,12 @@ import core.character.skills.Skill;
 import core.character.skills.SkillSet;
 import core.character.stats.CounterStat;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
-public class PlayerCharacter extends MagicCharacter{
+public class PlayerCharacter extends MagicCharacter implements Serializable{
 
 
 
@@ -80,12 +81,13 @@ public class PlayerCharacter extends MagicCharacter{
     @Override
     public String toString() {
         return String.format("" +
-                        "%s -- Level %.0f\n" +
-                        "%s  %s\n" +
+                        "%s -- Level %.0f %s %s\n" +
+                        "HP: %s  AC: %.0f\n" +
                         "%s %.0f (%+.0f)  %s %.0f (%+.0f)  %s %.0f (%+.0f)\n" +
                         "%s %.0f (%+.0f)  %s %.0f (%+.0f)  %s %.0f (%+.0f)",
-                this.getName(),this.LVL().getTotal(),
-                this.HP(), this.AC(),
+                this.characterName, this.LVL().getTotal(),
+                this.characterRace, this.characterClass,
+                this.HP().countToString(), this.AC().getTotal(),
                 "STR", this.getAbilities().STR().getTotal(), this.getAbilities().STR().getModifier(),
                 "DEX", this.getAbilities().DEX().getTotal(), this.getAbilities().DEX().getModifier(),
                 "CON", this.getAbilities().CON().getTotal(), this.getAbilities().CON().getModifier(),

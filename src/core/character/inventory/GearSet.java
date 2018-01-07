@@ -2,9 +2,10 @@ package core.character.inventory;
 
 import core.items.Item;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class GearSet {
+public class GearSet implements Serializable{
     private HashMap<GearSlot, Item> equippedGear;
 
     public GearSet(){

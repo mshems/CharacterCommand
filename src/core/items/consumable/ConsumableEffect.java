@@ -2,6 +2,8 @@ package core.items.consumable;
 
 import core.character.PlayerCharacter;
 
-public interface ConsumableEffect {
+import java.io.Serializable;
+
+public interface ConsumableEffect extends Serializable{
     void doEffect(PlayerCharacter pc);
 }

@@ -2,7 +2,9 @@ package core.character.inventory;
 
 import core.items.Item;
 
-public class ItemStack{
+import java.io.Serializable;
+
+public class ItemStack implements Serializable{
     private Item item;
     private int count;
 

@@ -20,4 +20,8 @@ public class Ability extends Stat{
     public String toString(){
         return String.format("%s: %.0f (%+.0f)", statName, getTotal(), getModifier());
     }
+
+    public String valueToString(){
+        return String.format("%.0f (%+.0f)", getTotal(), getModifier());
+    }
 }

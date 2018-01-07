@@ -2,10 +2,11 @@ package core.character.inventory;
 
 import jterminal.core.IllegalTokenException;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-public enum GearSlot {
+public enum GearSlot implements Serializable{
     HEAD, LEGS, BODY, HANDS, FEET, MAIN_HAND, OFF_HAND, UNSLOTTED;
 
     public static List<GearSlot> SlotList(){

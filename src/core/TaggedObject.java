@@ -1,10 +1,11 @@
 package core;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
-public class TaggedObject {
+public class TaggedObject implements Serializable{
     private HashSet<String> tags;
 
     public TaggedObject(String...t){

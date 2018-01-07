@@ -2,9 +2,10 @@ package core.character.inventory;
 
 import core.items.Item;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 
-public class Inventory{
+public class Inventory implements Serializable{
     private LinkedHashMap<String, ItemStack> contents;
 
     public Inventory(){

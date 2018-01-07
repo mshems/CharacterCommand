@@ -1,5 +1,7 @@
 package core.character.stats;
 
-public interface StatLink {
+import java.io.Serializable;
+
+public interface StatLink extends Serializable{
     double getValue();
 }
