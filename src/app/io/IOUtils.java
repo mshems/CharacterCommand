@@ -24,4 +24,8 @@ public class IOUtils {
             }
         }
     }
+
+    public static String toFileName(String str){
+        return str.replaceAll(("[\"*|/<>?\\\\]"), "").replaceAll("\\s+", "_");
+    }
 }

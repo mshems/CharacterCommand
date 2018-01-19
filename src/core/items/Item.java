@@ -1,6 +1,7 @@
 package core.items;
 
 import core.character.PlayerCharacter;
+import core.constants.EquipConstants;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -29,10 +30,10 @@ public class Item extends AbstractItem{
     }
 
     @Override
-    public void equip(PlayerCharacter pc) {}
+    public int equip(PlayerCharacter pc) {return EquipConstants.NOT_EQUIPPABLE;}
 
     @Override
-    public void dequip(PlayerCharacter pc) {}
+    public int dequip(PlayerCharacter pc) {return EquipConstants.NOT_EQUIPPABLE;}
 
     @Override
     public void doEffects() {}
@@ -46,7 +47,7 @@ public class Item extends AbstractItem{
     }
 
     public String details(){
-        if(!getItemDescription().isEmpty()) return toString()+"\n  "+tagsToString()+"\n  "+getItemDescription();
+        if(!getItemDescription().isEmpty()) return toString()+"\n  "+getItemDescription()+"\n  "+tagsToString();
         else return toString()+"\n  "+tagsToString();
     }
 

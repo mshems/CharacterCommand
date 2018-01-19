@@ -1,6 +1,7 @@
 package core.character.behaivor;
 
 import core.character.PlayerCharacter;
+import core.constants.EquipConstants;
 import core.items.Item;
 
 public class EquipBehavior extends AbstractBehavior {
@@ -9,19 +10,17 @@ public class EquipBehavior extends AbstractBehavior {
         super(pc);
     }
 
-    public boolean equip(Item item){
-        if(item.isEquipped()) return false;
+    public int equip(Item item){
+        if(item.isEquipped()) return EquipConstants.ALREADY_EQUIPPED;
         if(item.hasTag("equippable")){
-            item.equip(pc);
-            return true;
-        } else return false;
+            return item.equip(pc);
+        } else return EquipConstants.NOT_EQUIPPABLE;
     }
 
-    public boolean dequip(Item item){
-        if(!item.isEquipped()) return false;
+    public int dequip(Item item){
+        if(!item.isEquipped()) return EquipConstants.NOT_EQUIPPED;
         if(item.hasTag("equippable")){
-            item.dequip(pc);
-            return true;
-        } else return false;
+            return item.dequip(pc);
+        } else return EquipConstants.NOT_EQUIPPABLE;
     }
 }

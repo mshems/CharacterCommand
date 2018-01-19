@@ -1,4 +1,4 @@
-package core.magic;
+package core.constants;
 
 public class SpellConstants {
     public static final int FAILED_CAST = 0;

@@ -1,6 +1,8 @@
 package core.character.stats;
 
-public class CounterStat extends Stat{
+import java.io.Serializable;
+
+public class CounterStat extends Stat implements Serializable{
     private double currValue;
 
 

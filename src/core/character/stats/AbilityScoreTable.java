@@ -1,8 +1,9 @@
 package core.character.stats;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 
-public class AbilityScoreTable extends LinkedHashMap<String, Ability>{
+public class AbilityScoreTable extends LinkedHashMap<String, Ability> implements Serializable{
 
     public AbilityScoreTable(){
         this.put("str", new Ability("STR", 10));

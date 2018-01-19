@@ -1,6 +1,8 @@
 package core.character.stats;
 
-public class LinkedStat extends Stat{
+import java.io.Serializable;
+
+public class LinkedStat extends Stat implements Serializable{
     private StatLink statLink;
 
     public LinkedStat(String name, StatLink s){

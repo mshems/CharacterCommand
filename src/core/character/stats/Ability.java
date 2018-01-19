@@ -1,6 +1,8 @@
 package core.character.stats;
 
-public class Ability extends Stat{
+import java.io.Serializable;
+
+public class Ability extends Stat implements Serializable{
 
     public Ability(String name, double val){
         super(name, val);

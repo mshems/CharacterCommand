@@ -2,6 +2,7 @@ package core.items.equippable;
 
 import core.character.PlayerCharacter;
 import core.character.inventory.GearSlot;
+import core.constants.EquipConstants;
 import core.items.magic.MagicEffect;
 import core.items.magic.MagicItem;
 
@@ -14,9 +15,8 @@ public abstract class EquippableItem extends MagicItem {
         equipped = false;
     }
 
-    public void equip(PlayerCharacter pc){
-        this.equipped = true;
-        doEffects();
+    public int equip(PlayerCharacter pc){
+        if(equipped) return EquipConstants.ALREADY_EQUIPPED;
         if(gearSlot!=null && gearSlot!=GearSlot.UNSLOTTED) {
             if (pc.getGearSet().hasGear(gearSlot)) {
                 pc.getGearSet().getGear(gearSlot).dequip(pc);
@@ -25,14 +25,19 @@ public abstract class EquippableItem extends MagicItem {
                 pc.getGearSet().putGear(gearSlot, this);
             }
         }
+        this.equipped = true;
+        doEffects();
+        return EquipConstants.SUCCESSFUL_EQUIP;
     }
 
-    public void dequip(PlayerCharacter pc){
-        this.equipped = false;
-        undoEffects();
+    public int dequip(PlayerCharacter pc){
+        if(!equipped) return EquipConstants.NOT_EQUIPPED;
         if(gearSlot!=null && gearSlot!=GearSlot.UNSLOTTED){
             pc.getGearSet().removeGear(gearSlot);
         }
+        this.equipped = false;
+        undoEffects();
+        return EquipConstants.SUCCESSFUL_DEQUIP;
     }
 
     public void doEffects(){

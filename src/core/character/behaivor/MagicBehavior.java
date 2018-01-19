@@ -2,7 +2,7 @@ package core.character.behaivor;
 
 import core.character.PlayerCharacter;
 import core.magic.Spell;
-import core.magic.SpellConstants;
+import core.constants.SpellConstants;
 
 public class MagicBehavior extends AbstractBehavior {
 

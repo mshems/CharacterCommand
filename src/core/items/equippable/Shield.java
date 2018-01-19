@@ -2,6 +2,7 @@ package core.items.equippable;
 
 import core.character.PlayerCharacter;
 import core.character.inventory.GearSlot;
+import core.constants.EquipConstants;
 
 public class Shield extends EquippableItem {
     private double acBonus;
@@ -15,18 +16,18 @@ public class Shield extends EquippableItem {
     }
 
     @Override
-    public void equip(PlayerCharacter pc){
+    public int equip(PlayerCharacter pc){
         if(!equipped){
             pc.getStatBlock().get("ac").incrementBonusValue(acBonus);
-            super.equip(pc);
-        }
+            return super.equip(pc);
+        } else return EquipConstants.ALREADY_EQUIPPED;
     }
 
     @Override
-    public void dequip(PlayerCharacter pc){
+    public int dequip(PlayerCharacter pc){
         if(equipped){
             pc.getStatBlock().get("ac").decrementBonusValue(acBonus);
-            super.dequip(pc);
-        }
+            return super.dequip(pc);
+        } else return EquipConstants.NOT_EQUIPPED;
     }
 }

@@ -1,6 +1,8 @@
 package core.character.stats;
 
-public abstract class AbstractStat{
+import java.io.Serializable;
+
+public abstract class AbstractStat implements Serializable{
     String statName;
     double baseValue;
 

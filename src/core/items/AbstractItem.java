@@ -11,18 +11,16 @@ public abstract class AbstractItem extends TaggedObject implements Serializable{
     protected String itemDescription = "";
     protected double itemValue = 0;
     protected LinkedList<String> tags;
-    protected boolean equipped;
-
-    public AbstractItem(){}
+    protected boolean equipped = false;
 
     public AbstractItem(String itemName, String...tags){
         super(tags);
         this.itemName = itemName;
     }
 
-    public abstract void equip(PlayerCharacter pc);
+    public abstract int equip(PlayerCharacter pc);
 
-    public abstract void dequip(PlayerCharacter pc);
+    public abstract int dequip(PlayerCharacter pc);
 
     public abstract void doEffects();
 

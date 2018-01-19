@@ -1,5 +1,6 @@
 package app;
 
+import app.io.IOUtils;
 import app.io.Reader;
 import core.actions.DiceRoll;
 import core.character.PlayerCharacter;
@@ -21,15 +22,22 @@ public class Test {
 
     public static void main(String[] args){
         CharacterCommand app = new CharacterCommand();
-        addTestPC(app);
+
+        PlayerCharacter pc = addTestPC(app);
+        app.loadCharacter(pc);
+        app.loadCharacter(new PlayerCharacter("Clart"));
+        app.loadCharacter(new PlayerCharacter("Murpy"));
+        app.setActiveCharacter(pc);
+
         app.start();
     }
 
-    private static void addTestPC(CharacterCommand app){
+    private static PlayerCharacter addTestPC(CharacterCommand app){
         PlayerCharacter pc = new PlayerCharacter("Morris Stormraven");
         Armor a = new Armor("Chainmail Armor of Bluntness", 14, ArmorType.MEDIUM, GearSlot.BODY,".hidden-tag");
         a.addEffect(new MagicEffect(pc.getAbilities().CON(), +2));
         a.addEffect(new MagicEffect(pc.getAbilities().INT(), -2));
+        a.setItemDescription("A suit of chainmail armor that makes the wearer more hardy, if a bit dim-witted.");
 
         Weapon w1 = new Weapon("Holy Longsword", new WeaponDamage(
                 new DamageRoll(1,8,"slashing"),
@@ -70,10 +78,6 @@ public class Test {
         pc.magicBehavior.learnSpell(new Spell("Lightning Bolt", 3));
         pc.magicBehavior.learnSpell(new Spell("Fireball", 3));
 
-        PlayerCharacter pc2 = Reader.readCharacter(app, "Morris Stormraven");
-        app.loadCharacter(pc2);
-        app.setActiveCharacter(pc2);
-        //app.loadCharacter(pc);
-        //app.setActiveCharacter(pc);
+        return pc;
     }
 }

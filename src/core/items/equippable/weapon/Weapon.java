@@ -2,6 +2,7 @@ package core.items.equippable.weapon;
 
 import core.character.PlayerCharacter;
 import core.character.inventory.GearSlot;
+import core.constants.EquipConstants;
 import core.items.equippable.EquippableItem;
 import core.items.ItemTags;
 
@@ -24,9 +25,9 @@ public class Weapon extends EquippableItem {
     }
 
     @Override
-    public void equip(PlayerCharacter pc){
-        this.equipped = true;
+    public int equip(PlayerCharacter pc){
         if(hasTag("light")){
+            this.equipped = true;
             doEffects();
             if(!pc.getGearSet().hasGear(GearSlot.MAIN_HAND)){
                 pc.getGearSet().putGear(GearSlot.MAIN_HAND, this);
@@ -41,24 +42,25 @@ public class Weapon extends EquippableItem {
                 }
             }
         } else {
-            super.equip(pc);
+            return super.equip(pc);
         }
+        return EquipConstants.SUCCESSFUL_EQUIP;
     }
 
     @Override
-    public void dequip(PlayerCharacter pc){
-        this.equipped = false;
+    public int dequip(PlayerCharacter pc){
         if(hasTag("light")){
+            this.equipped = false;
             undoEffects();
             if(this == pc.getGearSet().getGear(GearSlot.MAIN_HAND)){
                 pc.getGearSet().removeGear(GearSlot.MAIN_HAND);
-            }
-            if(this == pc.getGearSet().getGear(GearSlot.OFF_HAND)){
+            } else if(this == pc.getGearSet().getGear(GearSlot.OFF_HAND)){
                 pc.getGearSet().removeGear(GearSlot.OFF_HAND);
             }
         } else {
             super.dequip(pc);
         }
+        return EquipConstants.SUCCESSFUL_DEQUIP;
     }
 
     public void makeVersatile(WeaponDamage altDamage){

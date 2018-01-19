@@ -29,11 +29,11 @@ public class InventoryAction {
                     break;
                 case "-i":
                 case "--item":
-                    viewItem(cc);
+                    viewItem(cc, getItem(cc));
                     break;
                 case "-im":
                 case "--item-menu":
-                    itemMenu(cc);
+                    viewItemMenu(cc, getItem(cc));
                     break;
                 case "--help":
                     cc.terminal.out.println("HELP MENU");
@@ -43,30 +43,70 @@ public class InventoryAction {
     }
 
     public static void viewInventoryMenu(CharacterCommand cc){
-        cc.terminal.out.println(
-                ListMenu.queryMenu(
+        if(cc.getActiveCharacter().getInventory().isEmpty()){
+            cc.terminal.out.println("Your inventory is empty!");
+            return;
+        }
+        Item item = ListMenu.queryMenu(
                         new MenuFactory()
                                 .setDirection(ListMenu.VERTICAL)
                                 .buildObjectMenu(
                                         cc.terminal,
                                         cc.getActiveCharacter().getInventory().getContents().values(),
                                         ItemStack::toString))
-                        .getItem().details());
+                .getItem();
+        viewItemMenu(cc, item);
+        //cc.terminal.out.println(item.details());
     }
 
-    private static void viewItem(CharacterCommand cc){
-        String itemName;
-        itemName = CCExtensions.buildNameFromTokens(cc.terminal);
+    private static Item getItem(CharacterCommand cc){
+        Item item = null;
+        String itemName = CCExtensions.buildNameFromTokens(cc.terminal);
         if(itemName!=null) {
-            Item i = cc.getActiveCharacter().getInventory().getItem(itemName.trim());
-            if (i != null) {
-                cc.terminal.out.println(i.details());
-            }
+            item = cc.getActiveCharacter().getInventory().getItem(itemName.trim());
+        }
+        return item;
+    }
+
+    private static void viewItem(CharacterCommand cc, Item i){
+        if (i != null) {
+            cc.terminal.out.println(i.details());
         }
     }
 
     //TODO: item action menu
-    private static void itemMenu(CharacterCommand cc){};
+    private static void viewItemMenu(CharacterCommand cc, Item i){
+        ArrayList<String> options = new ArrayList<>();
+        options.add("VIEW");
+        if(i.hasTag("equippable") && !i.isEquipped()) options.add("EQUIP");
+        if(i.isEquipped()) options.add("DEQUIP");
+        options.add("EXIT");
+
+        String select = ListMenu.queryMenu(
+                new MenuFactory()
+                        .setTitle(i.getItemName()+":")
+                        .setDirection(ListMenu.HORIZONTAL)
+                        .buildBasicMenu(cc.terminal, options.toArray(new String[]{})));
+
+        switch (select){
+            case "VIEW":
+                cc.terminal.out.println(i.details());
+                break;
+            case "EQUIP":
+                int equipRes = cc.getActiveCharacter().equipBehavior.equip(i);
+                cc.terminal.out.println(EquipAction.equipResultMessage(equipRes, i));
+                break;
+            case "DEQUIP":
+                int dequipRes = cc.getActiveCharacter().equipBehavior.dequip(i);
+                cc.terminal.out.println(EquipAction.dequipResultMessage(dequipRes, i));
+                break;
+            case "EXIT":
+                return;
+            default:
+                break;
+        }
+        //viewItemMenu(cc, i);
+    }
 
     public static void add(CharacterCommand cc){
         String itemName;

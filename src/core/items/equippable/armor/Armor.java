@@ -2,6 +2,7 @@ package core.items.equippable.armor;
 
 import core.character.PlayerCharacter;
 import core.character.inventory.GearSlot;
+import core.constants.EquipConstants;
 import core.items.equippable.EquippableItem;
 
 public class Armor extends EquippableItem {
@@ -21,7 +22,7 @@ public class Armor extends EquippableItem {
     }
 
     @Override
-    public void equip(PlayerCharacter pc){
+    public int equip(PlayerCharacter pc){
         if(!equipped){
             super.equip(pc);
             double dexMod = pc.getAbilities().DEX().getModifier();
@@ -36,11 +37,13 @@ public class Armor extends EquippableItem {
                 case HEAVY:
                     break;
             }
+            return EquipConstants.SUCCESSFUL_EQUIP;
         }
+        return EquipConstants.ALREADY_EQUIPPED;
     }
 
     @Override
-    public void dequip(PlayerCharacter pc){
+    public int dequip(PlayerCharacter pc){
         if(equipped){
             super.dequip(pc);
             double dexMod = pc.getAbilities().DEX().getModifier();
@@ -55,7 +58,9 @@ public class Armor extends EquippableItem {
                 case HEAVY:
                     break;
             }
+            return EquipConstants.SUCCESSFUL_DEQUIP;
         }
+        return EquipConstants.NOT_EQUIPPED;
     }
 
     @Override

@@ -2,6 +2,7 @@ package app.ui.useraction;
 
 import app.CharacterCommand;
 import app.ui.CCExtensions;
+import core.constants.SpellConstants;
 import jterminal.core.IllegalTokenException;
 import core.magic.*;
 
@@ -50,7 +51,7 @@ public class SpellAction {
                             break;
                     }
                 } catch(IllegalTokenException e){
-                    cc.terminal.out.println("ERROR: Illegal token: \"" + e.getToken() + "\"\n  Enter \"add --help\" for help");
+                    cc.terminal.out.println("ERROR: Illegal token: \"" + e.getToken() + "\"\n  Enter \"cast --help\" for help");
                     return;
                 }
             }

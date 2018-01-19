@@ -9,9 +9,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Reader {
-    public static PlayerCharacter readCharacter(CharacterCommand cc, String characterName) {
+    public static PlayerCharacter readCharacter(CharacterCommand cc, String characterName, boolean verbose) {
+        Path charPath = Paths.get(cc.dataDir() + "/" + IOUtils.toFileName(characterName) + ".data");
+        return readCharacter(charPath);
+    }
+
+    public static PlayerCharacter readCharacter(CharacterCommand cc, String fileName){
+        Path charPath = Paths.get(cc.dataDir() + "/" + fileName);
+        return readCharacter(charPath);
+    }
+
+    private static PlayerCharacter readCharacter(Path charPath){
         PlayerCharacter pc = null;
-        Path charPath = Paths.get(cc.dataDir() + "/" + characterName + ".data");
         if (Files.exists(charPath)) {
             File charFile = charPath.toFile();
             try {

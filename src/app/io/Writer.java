@@ -14,7 +14,7 @@ public class Writer {
     public static void writeCharacter(CharacterCommand cc, PlayerCharacter pc, boolean verbose){
         IOUtils.checkDirs(cc);
         try{
-            Path path = Paths.get(cc.dataDir()+"/" + pc.getName() + ".data");
+            Path path = Paths.get(cc.dataDir()+"/" + IOUtils.toFileName(pc.getName()) + ".data");
             ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(path.toString())));
             out.writeObject(pc);
             out.close();

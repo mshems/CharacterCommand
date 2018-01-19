@@ -1,6 +1,7 @@
 package core.magic;
 
 import core.TaggedObject;
+import core.constants.SpellConstants;
 
 import java.io.Serializable;
 
